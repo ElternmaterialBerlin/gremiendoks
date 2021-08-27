@@ -1,0 +1,1178 @@
+<html>
+<head>
+<title>
+  Kontaktdaten für die Elternarbeit
+</title>
+<meta charset="UTF-8">
+<style type="text/css">
+  :root {
+    --year: "2021/2022";
+    --npages: "";
+  }
+  body {
+    position: absolute;
+    padding: 0cm;
+    margin: 0mm;
+    font-family: Carlito, Calibre, sans-serif;
+    font-size: 11pt;
+    counter-reset: pn; 
+  }
+  .page {
+    position: relative;
+    display: inline-block;
+    margin: 0mm;
+    padding: 0mm;
+    width: 210mm;
+    height: 296.6mm;
+  }
+  .content {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    left: 10mm;
+    right: 10mm;
+    top: 10mm;
+    bottom: 10mm;
+  }
+  .expl {/*kleine erläuternde Texte*/
+    font-size: 9pt;
+  }
+  .footerl {
+    font-size: 8pt;
+    position: absolute;
+    bottom: 5mm;
+    height: 10mm;
+    left: 10mm;
+  }
+  .footerr {
+    font-size: 8pt;
+    position: absolute;
+    bottom: 5mm;
+    height: 10mm;
+    right: 10mm;
+  }
+  .doprint .pn::after {
+    counter-increment: pn;
+    content: counter(pn);
+  }
+  .np::after {
+    content: var(--npages);
+  }
+  .yr::after {
+    content: var(--year);
+  }
+  
+  @media print {
+    @page {
+      size: auto;
+      margin: 0mm;
+    }
+    .page {
+      /*nur für Debugging:*/
+/*       background-color: #efefff;
+       border: solid 1px; */
+      /*Ende Debugging*/
+      
+      break-after: page;
+    }
+    .guiheader {
+      display: none;
+    }
+    .noprint {
+      display: none;
+    }
+    .anleitung {
+      display: none;
+    }
+  }
+  @media screen {
+    .page {
+      background-color: #efefff;
+      border: solid 1px;
+    }
+    .content {
+  /*     border: dashed; */
+      background-color: white;
+    }
+    .guiheader {
+      font-size: 8pt;
+      position: absolute;
+      top: 0mm;
+      height: 10mm;
+/*       width: 15mm; */
+      padding-left: 2mm;
+      padding-right: 2mm;
+      right: 0mm;
+      text-align: center;
+      background-color: #b0ff80;
+    }
+    .guielement {
+      cursor: pointer;
+      color: red;
+      font-size:25pt;
+      margin-left: 1mm;
+    }
+    
+    .guielement_small {
+      display: inline-block;
+      max-width: 15mm; 
+      cursor: pointer;
+      color: red;
+      margin-left: 1mm;
+      margin-top: 1mm;
+    }
+    
+    .noprint {
+      filter: contrast(50%);
+    }
+  }
+  
+  h1 {/*Hauptüberschrift*/
+    text-align: center;
+    font-size: 21pt;
+    margin-top: 5mm;
+    margin-bottom: 0.5mm;
+  }
+  
+  .subhead {/*Untertitel*/
+    text-align: center;
+    font-size: 8pt;
+    margin-top: 0pt;
+    margin-bottom: 2mm;
+  }
+  
+  h2 {/*kleine Zwischenüberschrift*/
+    text-align: left;
+    font-weight: bold;
+    font-size: 11pt;
+    margin-bottom: 0pt;
+  }
+  
+  h3 {/*größere Zwischenüberschrift*/
+    text-align: left;
+    font-weight: bold;
+    font-size: 14pt;
+    margin-top: 0pt;
+    margin-bottom: 2mm;
+  }
+  
+  h4 {/*gleichrangig und zugehörig zu h5, idR davor*/
+    text-align: left;
+    font-weight: normal;
+    font-size: 11pt;
+    margin-top: 0pt;
+    margin-bottom: 2mm;
+    text-decoration: underline;
+  }
+  
+  h5 {/*gleichrangig und zugehörig zu h4, idR danach*/
+    text-align: left;
+    font-weight: bold;
+    font-size: 11pt;
+    margin-top: 4mm;
+    margin-bottom: 2mm;
+    background-color: #808080;
+    color: white;
+    display: inline-block;
+  }
+  
+  .erlaeuterung {/*Ausfüllhilfen und ähnliches*/
+    margin-top: 0pt;
+    text-align: justify;
+    font-size: 8pt;
+  }
+  
+  ul, ol {
+    margin-top: 0pt;
+    padding-top: 0pt;
+  }
+  
+  .haupttext {
+    margin-top: 0pt;
+    font-size: 11pt;
+  }
+  
+  .tabellebreit {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tabellebreit th {
+    border: 1pt solid;
+    height: 4.7mm;
+    font-size: 11pt;
+    font-weight: normal;
+  }
+  .tabellebreit td {
+    border: 1pt solid;
+    height: 7mm;
+  }
+  
+  .wahlerg {
+    background-color: #d9d9d9;
+    margin-bottom: 4mm;
+  }
+  .wahlerg .iptab {
+    background-color: #d9d9d9;
+  }
+  
+  .tabelleohnerahmen {
+    width: 100%;
+    padding: 0px;
+    border-spacing: 0pt;
+  }
+  
+  .iptab {
+    border: none;
+    width: 100%;
+  }
+  
+  .ipcb {
+    margin: 0pt;
+    border: none;
+    padding: 0pt;
+    width: 100%;
+    filter: opacity(0%);
+    margin-right: -70%;
+  }
+  
+  .ipcb:checked ~ a::after{
+    font-size: 100%;
+    content: "X";
+    pointer-events: none;
+  }
+  
+  .spkind {
+    width: 2cm;
+    text-align: left;
+  }
+  
+  .spnamen {
+    width: 4cm;
+    text-align: left;
+  }
+  
+  .sptel {
+    width: 3cm;
+    text-align: left;
+  }
+  
+  .spmail {
+    width: 3cm;
+    text-align: left;
+  }
+  
+  .sp1o, .sp2o, .sp3o {
+    width: 4mm;
+  }
+  
+  input {
+    font-size: 11pt;
+    border: none;
+    border-bottom: 1pt solid;
+  }
+  
+  label {
+    font-size: 11pt;
+    padding: 0pt;
+    margin-left: 0pt;
+  }
+  
+  #schulez {
+    padding: 0pt;
+    margin-left: 0pt;
+  }
+  
+  #schule {
+    width: 6cm;
+  }
+  
+  #klasse {
+    width: 2cm;
+  }
+  
+  #datumz {
+    text-align: right;
+  }
+  
+  #anwesend {
+    width: 1.2cm;
+  }
+  
+  #wahlleitung {
+    width: 15cm;
+  }
+  
+  .anz  {
+    width: 1.2cm;
+  }
+  
+  .wahltyp  {
+    width: 4cm;
+  }
+</style>
+<script>
+  storage = window.localStorage;
+  year = (new Date()).getFullYear();
+  year = year + "/" + (year+1);
+  
+  download = function(fn,text) {
+    const el = document.createElement("a");
+    el.setAttribute("href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    el.setAttribute("download", fn);
+    el.style.display = "none";
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
+  }
+  
+  dlSelf = function(){
+    const url = window.location.pathname;
+    const fn = url.substring(url.lastIndexOf("/")+1);
+    download(fn,
+      "<html>\n"+document.documentElement.innerHTML+"\n</html>"
+    );
+  }
+  
+  saveField = function(){
+    if (this.id && this.id != ""){
+      switch(this.type){
+        case "checkbox":
+          storage.setItem(this.id,this.checked?"on":"off");
+          break;
+        default:
+          storage.setItem(this.id,this.value);
+      }
+    }
+  };
+  
+  saveElement = function(el){
+    if (el.id && el.id != ""){
+      storage.setItem(el.id,el.innerHTML);
+    }
+  };
+  
+  loadElement = function(el){
+    if (el.id && el.id != ""){
+      const stored = storage.getItem(el.id);
+      if (stored){
+        el.innerHTML = stored;
+      }
+    }
+  };
+  
+  deleteStorage = function(){
+    storage.clear();
+    var inputs;
+    inputs = document.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; ++i) {
+      var ip = inputs[i];
+      switch(ip.type){
+        case "checkbox":
+          ip.checked = false;
+          break;
+        default:
+          ip.value = "";
+      }
+    }
+    location.reload();
+  };
+  
+  
+  ol = function(){
+    var npages = document.getElementsByClassName("doprint").length;
+    document.documentElement.style.setProperty("--year","'"+year+"'");
+    document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
+    document.npages = npages;
+    
+    var inputs;
+    inputs = document.getElementsByTagName("input");
+    var usedids = {};
+    for (var i = 0; i < inputs.length; ++i) {
+      var ip = inputs[i];
+      if (!ip.id || ip.id == ""){
+        var par = ip.parentNode
+        var gp = par.parentNode
+        var colNr = Array.prototype.indexOf.call(gp.children,par)
+        par = gp;
+        gp = par.parentNode;
+        var tab = gp.parentNode;
+        var rowNr = Array.prototype.indexOf.call(gp.children,par);
+        var colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
+        ip.id = tab.id+"_"+colid+rowNr;
+        
+        /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
+          copy and paste vermeiden.*/
+        if (usedids[ip.id]){
+          alert("Programmierfehler: id mehrfach vergeben!")
+        } else {
+          usedids[ip.id] = true;
+        }
+      }
+      var stored = storage.getItem(ip.id)
+      if (stored){
+        switch(ip.type){
+          case "checkbox":
+            ip.checked = (stored == "on");
+            break;
+          default:
+            ip.value = stored;
+        }
+      }
+      ip.oninput = saveField;
+    }
+    
+    observer = new MutationObserver(function(mutationsList,observer){
+      for(const mutation of mutationsList) {
+        const el = mutation.target.parentElement;
+        saveElement(el);
+      }
+    });
+    observer.observe(document,{characterData:true,subtree:true});
+    
+    const edicls = ["haupttext","erlaeuterung"];
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(var i=0;i<cl.length;++i) {
+        const el = cl[i];
+        el.id = c+"_"+i;
+        el.contentEditable = true;
+        loadElement(el);
+      }
+    }
+    const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(var i=0;i<tl.length;++i) {
+        const el = tl[i];
+        el.id = t+"_"+i;
+        el.contentEditable = true;
+        loadElement(el);
+      }
+    }
+  };
+  
+  hidePagePrint = function(x){
+    var page = x.parentNode.parentNode;
+    if (page.className.indexOf("noprint") == -1){
+      document.npages -= 1;
+      document.documentElement.style.setProperty("--npages",
+        "'/ "+document.npages+"'");
+    }
+    page.classList.add("noprint");
+    page.classList.remove("doprint");
+  };
+  showPagePrint = function(plus){
+    var page = plus.parentNode.parentNode;
+    if (page.className.indexOf("noprint") == -1){
+      alert("Verdoppeln von Seiten ist noch nicht implementiert."+
+      ' "+" stellt aktuell nur gelöschte Seiten wieder her.');
+    } else {
+      page.classList.add("doprint");
+      page.classList.remove("noprint");
+      document.npages += 1;
+      document.documentElement.style.setProperty("--npages",
+        "'/ "+document.npages+"'");
+    };
+  };
+</script>
+</head>
+<body onload="ol()">
+<div class="page anleitung">
+  <div class="content">
+    <h2>Anleitung</h2>
+    <p class="haupttext">
+      Dieses Dokument ist im Browser ausfüllbar und z.T. auch
+      editierbar. Es wird (bis auf farbige Ränder) sehr ähnlich zur
+      Bildschirmabbildung gedruckt. Sofern kein privater Modus o.ä.
+      genutzt wird, werden alle Änderungen im lokalen Speicher
+      des Browsers auch nach dem Beenden gesichert (Tipp: testen). Die
+      Schaltfläche <i>Daten löschen</i> setzt alle Änderungen an den
+      Texten, Überschriften etc. und alle ausgefüllten Felder zurück.
+      Dagegen ist es mit <i>Dokument speichern</i> möglich, die
+      Änderungen am Dokument selbst ohne ausgefüllte Felder zu
+      speichern. In Zukunft wird es ggf. eine Möglichkeit geben, die
+      Felddaten separat zu speichern, aktuell ist das Dokument aber
+      darauf ausgelegt, gedruckt zu werden. Seiten mit <i>X+</i> sind
+      entfernbar, sodass sie nicht mitgedruckt werden, die Seitenzahl
+      passt sich automatisch an. Ebenso wird diese Anleitungsseite
+      nicht gedruckt. Geplant ist auch, für einzelne Seiten
+      eine Vervielfachung zu ermöglichen. Weil das ganze Dokument
+      nur aus einer HTML-Datei besteht, können Sie es einfach
+      speichern, offline nutzen und weitergeben.
+    </p>
+    
+    <h2>Weitergabe</h2>
+    <p class="haupttext">
+      Dieses Werk ist lizenziert unter der Lizenz
+      <a rel="license"
+        href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Namensnennung - Weitergabe unter gleichen
+        Bedingungen 4.0
+      </a>
+      (bekannt als CC-BY-SA 4.0).
+      Zusätzlich ist es gestattet, unter Nutzung dieses Dokuments eine
+      PDF-Version oder einen Ausdruck des ganzen Dokuments oder eines
+      Teils (insbesondere ohne Anleitungsseite) zu erstellen und
+      ohne Namensnennung zu verbreiten und zu archivieren. Wenn Sie nur
+      die GUI dieses Dokuments übernehmen und z.B. ein Dokument zu einem
+      anderen Zweck erstellen, genügt es die technischen Autor*innen
+      dieses Dokuments aufzulisten.
+    </p>
+    
+    <p class="haupttext">
+      Die jeweils aktuelle Version finden Sie unter 
+      <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html">
+        https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html</a>
+      als Teil des Repositorys
+      <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
+        https://github.com/ElternmaterialBerlin/gremiendoks</a>.
+      
+      Dort finden Sie auch weitere
+      Dokumente zur Elternarbeit und können eine verbesserte Version
+      dieses Dokuments einsenden.
+    </p>
+    
+    <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
+    <ul>
+      <li> 2020-2021 Frank Fuhlbrück
+    </ul>
+    
+    <h2>Inhaltliche Autor*innen (Texte)</h2>
+    <ul>
+      <li> 2021 Frank Fuhlbrück
+    </ul>
+    
+    <h2>Haftungsausschluss</h2>
+    <p class="haupttext">
+      Die Autor*innen sind in der Mehrheit aktive Eltern ohne
+      juristische Ausbildung. Entsprechend kann für die korrekte
+      Auslegung von Gesetzen (Schulgesetz, DSGVO, etc.) keine Garantie
+      gegeben werden. Falls Sie Fehler oder Unklarheiten feststellen,
+      bitten wir Sie die zuletzt aktiven Autor*innen zu kontaktieren.
+    </p>
+    
+    <h2>Warum HTML?</h2>
+    <p class="haupttext">
+      Zum Zeitpunkt der ersten Erstellung (2020-2021) ist die
+      Druckdarstellung über die drei wichtigsten Desktopbrowser hinweg
+      relativ konsistent. Die gewählte Implementierung erlaubt zudem
+      das Anpassen von Teilen des Dokuments ohne HTML-Kenntnisse.
+      Da die korrekte Verarbeitung von Stilen
+      in Office-Dokumenten über Anwendungen (und Anweder*innen) hinweg
+      immer wieder problematisch ist, wurde bewusst kein OOXML (.docx)
+      oder OpenDocument (.odt) eingesetzt. TeX würde zwar
+      konsistentere Druckdarstellung und bessere Langzeitnutzbarkeit
+      desselben Dokuments erlauben, ist aber für die Elternarbeit
+      zu wenig verbreitet und schließt daher viele Mitarbeitende aus.
+    </p>
+  </div>  
+</div>  
+<div class="page doprint">
+  <div class="content">
+    <h1>Kontaktdaten für die Elternarbeit
+    </h1>
+    
+    <table class="tabelleohnerahmen">
+      <tr>
+        <td id="schulez"><!--
+          --><label for="schule">Schule:</label>
+          <input type="text" id="schule" name="schule" value="" />
+        </td>
+        <td id="klassez"><!--
+          --><label for="klasse">Klasse:</label>
+          <input type="text" id="klasse" name="klasse" value="" />
+        </td>
+        <td id="datumz">
+          <label for="datum">Datum:</label>
+          <input type="text" id="datum" name="datum" value="" />
+        </td>
+      </tr>
+    </table>
+    <h2>1. Zweck der Datenspeicherung</h2>
+    <p class="haupttext">
+      Die Daten werden gespeichert, um Kontakt durch die
+      Elternsprecher*innen der Klasse zu ermöglichen. Bei
+      Zustimmung zu weiteren Optionen (s.u.) ist der Zweck die
+      Kommunikation zwischen den Eltern der Klasse.
+    </p>
+    <h2>2. Umfang der gespeicherten Daten</h2>
+    <p class="haupttext">
+      Die Angabe jeglicher Daten ist freiwillig. Sofern angeben,
+      werden die in der Kopfzeile der Tabelle ausgeführten Daten gespeichert.
+    </p>
+    <h2>3. Ort der Speicherung und Senden von Daten</h2>
+    <p class="haupttext">
+      Die unten aufgeführte Tabelle wird in digitaler Form auf den Privatgeräten
+      der Elternsprecher*innen der Klasse gespeichert.
+      Im Falle der Zustimmung zur Weitergabe, werden die Daten per
+      E-Mail an die Mailingliste gesendet. Wird der Eintragung 
+      in die Mailingliste zugestimmt, so wird die Mailadresse auf dem
+      Mailinglistenserver gespeichert. Mails an die Mailingliste
+      werden über diesen so versendet, dass die Empfangsadressen
+      nicht für die anderen sichtbar sind, die Absendeadresse
+      ist hingegen sichtbar.
+    </p>
+    <h2>4. Dauer der Speicherung</h2>
+    <p class="haupttext">
+      Die Daten werden höchstens für die Dauer des Besuchs der Klasse
+      durch das eigene Kind gespeichert und jederzeit auf Wunsch
+      gelöscht. Jährlich erfolgt eine Erinnerung, ob Wunsch auf Löschung
+      besteht.
+    </p>
+    
+    <h2>Optionen</h2>
+    <ol class="haupttext">
+      <li>Aufnahme in Mailingliste</li>
+      <li>Weitergabe der Mailadresse an Eltern auf der Mailingliste</li>
+      <li>Weitergabe der Telefonnummer an Eltern auf der Mailingliste</li>
+    </ol> 
+
+    
+    <table id="kontaktdaten" class="tabellebreit">
+      <thead><tr>
+        <th class="spkind">Vorname Kind</th>
+        <th class="spnamen">Name Elternteil</th>
+        <th class="spmail">E-Mail</th>
+        <th class="sptel">Telefon</th>
+        <th class="sp1o">1</th>
+        <th class="sp2o">2</th>
+        <th class="sp3o">3</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+      <tbody>
+    </table>
+  </div>
+  <div class="footerl">
+    Kontaktdatenliste <a class="yr"></a><br/>
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>   <a class="np"></a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement_small" 
+      onclick="dlSelf();">Dokument speichern</a>
+    <a class="guielement_small" 
+      onclick="deleteStorage();">Daten löschen</a>
+  </div>
+</div>
+
+<div class="page doprint">
+  <div class="content">
+    <table id="kontaktdaten2" class="tabellebreit">
+      <thead><tr>
+        <th class="spkind">Vorname Kind</th>
+        <th class="spnamen">Name Elternteil</th>
+        <th class="spmail">E-Mail</th>
+        <th class="sptel">Telefon</th>
+        <th class="sp1o">1</th>
+        <th class="sp2o">2</th>
+        <th class="sp3o">3</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+        </tr>
+      <tbody>
+    </table>
+  </div>
+  <div class="footerl">
+    Kontaktdatenliste <a class="yr"></a><br/>
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>   <a class="np"></a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement" 
+      onclick="hidePagePrint(this);">x</a>
+    <a class="guielement" 
+      onclick="showPagePrint(this);">+</a>
+  </div>
+</div>
+
+
+</body>
+</html>
