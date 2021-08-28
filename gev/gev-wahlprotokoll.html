@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="de">
 <html>
 <head>
 <title>
@@ -310,8 +312,8 @@
   dlSelf = function(){
     const url = window.location.pathname;
     const fn = url.substring(url.lastIndexOf("/")+1);
-    download(fn,
-      "<html>\n"+document.documentElement.innerHTML+"\n</html>"
+    download(fn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
+      document.documentElement.innerHTML+"\n</html>"
     );
   }
   
@@ -1685,7 +1687,7 @@
   <div class="content">
     <h3>Template</h3>
     
-    <p class"haupttext">
+    <p class="haupttext">
       Das  Protokoll ist noch nicht fertig. Teil- und Fachkonferenzen
       sowie die Abschlussseite fehlen. Fertigstellung bis Anfang
       September 2021.

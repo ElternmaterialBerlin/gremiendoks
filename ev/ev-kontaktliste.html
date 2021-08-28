@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
 <title>
   Kontaktdaten für die Elternarbeit
@@ -329,8 +330,8 @@
   dlSelf = function(){
     const url = window.location.pathname;
     const fn = url.substring(url.lastIndexOf("/")+1);
-    download(fn,
-      "<html>\n"+document.documentElement.innerHTML+"\n</html>"
+    download(fn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
+      document.documentElement.innerHTML+"\n</html>"
     );
   }
   
@@ -823,6 +824,7 @@
       onclick="dlSelf();">Dokument speichern</a>
     <a class="guielement_small" 
       onclick="deleteStorage();">Daten löschen</a>
+  </div>
 <!-- ENDE GUI-Header erste Seite -->
 </div>
 
