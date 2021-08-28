@@ -7,6 +7,7 @@ direkt und nicht als Quelltext angeziegt zu bekommen.
 
 ### Klassenelternversammlung (EV)
 * [Kontaktliste](ev/ev-kontaktliste.html) zum Sammeln von Mailadressen und Telefonnummern.
+
 ### Gesamtelternversammlung (GEV)
 * [Wahlprotokoll](gev/gev-wahlprotokoll.html) für Wahlen in der GEV. Es ähnelt in der Darstellung dem bisher über BEAs verbreiteten Protokoll, wurde aber komplett neu in HTML erstellt und enthält auch einige inhaltliche Änderungen.
 * [Stimmzettel](gev/gev-stimmzettel.pdf) als PDF ([LuaLaTeX-Quelldatei](gev/gev-stimmzettel.tex) dazu). Da es hier auf genaue Darstellung zum Drucken ankommt, ist HTML ungeeignet. Die Stimmzettel enthalten Ankreuzoptionen für die gängigsten Wahlen und verzeichnen die Anzahl der zu wählenden (stellvertretenden) Mitglieder als Exponent bzw. Index.
