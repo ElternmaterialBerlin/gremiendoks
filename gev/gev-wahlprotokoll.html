@@ -14,19 +14,29 @@
   }
   body {
     position: absolute;
+    height:100%;
+    width:100%;
+    box-sizing: border-box;
     padding: 0cm;
     margin: 0mm;
     font-family: Carlito, Calibre, sans-serif;
     font-size: 11pt;
+    /*Verhindert Abstände zwischen Seiten:*/
+    line-height: 0pt;
+    font-size: 0pt;
     counter-reset: pn; 
   }
   .page {
+    box-sizing: border-box;
     position: relative;
     display: inline-block;
     margin: 0mm;
     padding: 0mm;
     width: 210mm;
     height: 296.6mm;
+    /*Normale Werte:*/
+    font-size: 11pt;
+    line-height: normal;
   }
   .content {
     margin: 0px;
@@ -76,7 +86,9 @@
        border: solid 1px; */
       /*Ende Debugging*/
       
-      break-after: page;
+/*       break-after: page; */
+      break-inside: avoid-page;
+      break-after: avoid;
     }
     .guiheader {
       display: none;
@@ -196,23 +208,26 @@
   }
   
   .tabellebreit {
+    box-sizing: border-box;
     width: 100%;
     border-collapse: collapse;
   }
   .tabellebreit th {
+    box-sizing: content-box;
     border: 1pt solid;
     height: 4.7mm;
     font-size: 11pt;
     font-weight: normal;
   }
   .tabellebreit td {
+    box-sizing: content-box;
     border: 1pt solid;
     height: 7mm;
   }
   
   .wahlerg {
     background-color: #d9d9d9;
-    margin-bottom: 4mm;
+/*     margin-bottom: 4mm; */
   }
   .wahlerg .iptab {
     background-color: #d9d9d9;
@@ -226,6 +241,9 @@
   
   .iptab {
     border: none;
+    height: 100%;
+    margin: 0pt;
+    box-sizing: border-box;
     width: 100%;
   }
   
@@ -1098,7 +1116,6 @@
         </tr>
       <tbody>
     </table>
-    
     <p class="erlaeuterung">
      Das Schulgesetz selbst sieht nicht explizit eine Rangfolge der
      stellvertretenden Mitglieder vor, jedoch war dies in der
