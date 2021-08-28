@@ -330,11 +330,12 @@
   }
 </style>
 <script>
-  storage = window.localStorage;
-  year = (new Date()).getFullYear();
+  "use strict";
+  const storage = window.localStorage;
+  var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
   
-  download = function(fn,text) {
+  const download = function(fn,text) {
     const el = document.createElement("a");
     el.setAttribute("href",
       "data:text/plain;charset=utf-8," + encodeURIComponent(text));
@@ -343,17 +344,17 @@
     document.body.appendChild(el);
     el.click();
     document.body.removeChild(el);
-  }
+  };
   
-  dlSelf = function(){
+  const dlSelf = function(){
     const url = window.location.pathname;
     const fn = url.substring(url.lastIndexOf("/")+1);
     download(fn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
       document.documentElement.innerHTML+"\n</html>"
     );
-  }
+  };
   
-  saveField = function(){
+  const saveField = function(){
     if (this.id && this.id != ""){
       switch(this.type){
         case "checkbox":
@@ -365,13 +366,13 @@
     }
   };
   
-  saveElement = function(el){
+  const saveElement = function(el){
     if (el.id && el.id != ""){
       storage.setItem(el.id,el.innerHTML);
     }
   };
   
-  loadElement = function(el){
+  const loadElement = function(el){
     if (el.id && el.id != ""){
       const stored = storage.getItem(el.id);
       if (stored){
@@ -380,12 +381,11 @@
     }
   };
   
-  deleteStorage = function(){
+  const deleteStorage = function(){
     storage.clear();
-    var inputs;
-    inputs = document.getElementsByTagName("input");
+    const inputs = document.getElementsByTagName("input");
     for (var i = 0; i < inputs.length; ++i) {
-      var ip = inputs[i];
+      const ip = inputs[i];
       switch(ip.type){
         case "checkbox":
           ip.checked = false;
@@ -397,52 +397,67 @@
     location.reload();
   };
   
-  allowEdits = false;
-  flipEdit = function(){
+  var allowEdits = false;
+  const edicls = ["haupttext","erlaeuterung"];
+  const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
+  
+  const flipEdit = function(){
     allowEdits = !allowEdits;
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(let i=0;i<cl.length;++i) {
+        cl[i].contentEditable = allowEdits;
+      }
+    }
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(let i=0;i<tl.length;++i) {
+        tl[i].contentEditable = allowEdits;
+      }
+    }
+  };
+  
+  const loadEdits = function(){
     const edicls = ["haupttext","erlaeuterung"];
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
-      for(var i=0;i<cl.length;++i) {
+      for(let i=0;i<cl.length;++i) {
         const el = cl[i];
         el.id = c+"_"+i;
-        el.contentEditable = allowEdits;
         loadElement(el);
       }
     }
-    const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
     for (const t of editags) {
       const tl = document.getElementsByTagName(t);
-      for(var i=0;i<tl.length;++i) {
+      for(let i=0;i<tl.length;++i) {
         const el = tl[i];
         el.id = t+"_"+i;
-        el.contentEditable = allowEdits;
         loadElement(el);
       }
     }
   };
   
-  
-  ol = function(){
-    var npages = document.getElementsByClassName("doprint").length;
+  var observer;
+  var npages;
+  const ol = function(){
+    "use strict";
+    npages = document.getElementsByClassName("doprint").length;
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
-    document.npages = npages;
     
-    var inputs;
-    inputs = document.getElementsByTagName("input");
-    var usedids = {};
+    const inputs = document.getElementsByTagName("input");
+    const usedids = {};
     for (var i = 0; i < inputs.length; ++i) {
-      var ip = inputs[i];
+      const ip = inputs[i];
       if (!ip.id || ip.id == ""){
         var par = ip.parentNode
         var gp = par.parentNode
-        var colNr = Array.prototype.indexOf.call(gp.children,par)
+        const colNr = Array.prototype.indexOf.call(gp.children,par)
         par = gp;
         gp = par.parentNode;
-        var tab = gp.parentNode;
-        var rowNr = Array.prototype.indexOf.call(gp.children,par);
-        var colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
+        const tab = gp.parentNode;
+        const rowNr = Array.prototype.indexOf.call(gp.children,par);
+        const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
         ip.id = tab.id+"_"+colid+rowNr;
         
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
@@ -453,7 +468,7 @@
           usedids[ip.id] = true;
         }
       }
-      var stored = storage.getItem(ip.id)
+      const stored = storage.getItem(ip.id)
       if (stored){
         switch(ip.type){
           case "checkbox":
@@ -473,30 +488,32 @@
       }
     });
     observer.observe(document,{characterData:true,subtree:true});
+    loadEdits();
     
   };
   
-  hidePagePrint = function(x){
-    var page = x.parentNode.parentNode;
+  const hidePagePrint = function(x){
+    const page = x.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
-      document.npages -= 1;
+      npages -= 1;
       document.documentElement.style.setProperty("--npages",
-        "'/ "+document.npages+"'");
+        "'/ "+npages+"'");
     }
     page.classList.add("noprint");
     page.classList.remove("doprint");
   };
-  showPagePrint = function(plus){
-    var page = plus.parentNode.parentNode;
+  
+  const showPagePrint = function(plus){
+    const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
       alert("Verdoppeln von Seiten ist noch nicht implementiert."+
       ' "+" stellt aktuell nur gelöschte Seiten wieder her.');
     } else {
       page.classList.add("doprint");
       page.classList.remove("noprint");
-      document.npages += 1;
+      npages += 1;
       document.documentElement.style.setProperty("--npages",
-        "'/ "+document.npages+"'");
+        "'/ "+npages+"'");
     };
   };
 </script>
@@ -582,7 +599,7 @@
       relativ konsistent. Die gewählte Implementierung erlaubt zudem
       das Anpassen von Teilen des Dokuments ohne HTML-Kenntnisse.
       Da die korrekte Verarbeitung von Stilen
-      in Office-Dokumenten über Anwendungen (und Anweder*innen) hinweg
+      in Office-Dokumenten über Anwendungen (und Anwender*innen) hinweg
       immer wieder problematisch ist, wurde bewusst kein OOXML (.docx)
       oder OpenDocument (.odt) eingesetzt. TeX würde zwar
       konsistentere Druckdarstellung und bessere Langzeitnutzbarkeit
