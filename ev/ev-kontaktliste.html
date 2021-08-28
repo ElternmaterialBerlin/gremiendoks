@@ -378,6 +378,31 @@
     location.reload();
   };
   
+  allowEdits = false;
+  flipEdit = function(){
+    allowEdits = !allowEdits;
+    const edicls = ["haupttext","erlaeuterung"];
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(var i=0;i<cl.length;++i) {
+        const el = cl[i];
+        el.id = c+"_"+i;
+        el.contentEditable = allowEdits;
+        loadElement(el);
+      }
+    }
+    const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(var i=0;i<tl.length;++i) {
+        const el = tl[i];
+        el.id = t+"_"+i;
+        el.contentEditable = allowEdits;
+        loadElement(el);
+      }
+    }
+  };
+  
   
   ol = function(){
     var npages = document.getElementsByClassName("doprint").length;
@@ -430,26 +455,6 @@
     });
     observer.observe(document,{characterData:true,subtree:true});
     
-    const edicls = ["haupttext","erlaeuterung"];
-    for (const c of edicls) {
-      const cl = document.getElementsByClassName(c);
-      for(var i=0;i<cl.length;++i) {
-        const el = cl[i];
-        el.id = c+"_"+i;
-        el.contentEditable = true;
-        loadElement(el);
-      }
-    }
-    const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
-    for (const t of editags) {
-      const tl = document.getElementsByTagName(t);
-      for(var i=0;i<tl.length;++i) {
-        const el = tl[i];
-        el.id = t+"_"+i;
-        el.contentEditable = true;
-        loadElement(el);
-      }
-    }
   };
   
   hidePagePrint = function(x){
@@ -521,7 +526,7 @@
     
     <p class="haupttext">
       Die jeweils aktuelle Version finden Sie unter 
-      <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html">
+      <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/ev-kontaktliste.html">
         https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html</a>
       als Teil des Repositorys
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
@@ -565,7 +570,7 @@
       desselben Dokuments erlauben, ist aber für die Elternarbeit
       zu wenig verbreitet und schließt daher viele Mitarbeitende aus.
     </p>
-  </div>  
+  </div>
 </div>  
 <div class="page doprint">
   <div class="content">
@@ -810,12 +815,15 @@
   <div class="footerr">
     Seite <a class="pn"></a>   <a class="np"></a>
   </div>
+<!-- GUI-Header erste Seite -->
   <div class="guiheader">
+    <a class="guielement_small" 
+      onclick="flipEdit();">Editieren an/aus</a>
     <a class="guielement_small" 
       onclick="dlSelf();">Dokument speichern</a>
     <a class="guielement_small" 
       onclick="deleteStorage();">Daten löschen</a>
-  </div>
+<!-- ENDE GUI-Header erste Seite -->
 </div>
 
 <div class="page doprint">
