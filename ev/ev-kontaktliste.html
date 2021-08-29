@@ -372,6 +372,10 @@
   };
   
   const dlSelf = function(){
+    if (hasClones()){
+      warnClones();
+      //Kein return, damit Änderungen dennoch gesichert werden können.
+    }
     download(selffn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
       document.documentElement.innerHTML+"\n</html>"
     );
@@ -439,6 +443,10 @@
   const editags = ["H1","H2","H3","H4","H5","TH","OL","UL"];
   
   const flipEdit = function(){
+    if(hasClones()){
+      warnClones();
+      return;
+    }
     allowEdits = !allowEdits;
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -477,12 +485,17 @@
   var observer;
   var npages;
   var npagesChanged = function(){};
+  var nclones;
+  try {
+    nclones = JSON.parse(getItem("..nclones"));
+    if (!nclones || !typeof(nclones) == "object"){
+      throw "No nclones saved.";
+    }
+  } catch (e) {
+    nclones = {};
+  }
   const ol = function(){
     "use strict";
-    npages = document.getElementsByClassName("doprint").length;
-    document.documentElement.style.setProperty("--year","'"+year+"'");
-    document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
-    npagesChanged();
     
     const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
@@ -519,6 +532,18 @@
     observer.observe(document,{characterData:true,subtree:true});
     loadEdits();
     
+    for (const pageid in nclones){
+      const ncl = nclones[pageid];
+      let page = document.getElementById(pageid);
+      for (let i=2; i<=ncl; ++i){
+        page = clonePage(page);
+      }
+    }
+    
+    npages = document.getElementsByClassName("doprint").length;
+    document.documentElement.style.setProperty("--year","'"+year+"'");
+    document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
+    npagesChanged();
   };
   
   const removeClonedPage = function(page){
@@ -529,6 +554,7 @@
       = "";//auf CSS-Wert zurücksetzen
     //wichtig ist hier nicht auf "initial" zu setzen, das würde auch
     //den @print-Stil überschreiben
+    nclones[page.baseid] = lastclone.ncopy;
   };
   
   const hidePagePrint = function(x){
@@ -565,6 +591,8 @@
     page.baseid = page.baseid ? page.baseid : page.id;
     pagecl.ncopy = page.ncopy + 1;
     pagecl.baseid = page.baseid;
+    nclones[page.baseid] = pagecl.ncopy;
+    setItem("..nclones",JSON.stringify(nclones));
     pagecl.id = page.baseid + "_" + pagecl.ncopy;
     page.getElementsByClassName("guiheader")[0].style.display = "none";
     const desc = pagecl.querySelectorAll("*");
@@ -586,7 +614,32 @@
       fld.oninput = saveField;
       loadField(fld);
     }
+    return pagecl;
   };
+  
+  const hasClones = function(){
+    for (const ncl of Object.values(nclones)){
+      if (ncl > 1){
+        return true;
+      }
+    }
+    return false;
+  };
+  
+  const warnClones = function(){
+      alert("Eine modifizierte Version des Dokuments sollte nicht " +
+      "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
+      "Bitte löschen Sie zunächst die Daten oder entfernen Sie " +
+      "alle vervielfältigten Seiten.");
+  };
+  
+  const warnEdit = function(){
+      alert("Eine modifizierte Version des Dokuments sollte nicht " +
+      "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
+      "Bitte speichern Sie Ihre modifizierte Version und stellen " +
+      "das Editieren ab, bevor Sie Seiten vervielfältigen.");
+  };
+  
   
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
@@ -594,6 +647,10 @@
       if (page.className.indexOf("cloneable") == -1){
         alert("Diese Seite kann nicht vervielfältigt werden.");
       } else {
+        if (allowEdits){
+          warnEdit();
+          return;
+        }
         clonePage(page);
       }
     } else {
