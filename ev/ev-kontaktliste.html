@@ -86,7 +86,6 @@
       
 /*       break-after: page; */
       break-inside: avoid-page;
-      break-after: avoid;
     }
     .guiheader {
       display: none;
@@ -352,6 +351,14 @@
   const storage = window.localStorage;
   var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
+  const url = window.location.pathname;
+  const selffn = url.substring(url.lastIndexOf("/")+1);
+  const getItem = function(id){
+    return storage.getItem(selffn+"_"+id);
+  };
+  const setItem = function(id,val){
+    return storage.setItem(selffn+"_"+id,val);
+  };
   
   const download = function(fn,text) {
     const el = document.createElement("a");
@@ -365,9 +372,7 @@
   };
   
   const dlSelf = function(){
-    const url = window.location.pathname;
-    const fn = url.substring(url.lastIndexOf("/")+1);
-    download(fn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
+    download(selffn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
       document.documentElement.innerHTML+"\n</html>"
     );
   };
@@ -377,17 +382,17 @@
     if (fld.id && fld.id != ""){
       switch(fld.type){
         case "checkbox":
-          storage.setItem(fld.id,fld.checked?"on":"off");
+          setItem(fld.id,fld.checked?"on":"off");
           break;
         default:
-          storage.setItem(fld.id,fld.value);
+          setItem(fld.id,fld.value);
       }
     }
   };
   
   const loadField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
-    const stored = storage.getItem(fld.id)
+    const stored = getItem(fld.id)
     if (stored){
       switch(fld.type){
         case "checkbox":
@@ -401,13 +406,13 @@
 
   const saveElement = function(el){
     if (el.id && el.id != ""){
-      storage.setItem(el.id,el.innerHTML);
+      setItem(el.id,el.innerHTML);
     }
   };
   
   const loadElement = function(el){
     if (el.id && el.id != ""){
-      const stored = storage.getItem(el.id);
+      const stored = getItem(el.id);
       if (stored){
         el.innerHTML = stored;
       }
