@@ -125,10 +125,22 @@
       font-size:25pt;
       margin-left: 1mm;
     }
+    .cloneable .morepages::after {
+      content: "+";
+    }
+    .noprint .morepages::after {
+      content: "+";
+    }
+    .doprint .lesspages::after {
+      content: "x";
+    }
+    .noprint .lesspages::after {
+      content: "";
+    }
     
     .guielement_small {
       display: inline-block;
-      max-width: 15mm; 
+      max-width: 15mm;
       cursor: pointer;
       color: red;
       margin-left: 1mm;
@@ -223,9 +235,14 @@
     height: 7mm;
   }
   
+  .doppelzeilen td {
+    height: 14mm;
+    vertical-align: top;
+  }
+  
   .wahlerg {
     background-color: #d9d9d9;
-    margin-bottom: 4mm;
+/*     margin-bottom: 4mm; */
   }
   .wahlerg .iptab {
     background-color: #d9d9d9;
@@ -243,6 +260,7 @@
     margin: 0pt;
     box-sizing: border-box;
     width: 100%;
+    resize: none;
   }
   
   .ipcb {
@@ -291,7 +309,7 @@
   }
   
   label {
-    font-size: 11pt;
+/*     font-size: 11pt; */
     padding: 0pt;
     margin-left: 0pt;
   }
@@ -354,18 +372,33 @@
     );
   };
   
-  const saveField = function(){
-    if (this.id && this.id != ""){
-      switch(this.type){
+  const saveField = function(fld){
+    fld = fld instanceof HTMLElement ? fld : this;
+    if (fld.id && fld.id != ""){
+      switch(fld.type){
         case "checkbox":
-          storage.setItem(this.id,this.checked?"on":"off");
+          storage.setItem(fld.id,fld.checked?"on":"off");
           break;
         default:
-          storage.setItem(this.id,this.value);
+          storage.setItem(fld.id,fld.value);
       }
     }
   };
   
+  const loadField = function(fld){
+    fld = fld instanceof HTMLElement ? fld : this;
+    const stored = storage.getItem(fld.id)
+    if (stored){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = (stored == "on");
+          break;
+        default:
+          fld.value = stored;
+      }
+    }
+  };
+
   const saveElement = function(el){
     if (el.id && el.id != ""){
       storage.setItem(el.id,el.innerHTML);
@@ -383,15 +416,14 @@
   
   const deleteStorage = function(){
     storage.clear();
-    const inputs = document.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length; ++i) {
-      const ip = inputs[i];
-      switch(ip.type){
+    const flds  = document.querySelectorAll("input,select,textarea");
+    for(const fld of flds){
+      switch(fld.type){
         case "checkbox":
-          ip.checked = false;
+          fld.checked = false;
           break;
         default:
-          ip.value = "";
+          fld.value = fld.defaultValue;
       }
     }
     location.reload();
@@ -399,7 +431,7 @@
   
   var allowEdits = false;
   const edicls = ["haupttext","erlaeuterung"];
-  const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
+  const editags = ["H1","H2","H3","H4","H5","TH","OL","UL"];
   
   const flipEdit = function(){
     allowEdits = !allowEdits;
@@ -447,12 +479,11 @@
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
     npagesChanged();
     
-    const inputs = document.getElementsByTagName("input");
+    const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
-    for (var i = 0; i < inputs.length; ++i) {
-      const ip = inputs[i];
-      if (!ip.id || ip.id == ""){
-        var par = ip.parentNode
+    for(const fld of flds){
+      if (!fld.id || fld.id == ""){
+        var par = fld.parentNode
         var gp = par.parentNode
         const colNr = Array.prototype.indexOf.call(gp.children,par)
         par = gp;
@@ -460,27 +491,18 @@
         const tab = gp.parentNode;
         const rowNr = Array.prototype.indexOf.call(gp.children,par);
         const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
-        ip.id = tab.id+"_"+colid+rowNr;
+        fld.id = tab.id+"_"+colid+rowNr;
         
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
           copy and paste vermeiden.*/
-        if (usedids[ip.id]){
+        if (usedids[fld.id]){
           alert("Programmierfehler: id mehrfach vergeben!")
         } else {
-          usedids[ip.id] = true;
+          usedids[fld.id] = true;
         }
       }
-      const stored = storage.getItem(ip.id)
-      if (stored){
-        switch(ip.type){
-          case "checkbox":
-            ip.checked = (stored == "on");
-            break;
-          default:
-            ip.value = stored;
-        }
-      }
-      ip.oninput = saveField;
+      loadField(fld);
+      fld.oninput = saveField;
     }
     
     observer = new MutationObserver(function(mutationsList,observer){
@@ -494,23 +516,81 @@
     
   };
   
+  const removeClonedPage = function(page){
+    page.parentNode.removeChild(page);
+    const idsuffix = page.ncopy > 2 ? "_"+(page.ncopy-1): "";
+    const lastclone = document.getElementById(page.baseid+idsuffix);
+    lastclone.getElementsByClassName("guiheader")[0].style.display
+      = "";//auf CSS-Wert zurücksetzen
+    //wichtig ist hier nicht auf "initial" zu setzen, das würde auch
+    //den @print-Stil überschreiben
+  };
+  
   const hidePagePrint = function(x){
     const page = x.parentNode.parentNode;
+    if (page.ncopy && page.ncopy > 1){
+      const conf = confirm("Wollen Sie die Seite löschen? " +
+        "Sie wird nicht lediglich versteckt, sondern entfernt.");
+      if (!conf){
+        return;
+      }
+    }
     if (page.className.indexOf("noprint") == -1){
       npages -= 1;
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
       npagesChanged();
     }
-    page.classList.add("noprint");
-    page.classList.remove("doprint");
+    if (page.ncopy && page.ncopy > 1){
+      removeClonedPage(page);
+    } else {
+      page.classList.add("noprint");
+      page.classList.remove("doprint");
+    }
+  };
+  
+  const clonePage = function(page){
+    const pagecl = page.cloneNode(true);
+    page.parentNode.insertBefore(pagecl,page.nextSibling);
+    npages += 1;
+    npagesChanged();
+    document.documentElement.style.setProperty("--npages",
+      "'/ "+npages+"'");
+    page.ncopy = page.ncopy ? page.ncopy:1;
+    page.baseid = page.baseid ? page.baseid : page.id;
+    pagecl.ncopy = page.ncopy + 1;
+    pagecl.baseid = page.baseid;
+    pagecl.id = page.baseid + "_" + pagecl.ncopy;
+    page.getElementsByClassName("guiheader")[0].style.display = "none";
+    const desc = pagecl.querySelectorAll("*");
+    for(const el of desc){
+      if(el.id){
+        el.baseid = el.baseid ? el.baseid : el.id;
+        el.id = pagecl.id + "_" + el.baseid;
+      }
+    }
+    const fdesc  = pagecl.querySelectorAll("input,select,textarea");
+    for(const fld of fdesc){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = false;
+          break;
+        default:
+          fld.value = fld.defaultValue;
+      }
+      fld.oninput = saveField;
+      loadField(fld);
+    }
   };
   
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
-      alert("Verdoppeln von Seiten ist noch nicht implementiert."+
-      ' "+" stellt aktuell nur gelöschte Seiten wieder her.');
+      if (page.className.indexOf("cloneable") == -1){
+        alert("Diese Seite kann nicht vervielfältigt werden.");
+      } else {
+        clonePage(page);
+      }
     } else {
       page.classList.add("doprint");
       page.classList.remove("noprint");
@@ -523,7 +603,7 @@
 </script>
 </head>
 <body onload="ol()">
-<div class="page anleitung">
+<div class="page anleitung" id="anl">
   <div class="content">
     <h2>Anleitung</h2>
     <p class="haupttext">
@@ -623,7 +703,7 @@
     </p>
   </div>
 </div>  
-<div class="page doprint">
+<div class="page doprint" id="kontakt">
   <div class="content">
     <h1>Kontaktdaten für die Elternarbeit
     </h1>
@@ -859,7 +939,7 @@
   </div>
 <!-- ENDE GUI-Header erste Seite -->
 </div><!--
---><div class="page doprint">
+--><div class="page doprint cloneable" id="kontaktforts">
   <div class="content">
     <table id="kontaktdaten2" class="tabellebreit">
       <thead><tr>
@@ -1180,8 +1260,12 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div></body></html>

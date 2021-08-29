@@ -126,10 +126,22 @@
       font-size:25pt;
       margin-left: 1mm;
     }
+    .cloneable .morepages::after {
+      content: "+";
+    }
+    .noprint .morepages::after {
+      content: "+";
+    }
+    .doprint .lesspages::after {
+      content: "x";
+    }
+    .noprint .lesspages::after {
+      content: "";
+    }
     
     .guielement_small {
       display: inline-block;
-      max-width: 15mm; 
+      max-width: 15mm;
       cursor: pointer;
       color: red;
       margin-left: 1mm;
@@ -559,7 +571,11 @@
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
-      clonePage(page);
+      if (page.className.indexOf("cloneable") == -1){
+        alert("Diese Seite kann nicht vervielfältigt werden.");
+      } else {
+        clonePage(page);
+      }
     } else {
       page.classList.add("doprint");
       page.classList.remove("noprint");
@@ -576,7 +592,7 @@
 </script>
 </head>
 <body onload="ol()">
-<div class="page anleitung">
+<div class="page anleitung" id="anl">
   <div class="content">
     <h2>Anleitung</h2>
     <p class="haupttext">
@@ -694,7 +710,7 @@
     </p>
   </div>
 </div>  
-<div class="page doprint">
+<div class="page doprint" id="schesp">
   <div class="content">
     <h1>Wahlprotokoll für die<br/>
       Funktionen in der Gesamtelternvertretung
@@ -861,7 +877,7 @@
 </div>
 
 
-<div class="page doprint">
+<div class="page doprint" id="stvschesp">
   <div class="content">
     <h3>Elternsprecherin oder Elternsprecher der Schule</h3>
     <h4>
@@ -962,7 +978,7 @@
 <!-- ENDE Schulelternsprecher*in plus Stv. -->
 
 <!-- Schulkonferenz -->
-<div class="page doprint">
+<div class="page doprint" id="sk">
   <div class="content">
     <h3>Schulkonferenz</h3>
     <p class="erlaeuterung">
@@ -1093,13 +1109,17 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 
-<div class="page doprint">
+<div class="page doprint" id="stvsk">
   <div class="content">
     <h3>Schulkonferenz</h3>
     <h4>
@@ -1252,16 +1272,20 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 <!-- ENDE Schulkonferenz -->
 
 
 <!-- BEA -->
-<div class="page doprint">
+<div class="page doprint" id="bea">
   <div class="content">
     <h3>Bezirkselternausschuss</h3>
     <p class="erlaeuterung">
@@ -1438,15 +1462,19 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 <!-- ENDE BEA -->
 
 <!-- Gesamtkonferenz -->
-<div class="page doprint">
+<div class="page doprint" id="gk">
   <div class="content">
     <h3>Gesamtkonferenz</h3>
     <p class="erlaeuterung">
@@ -1623,15 +1651,19 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 <!-- ENDE Gesamtkonferenz -->
 
 <!-- Gesamtschülervertretung -->
-<div class="page doprint">
+<div class="page doprint" id="gsv">
   <div class="content">
     <h3>Gesamtschülervertretung</h3>
     <p class="erlaeuterung">
@@ -1811,15 +1843,19 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 <!-- ENDE Gesamtschülervertretung -->
 
 <!-- Fachkonferenz lang -->
-<div class="page doprint" id="fako">
+<div class="page doprint cloneable" id="fako">
   <div class="content">
     <h3><label for="fkfach">Fachkonferenz für</label>
       <input id="fkfach" name="fkfach" class="fach" /></h3>
@@ -1997,14 +2033,18 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 <!-- ENDE Fachkonferenz lang -->
 
-<div class="page doprint">
+<div class="page doprint" id="template">
   <div class="content">
     <h3>Template</h3>
     
@@ -2023,14 +2063,18 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 
 
-<div class="page doprint">
+<div class="page doprint" id="abschluss">
   <div class="content">
     <h2>4. Einspruch, geleitete Wahlen und Unterschriften</h2>
     
@@ -2106,9 +2150,13 @@
   </div>
   <div class="guiheader">
     <a class="guielement" 
-      onclick="hidePagePrint(this);">x</a>
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
     <a class="guielement" 
-      onclick="showPagePrint(this);">+</a>
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
   </div>
 </div>
 
