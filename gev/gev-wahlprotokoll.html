@@ -286,7 +286,7 @@
   }
   
   label {
-    font-size: 11pt;
+/*     font-size: 11pt; */
     padding: 0pt;
     margin-left: 0pt;
   }
@@ -345,18 +345,33 @@
     );
   };
   
-  const saveField = function(){
-    if (this.id && this.id != ""){
-      switch(this.type){
+  const saveField = function(fld){
+    fld = fld instanceof HTMLElement ? fld : this;
+    if (fld.id && fld.id != ""){
+      switch(fld.type){
         case "checkbox":
-          storage.setItem(this.id,this.checked?"on":"off");
+          storage.setItem(fld.id,fld.checked?"on":"off");
           break;
         default:
-          storage.setItem(this.id,this.value);
+          storage.setItem(fld.id,fld.value);
       }
     }
   };
   
+  const loadField = function(fld){
+    fld = fld instanceof HTMLElement ? fld : this;
+    const stored = storage.getItem(fld.id)
+    if (stored){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = (stored == "on");
+          break;
+        default:
+          fld.value = stored;
+      }
+    }
+  };
+
   const saveElement = function(el){
     if (el.id && el.id != ""){
       storage.setItem(el.id,el.innerHTML);
@@ -374,15 +389,14 @@
   
   const deleteStorage = function(){
     storage.clear();
-    const inputs = document.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length; ++i) {
-      const ip = inputs[i];
-      switch(ip.type){
+    const flds  = document.querySelectorAll("input,select,textarea");
+    for(const fld of flds){
+      switch(fld.type){
         case "checkbox":
-          ip.checked = false;
+          fld.checked = false;
           break;
         default:
-          ip.value = "";
+          fld.value = fld.defaultValue;
       }
     }
     location.reload();
@@ -390,7 +404,7 @@
   
   var allowEdits = false;
   const edicls = ["haupttext","erlaeuterung"];
-  const editags = ["h1","h2","h3","h4","h5","th","ol","ul"];
+  const editags = ["H1","H2","H3","H4","H5","TH","OL","UL"];
   
   const flipEdit = function(){
     allowEdits = !allowEdits;
@@ -438,12 +452,11 @@
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
     npagesChanged();
     
-    const inputs = document.getElementsByTagName("input");
+    const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
-    for (var i = 0; i < inputs.length; ++i) {
-      const ip = inputs[i];
-      if (!ip.id || ip.id == ""){
-        var par = ip.parentNode
+    for(const fld of flds){
+      if (!fld.id || fld.id == ""){
+        var par = fld.parentNode
         var gp = par.parentNode
         const colNr = Array.prototype.indexOf.call(gp.children,par)
         par = gp;
@@ -451,27 +464,18 @@
         const tab = gp.parentNode;
         const rowNr = Array.prototype.indexOf.call(gp.children,par);
         const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
-        ip.id = tab.id+"_"+colid+rowNr;
+        fld.id = tab.id+"_"+colid+rowNr;
         
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
           copy and paste vermeiden.*/
-        if (usedids[ip.id]){
+        if (usedids[fld.id]){
           alert("Programmierfehler: id mehrfach vergeben!")
         } else {
-          usedids[ip.id] = true;
+          usedids[fld.id] = true;
         }
       }
-      const stored = storage.getItem(ip.id)
-      if (stored){
-        switch(ip.type){
-          case "checkbox":
-            ip.checked = (stored == "on");
-            break;
-          default:
-            ip.value = stored;
-        }
-      }
-      ip.oninput = saveField;
+      loadField(fld);
+      fld.oninput = saveField;
     }
     
     observer = new MutationObserver(function(mutationsList,observer){
@@ -485,23 +489,77 @@
     
   };
   
+  const removeClonedPage = function(page){
+    page.parentNode.removeChild(page);
+    const idsuffix = page.ncopy > 2 ? "_"+(page.ncopy-1): "";
+    const lastclone = document.getElementById(page.baseid+idsuffix);
+    lastclone.getElementsByClassName("guiheader")[0].style.display
+      = "";//auf CSS-Wert zurücksetzen
+    //wichtig ist hier nicht auf "initial" zu setzen, das würde auch
+    //den @print-Stil überschreiben
+  };
+  
   const hidePagePrint = function(x){
     const page = x.parentNode.parentNode;
+    if (page.ncopy && page.ncopy > 1){
+      const conf = confirm("Wollen Sie die Seite löschen? " +
+        "Sie wird nicht lediglich versteckt, sondern entfernt.");
+      if (!conf){
+        return;
+      }
+    }
     if (page.className.indexOf("noprint") == -1){
       npages -= 1;
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
       npagesChanged();
     }
-    page.classList.add("noprint");
-    page.classList.remove("doprint");
+    if (page.ncopy && page.ncopy > 1){
+      removeClonedPage(page);
+    } else {
+      page.classList.add("noprint");
+      page.classList.remove("doprint");
+    }
+  };
+  
+  const clonePage = function(page){
+    const pagecl = page.cloneNode(true);
+    page.parentNode.insertBefore(pagecl,page.nextSibling);
+    npages += 1;
+    npagesChanged();
+    document.documentElement.style.setProperty("--npages",
+      "'/ "+npages+"'");
+    page.ncopy = page.ncopy ? page.ncopy:1;
+    page.baseid = page.baseid ? page.baseid : page.id;
+    pagecl.ncopy = page.ncopy + 1;
+    pagecl.baseid = page.baseid;
+    pagecl.id = page.baseid + "_" + pagecl.ncopy;
+    page.getElementsByClassName("guiheader")[0].style.display = "none";
+    const desc = pagecl.querySelectorAll("*");
+    for(const el of desc){
+      if(el.id){
+        el.baseid = el.baseid ? el.baseid : el.id;
+        el.id = pagecl.id + "_" + el.baseid;
+      }
+    }
+    const fdesc  = pagecl.querySelectorAll("input,select,textarea");
+    for(const fld of fdesc){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = false;
+          break;
+        default:
+          fld.value = fld.defaultValue;
+      }
+      fld.oninput = saveField;
+      loadField(fld);
+    }
   };
   
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
-      alert("Verdoppeln von Seiten ist noch nicht implementiert."+
-      ' "+" stellt aktuell nur gelöschte Seiten wieder her.');
+      clonePage(page);
     } else {
       page.classList.add("doprint");
       page.classList.remove("noprint");
@@ -593,10 +651,10 @@
         <a href="https://beas-mh.de/aktuell/307-willkommenspaket-2021">
           Marzahn-Hellersdorf</a>)
       </li>
-      <li> 2020-2021 Frank Fuhlbrück (detailliertere Erläuterungen zur
-        Stimmabgabe bei mehreren Kandidierende und allgemein zur Rolle
-        der Wahlordnung nach SchulVerfG, kompakte Darstellung mehrerer
-        Fachkonferenzen)
+      <li> 2020-2021 Frank Fuhlbrück (u.a. detailliertere Erläuterungen
+        zur Stimmabgabe bei mehreren Kandidierende und allgemein zur
+        Rolle der Wahlordnung nach SchulVerfG, kompakte Darstellung
+        mehrerer Fachkonferenzen)
       </li>
     </ul>
     
@@ -1392,7 +1450,7 @@
   <div class="content">
     <h3>Gesamtkonferenz</h3>
     <p class="erlaeuterung">
-      Für die Gesamtkonferenz (GK) werden zwei Mitglieder und
+      Für die Gesamtkonferenz (GK) werden zwei beratende Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
       SchulG Berlin § 117 (2): Für die 
       nach diesem Gesetz zu wählenden Gremienmitglieder sind 
@@ -1577,7 +1635,10 @@
   <div class="content">
     <h3>Gesamtschülervertretung</h3>
     <p class="erlaeuterung">
-      Für die Gesamtschülervertretung (GSV) werden zwei Mitglieder und
+      Die die Gesamtschülervertretung (GSV) existiert (in dieser Form)
+      nur an Gemeinschaftsschulen und Oberschulen, nicht an
+      Grundschulen.
+      Für die GSV werden zwei beratende Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
       SchulG Berlin § 117 (2): Für die 
       nach diesem Gesetz zu wählenden Gremienmitglieder sind 
@@ -1756,6 +1817,192 @@
   </div>
 </div>
 <!-- ENDE Gesamtschülervertretung -->
+
+<!-- Fachkonferenz lang -->
+<div class="page doprint" id="fako">
+  <div class="content">
+    <h3><label for="fkfach">Fachkonferenz für</label>
+      <input id="fkfach" name="fkfach" class="fach" /></h3>
+    <p class="erlaeuterung">
+      Für jede Fachkonferenz werden zwei beratende Mitglieder und
+      bis zu vier stellvertretende Mitglieder gewählt.<br/>
+      SchulG Berlin § 117 (2): Für die 
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      soweit dieses Gesetz nichts anderes bestimmt.
+    </p>
+    
+    <h4>
+      Kandidierende für zwei Mitglieder in der Fachkonferenz
+    </h4>
+    
+    <table id=kandfk class="tabellebreit">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spanz">Anzahl der Stimmen</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+      (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
+    </p>
+    
+    <p class="haupttext">
+      <label for="fktyp">Art der Wahl:</label>
+      <input id="fktyp" name="fktyp" class="wahltyp" />
+      <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
+    </p>
+    
+    <p class="haupttext">
+      <label for="fkges">Anzahl der abgegebenen Stimmzettel:</label>
+      <input id="fkges" name="fkges" class="anz" />
+      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+    </p>
+    
+    <h5>
+      Wahlergebnis Mitglieder in der Fachkonferenz
+    </h5>
+    
+    <table id=wefk class="tabellebreit wahlerg">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spkontakt">E-Mail / Telefon</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <h4>
+      Kandidierende für die stellvertretenden Mitglieder in der Fachkonferenz
+    </h4>
+    
+    <p class="haupttext">
+      <label for="stvfkanz">Es sollen </label>
+      <input id="stvfkanz" name="stvfkanz" class="anz" />
+      stellvertretende Mitglieder der Fachkonferenz gewählt
+      werden.
+      <a class="erlaeuterung">(2-4)</a>
+    </p>
+    
+    <table id=kandstvfk class="tabellebreit">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spanz">Anzahl der Stimmen</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+      (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
+    </p>
+    
+    <p class="haupttext">
+      <label for="stvfktyp">Art der Wahl:</label>
+      <input id="stvfktyp" name="stvfktyp" class="wahltyp" />
+      <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
+    </p>
+    
+    <p class="haupttext">
+      <label for="stvfkges">Anzahl der abgegebenen Stimmzettel:</label>
+      <input id="stvfkges" name="stvfkges" class="anz" />
+      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+    </p>
+    
+    <h5>
+      Wahlergebnis stellvertretende Mitglieder der Schulkonferenz
+    </h5>
+    
+    <table id=westvfk class="tabellebreit wahlerg">
+      <thead><tr>
+        <th class="sprang">&#35;</th>
+        <th class="spnamen">Name</th>
+        <th class="spkontakt">E-Mail / Telefon</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    
+    <p class="erlaeuterung">
+     Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
+    </p>
+    
+  </div>
+  <div class="footerl">
+    Wahlprotokoll GEV <a class="yr"></a><br/>
+    Fachkonferenz
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>  <a class="np"></a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement" 
+      onclick="hidePagePrint(this);">x</a>
+    <a class="guielement" 
+      onclick="showPagePrint(this);">+</a>
+  </div>
+</div>
+<!-- ENDE Fachkonferenz lang -->
 
 <div class="page doprint">
   <div class="content">
