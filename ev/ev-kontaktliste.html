@@ -439,11 +439,13 @@
   
   var observer;
   var npages;
+  var npagesChanged = function(){};
   const ol = function(){
     "use strict";
     npages = document.getElementsByClassName("doprint").length;
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
+    npagesChanged();
     
     const inputs = document.getElementsByTagName("input");
     const usedids = {};
@@ -498,6 +500,7 @@
       npages -= 1;
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
+      npagesChanged();
     }
     page.classList.add("noprint");
     page.classList.remove("doprint");
@@ -512,6 +515,7 @@
       page.classList.add("doprint");
       page.classList.remove("noprint");
       npages += 1;
+      npagesChanged();
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
     };

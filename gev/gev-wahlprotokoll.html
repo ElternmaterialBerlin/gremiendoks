@@ -224,6 +224,11 @@
     height: 7mm;
   }
   
+  .doppelzeilen td {
+    height: 14mm;
+    vertical-align: top;
+  }
+  
   .wahlerg {
     background-color: #d9d9d9;
 /*     margin-bottom: 4mm; */
@@ -244,6 +249,7 @@
     margin: 0pt;
     box-sizing: border-box;
     width: 100%;
+    resize: none;
   }
   
   .ipcb {
@@ -267,6 +273,10 @@
   
   .sprang {
     width: 4mm;
+  }
+  
+  .spunters {
+    width: 6cm;
   }
   
   input {
@@ -420,11 +430,13 @@
   
   var observer;
   var npages;
+  var npagesChanged = function(){};
   const ol = function(){
     "use strict";
     npages = document.getElementsByClassName("doprint").length;
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
+    npagesChanged();
     
     const inputs = document.getElementsByTagName("input");
     const usedids = {};
@@ -479,6 +491,7 @@
       npages -= 1;
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
+      npagesChanged();
     }
     page.classList.add("noprint");
     page.classList.remove("doprint");
@@ -493,9 +506,14 @@
       page.classList.add("doprint");
       page.classList.remove("noprint");
       npages += 1;
+      npagesChanged();
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
     };
+  };
+  
+  npagesChanged = function(){
+    document.getElementById("seiten").defaultValue = npages;
   };
 </script>
 </head>
@@ -690,7 +708,7 @@
       Bei Stimmengleichheit findet (sofern nötig) eine Stichwahl
       statt, besteht danach die Stimmengleichheit fort, wird durch die
       Wahlleitung gelost. Stichwahl und Losentscheid sollten
-      in der Stimmenspalte vermerkt werden, z.B. "8/10/Los" für
+      in der Stimmenspalte vermerkt werden, z.B. „8/10/Los“ für
       eine im Losentscheid erfolgreiche Person, die davor 8 und 
       10 Stimmen erhielt.
     </p>
@@ -1745,13 +1763,96 @@
     
     <p class="haupttext">
       Das  Protokoll ist noch nicht fertig. Teil- und Fachkonferenzen
-      sowie die Abschlussseite fehlen. Fertigstellung bis Anfang
+      fehlen. Fertigstellung bis Anfang
       September 2021.
     </p>
   </div>
   <div class="footerl">
     Wahlprotokoll GEV <a class="yr"></a><br/>
     unfertig
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>  <a class="np"></a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement" 
+      onclick="hidePagePrint(this);">x</a>
+    <a class="guielement" 
+      onclick="showPagePrint(this);">+</a>
+  </div>
+</div>
+
+
+<div class="page doprint">
+  <div class="content">
+    <h2>4. Einspruch, geleitete Wahlen und Unterschriften</h2>
+    
+    <p class="haupttext">
+      Einspruch gegen die Wahlen oder Wahldurchführung sind
+      schriftlich begründet innerhalb einer Woche bei der
+      Wahlleitung einzulegen. Über die Einsprüche entscheidet
+      innerhalb einer Woche die Schulleiterin oder der 
+      Schulleiter (SchulG § 118(1) und (2)).
+    </p>
+    
+    <p class="haupttext">
+      <label for="seiten">Das Wahlprotokoll umfasst</label>
+      <input id="seiten" name="seiten" class="anz" />
+      Seiten.
+    </p>
+    
+    <table id=wahlleitus class="tabellebreit doppelzeilen">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spwg">
+          <strong>nicht</strong> geleitete
+          Wahlen
+        </th>
+        <th class="spunters">Unterschrift</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+     Kandidierende einer Wahl sollen der Wahlleitung dieser
+     Wahl auch nicht durch z.B. Auszählen oder Verteilen der Stimmzettel
+     helfen. Bei vielen nicht geleiteten Wahlen kann man diese
+     z.B. durch „SK, stvSK, FK D,FK Ku, stvGK“ abkürzen.
+    </p>
+  </div>
+  <div class="footerl">
+    Wahlprotokoll GEV <a class="yr"></a><br/>
+    Einspruch, geleitete Wahlen und Unterschriften
   </div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
