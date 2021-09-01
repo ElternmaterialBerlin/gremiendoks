@@ -4,7 +4,12 @@
 <title>
   Kontaktdaten für die Elternarbeit
 </title>
-<meta charset="UTF-8">
+<meta charset="UTF-8"/>
+<meta name="description"
+  content="Mailadresse, Telefon etc. sammeln und Eltern über deren Verwendung informieren"/>
+<meta name=”robots” content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style type="text/css">
   :root {
     --year: "2021/2022";
@@ -17,7 +22,7 @@
     box-sizing: border-box;
     padding: 0cm;
     margin: 0mm;
-    font-family: Carlito, Calibre, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 11pt;
     /*Verhindert Abstände zwischen Seiten:*/
     line-height: 0pt;
@@ -118,6 +123,10 @@
       text-align: center;
       background-color: #b0ff80;
     }
+    .guiheader_edit {
+      left: 0mm;
+      right: auto;
+    }
     .guielement {
       cursor: pointer;
       color: red;
@@ -139,7 +148,7 @@
     
     .guielement_small {
       display: inline-block;
-      max-width: 15mm;
+      max-width: 18mm;
       cursor: pointer;
       color: red;
       margin-left: 1mm;
@@ -213,6 +222,7 @@
   
   .haupttext {
     margin-top: 0pt;
+    text-align: justify;
     font-size: 11pt;
   }
   
@@ -353,11 +363,32 @@
   year = year + "/" + (year+1);
   const url = window.location.pathname;
   const selffn = url.substring(url.lastIndexOf("/")+1);
-  const getItem = function(id){
-    return storage.getItem(selffn+"_"+id);
+  const editPrefix = "..edit.";
+  const fieldPrefix = "..data.";
+  const objStore = {};
+  const getItem = function(id,prefix){
+    prefix = prefix ? prefix : "";
+    prefix = selffn+"_"+prefix;
+    const val = storage.getItem(prefix+id);
+    if(val){
+      objStore[prefix] = objStore[prefix] ? objStore[prefix] : {};
+      objStore[prefix][id] = val;
+    }
+    return val;
   };
-  const setItem = function(id,val){
-    return storage.setItem(selffn+"_"+id,val);
+  const setItem = function(id,val,prefix){
+    prefix = prefix ? prefix : "";
+    prefix = selffn+"_"+prefix;
+    objStore[prefix] = objStore[prefix] ? objStore[prefix] : {};
+    objStore[prefix][id] = val;
+    return storage.setItem(prefix+id,val);
+  };
+  const removeItem = function(id,prefix){
+    prefix = prefix ? prefix : "";
+    prefix = selffn+"_"+prefix;
+    objStore[prefix] = objStore[prefix] ? objStore[prefix] : {};
+    delete objStore[prefix][id];
+    return storage.removeItem(prefix+id);
   };
   
   const download = function(fn,text) {
@@ -365,6 +396,22 @@
     el.setAttribute("href",
       "data:text/plain;charset=utf-8," + encodeURIComponent(text));
     el.setAttribute("download", fn);
+    el.style.display = "none";
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
+  };
+  
+  const upload = function(cb) {
+    const fr = new FileReader();
+    fr.onload= function(){
+      cb(fr.result);
+    };
+    const el = document.createElement("input");
+    el.setAttribute("type","file");
+    el.onchange = function(){
+      fr.readAsText(this.files[0],'UTF-8');
+    }
     el.style.display = "none";
     document.body.appendChild(el);
     el.click();
@@ -381,22 +428,43 @@
     );
   };
   
+  const exportObjStore = function(fn,prefix){
+    const obj = prefix ? objStore[selffn+"_"+prefix] : objStore;
+    download(fn,JSON.stringify(obj));
+  };
+  
+  const importJsonToStores = function(js,prefix){
+  var obj;
+    try {
+      obj = JSON.parse(js);
+      if (!obj || !typeof(obj) == "object"){
+        throw "Invalid import.";
+      }
+    } catch (e) {
+      alert("Import fehlgeschlagen, kein korrektes JSON-Objekt.")
+      return;
+    }
+    for(const id in obj){
+      setItem(id,obj[id],prefix);
+    }
+  };
+  
   const saveField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     if (fld.id && fld.id != ""){
       switch(fld.type){
         case "checkbox":
-          setItem(fld.id,fld.checked?"on":"off");
+          setItem(fld.id,fld.checked?"on":"off",fieldPrefix);
           break;
         default:
-          setItem(fld.id,fld.value);
+          setItem(fld.id,fld.value,fieldPrefix);
       }
     }
   };
   
   const loadField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
-    const stored = getItem(fld.id)
+    const stored = getItem(fld.id,fieldPrefix)
     if (stored){
       switch(fld.type){
         case "checkbox":
@@ -407,24 +475,35 @@
       }
     }
   };
+  
+  const deleteSavedField = function(fld){
+    if (fld.id && fld.id != ""){
+      removeItem(fld.id,fieldPrefix);
+    }
+  };
 
   const saveElement = function(el){
     if (el.id && el.id != ""){
-      setItem(el.id,el.innerHTML);
+      setItem(el.id,el.innerHTML,editPrefix);
     }
   };
   
   const loadElement = function(el){
     if (el.id && el.id != ""){
-      const stored = getItem(el.id);
+      const stored = getItem(el.id,editPrefix);
       if (stored){
         el.innerHTML = stored;
       }
     }
   };
   
-  const deleteStorage = function(){
-    storage.clear();
+  const deleteSavedElement = function(el){
+    if (el.id && el.id != ""){
+      removeItem(el.id,editPrefix);
+    }
+  };
+  
+  const clearFields = function(){
     const flds  = document.querySelectorAll("input,select,textarea");
     for(const fld of flds){
       switch(fld.type){
@@ -434,8 +513,20 @@
         default:
           fld.value = fld.defaultValue;
       }
+      deleteSavedField(fld);
     }
     location.reload();
+  };
+  
+  const exportFields = function(){
+    exportObjStore(selffn+"_daten.json",fieldPrefix);
+  };
+  
+  const importFields = function(){
+    upload(function(js){
+      importJsonToStores(js,fieldPrefix);
+      location.reload();
+    });
   };
   
   var allowEdits = false;
@@ -463,7 +554,6 @@
   };
   
   const loadEdits = function(){
-    const edicls = ["haupttext","erlaeuterung"];
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
       for(let i=0;i<cl.length;++i) {
@@ -480,6 +570,26 @@
         loadElement(el);
       }
     }
+  };
+  
+  const revertEdits = function(){
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(let i=0;i<cl.length;++i) {
+        const el = cl[i];
+        el.id = c+"_"+i;
+        deleteSavedElement(el);
+      }
+    }
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(let i=0;i<tl.length;++i) {
+        const el = tl[i];
+        el.id = t+"_"+i;
+        deleteSavedElement(el);
+      }
+    }
+    location.reload();
   };
   
   var observer;
@@ -669,22 +779,23 @@
   <div class="content">
     <h2>Anleitung</h2>
     <p class="haupttext">
-      Dieses Dokument ist im Browser ausfüllbar und z.T. auch
-      editierbar. Es wird (bis auf farbige Ränder) sehr ähnlich zur
+      Dieses Dokument ist im Browser ausfüllbar. Überschriften,
+      Fließtext und Tabellenköpfe sind nach Drücken der
+      Schaltfläche auch editierbar und anschließend kann eine
+      angepasste Version lokal gespeichert werden
+      (<i>Dokument speichern</i>).
+      Das Dokument wird (bis auf farbige Ränder) sehr ähnlich zur
       Bildschirmabbildung gedruckt. Sofern kein privater Modus o.ä.
-      genutzt wird, werden alle Änderungen im lokalen Speicher
-      des Browsers auch nach dem Beenden gesichert (Tipp: testen). Die
-      Schaltfläche <i>Daten löschen</i> setzt alle Änderungen an den
-      Texten, Überschriften etc. und alle ausgefüllten Felder zurück.
-      Dagegen ist es mit <i>Dokument speichern</i> möglich, die
-      Änderungen am Dokument selbst ohne ausgefüllte Felder zu
-      speichern. In Zukunft wird es ggf. eine Möglichkeit geben, die
-      Felddaten separat zu speichern, aktuell ist das Dokument aber
-      darauf ausgelegt, gedruckt zu werden. Seiten mit <i>X+</i> sind
-      entfernbar, sodass sie nicht mitgedruckt werden, die Seitenzahl
-      passt sich automatisch an. Ebenso wird diese Anleitungsseite
-      nicht gedruckt. Geplant ist auch, für einzelne Seiten
-      eine Vervielfachung zu ermöglichen. Weil das ganze Dokument
+      genutzt wird, werden ausgefüllte Felder und Änderungen im lokalen
+      Speicher des Browsers auch nach dem Beenden gesichert
+      (Tipp: testen). Die Schaltflächen <i>Daten löschen</i> bzw.
+      <i>Änderungen verwerfen</i> löschen die jeweils gespeicherten
+      Werte. Die Felddaten können auch exportiert und importiert
+      werden. Seiten mit <i>+</i> oben rechts können
+      vervielfältigt werden, Seiten mit <i>x</i> sind
+      entfernbar, sodass sie nicht mitgedruckt werden, die Seitenanzahl
+      passt sich jeweils automatisch an. Ebenso wird diese
+      Anleitungsseite nicht gedruckt. Weil das ganze Dokument
       nur aus einer HTML-Datei besteht, können Sie es einfach
       speichern, offline nutzen und weitergeben.
     </p>
@@ -707,12 +818,12 @@
     </p>
     
     <p class="haupttext">
-      Die jeweils aktuelle Version finden Sie unter 
+      Die jeweils aktuelle Version finden Sie unter:<br/>
       <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/ev-kontaktliste.html">
-        https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html</a>
-      als Teil des Repositorys
+        https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html</a><br/>
+      als Teil der Materialsammlung:<br/>
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
-        https://github.com/ElternmaterialBerlin/gremiendoks</a>.
+        https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
       
       Dort finden Sie auch weitere
       Dokumente zur Elternarbeit und können eine verbesserte Version
@@ -755,10 +866,11 @@
     
     <h2>Drucktipps</h2>
     <p class="haupttext">
-      Kopf- und Fußzeilen des Browsers müssen ausgestellt werden.
+      Kopf- und Fußzeilen des Browsers müssen ausgestellt und
+      das Drucken von Hintergrundfarben erlaubt werden.
       Falls Sie eine zusätzliche leere Seite in der Druckvorschau
       bekommen (beobachtet in Safari), stellen Sie die Skalierung auf
-      99% oder weniger stellen. Unter Android kann man direkt aus
+      99% oder weniger ein. Unter Android kann man direkt aus
       Firefox seit Version 69 keine PDFs mehr erstellen, mit Chrome
       wählt man <i>Teilen</i> und dann <i>Drucker</i>
       (auch für PDF-Export).
@@ -991,13 +1103,21 @@
     Seite <a class="pn"></a>   <a class="np"></a>
   </div>
 <!-- GUI-Header erste Seite -->
-  <div class="guiheader">
+  <div class="guiheader guiheader_edit">
     <a class="guielement_small" 
       onclick="flipEdit();">Editieren an/aus</a>
     <a class="guielement_small" 
       onclick="dlSelf();">Dokument speichern</a>
     <a class="guielement_small" 
-      onclick="deleteStorage();">Daten löschen</a>
+      onclick="revertEdits();">Änderungen verwerfen</a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement_small" 
+      onclick="clearFields();">Daten löschen</a>
+    <a class="guielement_small" 
+      onclick="exportFields();">Daten exportieren</a>
+    <a class="guielement_small" 
+      onclick="importFields();">Daten importieren</a>
   </div>
 <!-- ENDE GUI-Header erste Seite -->
 </div><!--
