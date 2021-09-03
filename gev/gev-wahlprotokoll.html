@@ -102,6 +102,11 @@
     .anleitung {
       display: none;
     }
+    
+    select {
+      appearance: none;
+      border-bottom: 1px solid;
+    }
   }
   @media screen {
     .page {
@@ -194,7 +199,7 @@
     text-align: left;
     font-weight: normal;
     font-size: 11pt;
-    margin-top: 0pt;
+    margin-top: 4mm;
     margin-bottom: 2mm;
     text-decoration: underline;
   }
@@ -296,12 +301,16 @@
     width: 4mm;
   }
   
+  .spfach {
+    width: 2cm;
+  }
+  
   .spunters {
     width: 6cm;
   }
   
   input {
-    font-size: 11pt;
+    font: inherit;
     border: none;
     border-bottom: 1pt solid;
   }
@@ -310,6 +319,15 @@
 /*     font-size: 11pt; */
     padding: 0pt;
     margin-left: 0pt;
+  }
+  
+  select {
+    font: inherit;
+    border: none;
+    border-bottom: 1px solid;
+    background-color: inherit;
+    padding: 0pt;
+    margin: 0pt;
   }
   
   #schulez {
@@ -609,7 +627,8 @@
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
           copy and paste vermeiden.*/
         if (usedids[fld.id]){
-          alert("Programmierfehler: id mehrfach vergeben!")
+          alert("Programmierfehler: id \"" + fld.id
+            + "\" mehrfach vergeben!")
         } else {
           usedids[fld.id] = true;
         }
@@ -633,6 +652,12 @@
       for (let i=2; i<=ncl; ++i){
         page = clonePage(page);
       }
+      if (ncl == 0){
+        page.ncopy = 0;
+        nclones[page.id] = 0;
+        page.classList.add("noprint");
+        page.classList.remove("doprint");
+      }
     }
     
     npages = document.getElementsByClassName("doprint").length;
@@ -650,6 +675,7 @@
     //wichtig ist hier nicht auf "initial" zu setzen, das würde auch
     //den @print-Stil überschreiben
     nclones[page.baseid] = lastclone.ncopy;
+    setItem("..nclones",JSON.stringify(nclones));
   };
   
   const hidePagePrint = function(x){
@@ -670,6 +696,9 @@
     if (page.ncopy && page.ncopy > 1){
       removeClonedPage(page);
     } else {
+      page.ncopy = 0;
+      nclones[page.id] = 0;
+      setItem("..nclones",JSON.stringify(nclones));
       page.classList.add("noprint");
       page.classList.remove("doprint");
     }
@@ -751,6 +780,9 @@
     } else {
       page.classList.add("doprint");
       page.classList.remove("noprint");
+      page.ncopy = 1;
+      nclones[page.id] = 1;
+      setItem("..nclones",JSON.stringify(nclones));
       npages += 1;
       npagesChanged();
       document.documentElement.style.setProperty("--npages",
@@ -1599,7 +1631,7 @@
     </p>
     
     <h5>
-      Wahlergebnis stellvertretende Mitglieder der Schulkonferenz
+      Wahlergebnis stellvertretende Mitglieder im BEA
     </h5>
     
     <table id=westvbea class="tabellebreit wahlerg">
@@ -1672,7 +1704,7 @@
     </p>
     
     <h4>
-      Kandidierende für zwei Mitglieder in der Gesamtkonferenz
+      Kandidierende für zwei beratende Mitglieder in der Gesamtkonferenz
     </h4>
     
     <table id=kandgk class="tabellebreit">
@@ -1716,7 +1748,7 @@
     </p>
     
     <h5>
-      Wahlergebnis Mitglieder in der Gesamtkonferenz
+      Wahlergebnis beratende Mitglieder in der Gesamtkonferenz
     </h5>
     
     <table id=wegk class="tabellebreit wahlerg">
@@ -1788,7 +1820,7 @@
     </p>
     
     <h5>
-      Wahlergebnis stellvertretende Mitglieder der Schulkonferenz
+      Wahlergebnis stellvertretende Mitglieder der Gesamtkonferenz
     </h5>
     
     <table id=westvgk class="tabellebreit wahlerg">
@@ -1864,7 +1896,7 @@
     </p>
     
     <h4>
-      Kandidierende für zwei Mitglieder in der Gesamtschülervertretung
+      Kandidierende für zwei beratende Mitglieder in der Gesamtschülervertretung
     </h4>
     
     <table id=kandgsv class="tabellebreit">
@@ -1908,7 +1940,7 @@
     </p>
     
     <h5>
-      Wahlergebnis Mitglieder in der Gesamtschülervertretung
+      Wahlergebnis beratende Mitglieder in der Gesamtschülervertretung
     </h5>
     
     <table id=wegsv class="tabellebreit wahlerg">
@@ -1980,7 +2012,7 @@
     </p>
     
     <h5>
-      Wahlergebnis stellvertretende Mitglieder der Schulkonferenz
+      Wahlergebnis stellvertretende Mitglieder der Gesamtschülervertretung
     </h5>
     
     <table id=westvgsv class="tabellebreit wahlerg">
@@ -2054,7 +2086,7 @@
     </p>
     
     <h4>
-      Kandidierende für zwei Mitglieder in der Fachkonferenz
+      Kandidierende für zwei beratende Mitglieder in der Fachkonferenz
     </h4>
     
     <table id=kandfk class="tabellebreit">
@@ -2170,7 +2202,7 @@
     </p>
     
     <h5>
-      Wahlergebnis stellvertretende Mitglieder der Schulkonferenz
+      Wahlergebnis stellvertretende Mitglieder der Fachkonferenz
     </h5>
     
     <table id=westvfk class="tabellebreit wahlerg">
@@ -2228,19 +2260,173 @@
 </div>
 <!-- ENDE Fachkonferenz lang -->
 
-<div class="page doprint" id="template">
+<!-- Fachkonferenz kompakt -->
+<div class="page doprint cloneable" id="fakokompakt">
   <div class="content">
-    <h3>Template</h3>
-    
-    <p class="haupttext">
-      Das  Protokoll ist noch nicht fertig. Teil- und Fachkonferenzen
-      fehlen. Fertigstellung bis Anfang
-      September 2021.
+    <h3>Fachkonferenzen <span class="erlaeuterung">kompakt</span></h3>
+    <p class="erlaeuterung">
+      Für jede Fachkonferenz werden zwei beratende Mitglieder und
+      bis zu vier stellvertretende Mitglieder gewählt.<br/>
+      SchulG Berlin § 117 (2): Für die 
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      soweit dieses Gesetz nichts anderes bestimmt.<br/>
+      Diese Seite kann für die Fachkonferenzwahlen genutzt werden,
+      die <strong>offen durchgeführt werden</strong>. Für geheime
+      Wahlen bitte die ausführlichen Seiten nutzen.
     </p>
+    
+    <p class="haupttext">Es finden je zwei Wahlen
+      (Mitglieder, stellvertretende Mitglieder) 
+      pro Fachkonferenz statt.
+    </p>
+    
+    <h4>
+      Kandidierende für je zwei beratende Mitglieder in den
+      Fachkonferenzen
+    </h4>
+    
+    <table id=kandfkkp class="tabellebreit">
+      <thead><tr>
+        <th class="spfach">Fach</th>
+        <th class="spnamen">Name</th>
+        <th class="spanz">Anzahl der Stimmen</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+      (bei mehr als zehn Kandidierenden bitte eigenes Blatt verwenden)
+    </p>
+    
+    <h5>
+      Wahlergebnis Mitglieder in den Fachkonferenzen
+    </h5>
+    
+    <table id=wefkkp class="tabellebreit wahlerg">
+      <thead><tr>
+        <th class="spfach">Fach</th>
+        <th class="spnamen">Name</th>
+        <th class="spkontakt">E-Mail / Telefon</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
   </div>
   <div class="footerl">
     Wahlprotokoll GEV <a class="yr"></a><br/>
-    unfertig
+    Fachkonferenzen kompakt
   </div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
@@ -2256,6 +2442,371 @@
     </a>
   </div>
 </div>
+
+<div class="page doprint cloneable" id="template">
+  <div class="content">
+    <h3>Fachkonferenzen <span class="erlaeuterung">kompakt</span></h3>
+    
+    <h4>
+      Kandidierende für die stellvertretenden Mitglieder in den
+      Fachkonferenzen
+    </h4>
+    
+    <p class="haupttext">
+      <label for="stvfkkpanz">Es sollen </label>
+      <input id="stvfkkpanz" name="stvfkkpanz" class="anz" />
+      stellvertretende Mitglieder pro Fachkonferenz gewählt
+      werden.
+      <a class="erlaeuterung">(2-4)</a>
+    </p>
+    
+    <table id=kandstvfkkp class="tabellebreit">
+      <thead><tr>
+        <th class="spfach">Fach</th>
+        <th class="spnamen">Name</th>
+        <th class="spanz">Anzahl der Stimmen</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+      (bei mehr als zehn Kandidierenden bitte eigenes Blatt verwenden)
+    </p>
+    
+    <h5>
+      Wahlergebnis stellvertretende Mitglieder der Fachkonferenzen
+    </h5>
+    
+    <table id=westvfkkp class="tabellebreit wahlerg">
+      <thead><tr>
+        <th class="spfach"></th>
+        <th class="sprang">&#35;</th>
+        <th class="spnamen">Name</th>
+        <th class="spkontakt">E-Mail / Telefon</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    
+    <p class="erlaeuterung">
+     Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
+    </p>
+    
+  </div>
+  <div class="footerl">
+    Wahlprotokoll GEV <a class="yr"></a><br/>
+    Fachkonferenz
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>  <a class="np"></a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement" 
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
+    <a class="guielement" 
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
+  </div>
+</div>
+<!-- ENDE Fachkonferenz kompakt -->
+
+<!-- Teilkonferenz lang -->
+<div class="page doprint cloneable" id="teko">
+  <div class="content">
+    <h3>
+      <select id="tekotsv">
+        <option value="teko">Teilkonferenz der Lehrkräfte</option>
+        <option value="tsv">Teilschülervertretung</option>
+      </select>
+      <label for="tkbereich"> für</label>
+      <input id="tkbereich" name="tkbereich" class="fach" /></h3>
+    <p class="erlaeuterung">
+      Für jede Teilkonferenz/Teilschülervertretung werden ein
+      beratendes Mitglied und
+      bis zu zwei stellvertretende Mitglieder gewählt.<br/>
+      SchulG Berlin § 117 (2): Für die 
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      soweit dieses Gesetz nichts anderes bestimmt.<br/>
+      Diese Wahlen erfolgen nur dann in der GEV, wenn die GEV keine 
+      Teilelternvertretungen eingerichtet hat (SchulG § 90 (4)).
+      Sonst ist dort zu wählen.
+    </p>
+    
+    <h4>
+      Kandidierende für ein beratende Mitglied in der Teilkonferenz/Teilschülervertretung
+    </h4>
+    
+    <table id=kandtk class="tabellebreit">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spanz">Anzahl der Stimmen</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+      (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
+    </p>
+    
+    <p class="haupttext">
+      <label for="tktyp">Art der Wahl:</label>
+      <input id="tktyp" name="tktyp" class="wahltyp" />
+      <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
+    </p>
+    
+    <p class="haupttext">
+      <label for="tkges">Anzahl der abgegebenen Stimmzettel:</label>
+      <input id="tkges" name="tkges" class="anz" />
+      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+    </p>
+    
+    <h5>
+      Wahlergebnis Mitglied in der Teilkonferenz/Teilschülervertretung
+    </h5>
+    
+    <table id=wetk class="tabellebreit wahlerg">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spkontakt">E-Mail / Telefon</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <h4>
+      Kandidierende für die stellvertretenden Mitglieder in der Teilkonferenz/Teilschülervertretung
+    </h4>
+    
+    <p class="haupttext">
+      <label for="stvtkanz">Es sollen </label>
+      <input id="stvtkanz" name="stvtkanz" class="anz" />
+      stellvertretende Mitglieder der Teilkonferenz/Teilschülervertretung gewählt
+      werden.
+      <a class="erlaeuterung">(1-2)</a>
+    </p>
+    
+    <table id=kandstvtk class="tabellebreit">
+      <thead><tr>
+        <th class="spnamen">Name</th>
+        <th class="spanz">Anzahl der Stimmen</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    <p class="erlaeuterung">
+      (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
+    </p>
+    
+    <p class="haupttext">
+      <label for="stvtktyp">Art der Wahl:</label>
+      <input id="stvtktyp" name="stvtktyp" class="wahltyp" />
+      <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
+    </p>
+    
+    <p class="haupttext">
+      <label for="stvtkges">Anzahl der abgegebenen Stimmzettel:</label>
+      <input id="stvtkges" name="stvtkges" class="anz" />
+      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+    </p>
+    
+    <h5>
+      Wahlergebnis stellvertretende Mitglieder der Teilkonferenz/Teilschülervertretung
+    </h5>
+    
+    <table id=westvtk class="tabellebreit wahlerg">
+      <thead><tr>
+        <th class="sprang">&#35;</th>
+        <th class="spnamen">Name</th>
+        <th class="spkontakt">E-Mail / Telefon</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+      <tbody>
+    </table>
+    
+    <p class="erlaeuterung">
+     Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
+    </p>
+    
+  </div>
+  <div class="footerl">
+    Wahlprotokoll GEV <a class="yr"></a><br/>
+    Teilkonferenz/Teilschülervertretung
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>  <a class="np"></a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement" 
+      onclick="hidePagePrint(this);">
+      <span class="lesspages"></span>
+    </a>
+    <a class="guielement" 
+      onclick="showPagePrint(this);">
+      <span class="morepages"></span>
+    </a>
+  </div>
+</div>
+<!-- ENDE Teilkonferenz lang -->
 
 
 <div class="page doprint" id="abschluss">
