@@ -15,6 +15,7 @@
     --year: "2021/2022";
     --npages: "";
   }
+  
   body {
     position: absolute;
     height:100%;
@@ -39,7 +40,9 @@
     height: 296.6mm;
     /*Normale Werte:*/
     font-size: 11pt;
-    line-height: normal;
+    /*Das macht nicht alles konsistent, siehe
+      https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
+    line-height: 1.1;
   }
   .content {
     margin: 0px;
@@ -105,6 +108,11 @@
     select {
       appearance: none;
       border-bottom: 1px solid;
+    }
+    
+    a:link {
+      text-decoration: inherit;
+      color: inherit;
     }
   }
   @media screen {
@@ -183,6 +191,7 @@
     text-align: left;
     font-weight: bold;
     font-size: 11pt;
+    margin-top: 2mm;
     margin-bottom: 0pt;
   }
   
@@ -201,6 +210,8 @@
     margin-top: 4mm;
     margin-bottom: 2mm;
     text-decoration: underline;
+    text-decoration-thickness: 0.5pt;
+    text-underline-offset: 1pt;
   }
   
   h5 {/*gleichrangig und zugehörig zu h4, idR danach*/
@@ -214,21 +225,41 @@
     display: inline-block;
   }
   
-  .erlaeuterung {/*Ausfüllhilfen und ähnliches*/
+  p {
+    padding: 0mm;
+    margin: 0mm;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+  }
+  
+  .erlaeuterung {
+    font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
     text-align: justify;
     font-size: 8pt;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
   
   ul, ol {
     margin-top: 0pt;
     padding-top: 0pt;
+    margin-bottom: 0pt;
+    padding-bottom: 0pt;
   }
   
   .haupttext {
+    font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
     text-align: justify;
     font-size: 11pt;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  
+  td, th {
+    margin: 0mm;
+    padding: 1pt;
   }
   
   .tabellebreit {
@@ -320,6 +351,8 @@
     font: inherit;
     border: none;
     border-bottom: 1pt solid;
+    padding: 1pt;
+    margin: 0pt;
   }
   
   label {
@@ -895,7 +928,9 @@
     <h2>Drucktipps</h2>
     <p class="haupttext">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken von Hintergrundfarben erlaubt werden.
+      das Drucken von Hintergrundfarben erlaubt werden. Zudem sollten
+      keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
+      auf die Seite passt.
       Falls Sie eine zusätzliche leere Seite in der Druckvorschau
       bekommen (beobachtet in Safari), stellen Sie die Skalierung auf
       99% oder weniger ein. Unter Android kann man direkt aus

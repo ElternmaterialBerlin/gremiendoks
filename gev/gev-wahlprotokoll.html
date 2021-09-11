@@ -16,6 +16,7 @@
     --year: "2021/2022";
     --npages: "";
   }
+  
   body {
     position: absolute;
     height:100%;
@@ -40,7 +41,9 @@
     height: 296.6mm;
     /*Normale Werte:*/
     font-size: 11pt;
-    line-height: normal;
+    /*Das macht nicht alles konsistent, siehe
+      https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
+    line-height: 1.1;
   }
   .content {
     margin: 0px;
@@ -106,6 +109,11 @@
     select {
       appearance: none;
       border-bottom: 1px solid;
+    }
+    
+    a:link {
+      text-decoration: inherit;
+      color: inherit;
     }
   }
   @media screen {
@@ -184,6 +192,7 @@
     text-align: left;
     font-weight: bold;
     font-size: 11pt;
+    margin-top: 2mm;
     margin-bottom: 0pt;
   }
   
@@ -202,6 +211,8 @@
     margin-top: 4mm;
     margin-bottom: 2mm;
     text-decoration: underline;
+    text-decoration-thickness: 0.5pt;
+    text-underline-offset: 1pt;
   }
   
   h5 {/*Wahlergebnis*/
@@ -215,21 +226,41 @@
     display: inline-block;
   }
   
+  p {
+    padding: 0mm;
+    margin: 0mm;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+  }
+  
   .erlaeuterung {
+    font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
     text-align: justify;
     font-size: 8pt;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
   
   ul, ol {
     margin-top: 0pt;
     padding-top: 0pt;
+    margin-bottom: 0pt;
+    padding-bottom: 0pt;
   }
   
   .haupttext {
+    font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
     text-align: justify;
     font-size: 11pt;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  
+  td, th {
+    margin: 0mm;
+    padding: 1pt;
   }
   
   .tabellebreit {
@@ -313,6 +344,8 @@
     font: inherit;
     border: none;
     border-bottom: 1pt solid;
+    padding: 1pt;
+    margin: 0pt;
   }
   
   label {
@@ -908,7 +941,9 @@
     <h2>Drucktipps</h2>
     <p class="haupttext">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken von Hintergrundfarben erlaubt werden.
+      das Drucken von Hintergrundfarben erlaubt werden. Zudem sollten
+      keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
+      auf die Seite passt.
       Falls Sie eine zusätzliche leere Seite in der Druckvorschau
       bekommen (beobachtet in Safari), stellen Sie die Skalierung auf
       99% oder weniger ein. Unter Android kann man direkt aus
@@ -949,7 +984,10 @@
       Klassenelternsprecherinnen und Klassenelternsprecher der Klasse
       anwesend sind, als Abwesenheitsvertreterinnen und
       Abwesenheitsvertreter aktiv wählen, sich aber nicht wählen
-      lassen.
+      lassen. Eine Person kann nicht für eine Klasse anwesend und für
+      eine andere abwesend sein (siehe 
+      <a href="https://pardok.parlament-berlin.de/starweb/adis/citat/VT/17/SchrAnfr/s17-14635.pdf">
+      AGH Drucksache 17/14635</a>).
     </p>
     <p class="haupttext">
       <label for="anwesend">Anwesend sind</label>
@@ -994,6 +1032,7 @@
       eine im Losentscheid erfolgreiche Person, die davor 8 und 
       10 Stimmen erhielt.
     </p>
+    <p></p>
     
 <!-- Schulelternsprecher*in plus Stv. -->
     <h3>Elternsprecherin oder Elternsprecher der Schule</h3>
@@ -1043,8 +1082,10 @@
     
     <p class="haupttext">
       <label for="schespges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="schespges" name="schespges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="schespges" name="schespges" class="anz" />,
+      <label for="schespenth">davon Enthaltungen:</label>
+      <input id="schespenth" name="schespenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1153,8 +1194,10 @@
     
     <p class="haupttext">
       <label for="stvschespges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvschespges" name="stvschespges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvschespges" name="stvschespges" class="anz" />,
+      <label for="stvschespenth">davon Enthaltungen:</label>
+      <input id="stvschespenth" name="stvschespenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1283,8 +1326,10 @@
     
     <p class="haupttext">
       <label for="skges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="skges" name="skges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="skges" name="skges" class="anz" />,
+      <label for="skenth">davon Enthaltungen:</label>
+      <input id="skenth" name="skenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1410,8 +1455,10 @@
     
     <p class="haupttext">
       <label for="stvskges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvskges" name="stvskges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvskges" name="stvskges" class="anz" />,
+      <label for="stvskenth">davon Enthaltungen:</label>
+      <input id="stvskenth" name="stvskenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1554,8 +1601,10 @@
     
     <p class="haupttext">
       <label for="beages">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="beages" name="beages" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="beages" name="beages" class="anz" />,
+      <label for="beaenth">davon Enthaltungen:</label>
+      <input id="beaenth" name="beaenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1626,8 +1675,10 @@
     
     <p class="haupttext">
       <label for="stvbeages">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvbeages" name="stvbeages" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvbeages" name="stvbeages" class="anz" />,
+      <label for="stvbeaenth">davon Enthaltungen:</label>
+      <input id="stvbeaenth" name="stvbeaenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1743,8 +1794,10 @@
     
     <p class="haupttext">
       <label for="gkges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="gkges" name="gkges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="gkges" name="gkges" class="anz" />,
+      <label for="gkenth">davon Enthaltungen:</label>
+      <input id="gkenth" name="gkenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1815,8 +1868,10 @@
     
     <p class="haupttext">
       <label for="stvgkges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvgkges" name="stvgkges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvgkges" name="stvgkges" class="anz" />,
+      <label for="stvgkenth">davon Enthaltungen:</label>
+      <input id="stvgkenth" name="stvgkenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -1935,8 +1990,10 @@
     
     <p class="haupttext">
       <label for="gsvges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="gsvges" name="gsvges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="gsvges" name="gsvges" class="anz" />,
+      <label for="gsventh">davon Enthaltungen:</label>
+      <input id="gsventh" name="gsventh" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -2007,8 +2064,10 @@
     
     <p class="haupttext">
       <label for="stvgsvges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvgsvges" name="stvgsvges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvgsvges" name="stvgsvges" class="anz" />,
+      <label for="stvgsventh">davon Enthaltungen:</label>
+      <input id="stvgsventh" name="stvgsventh" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -2125,8 +2184,10 @@
     
     <p class="haupttext">
       <label for="fkges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="fkges" name="fkges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="fkges" name="fkges" class="anz" />,
+      <label for="fkenth">davon Enthaltungen:</label>
+      <input id="fkenth" name="fkenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -2197,8 +2258,10 @@
     
     <p class="haupttext">
       <label for="stvfkges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvfkges" name="stvfkges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvfkges" name="stvfkges" class="anz" />,
+      <label for="stvfkenth">davon Enthaltungen:</label>
+      <input id="stvfkenth" name="stvfkenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -2529,7 +2592,7 @@
     
     <table id=westvfkkp class="tabellebreit wahlerg">
       <thead><tr>
-        <th class="spfach"></th>
+        <th class="spfach">Fach</th>
         <th class="sprang">&#35;</th>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
@@ -2687,8 +2750,10 @@
     
     <p class="haupttext">
       <label for="tkges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="tkges" name="tkges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="tkges" name="tkges" class="anz" />,
+      <label for="tkenth">davon Enthaltungen:</label>
+      <input id="tkenth" name="tkenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
@@ -2755,8 +2820,10 @@
     
     <p class="haupttext">
       <label for="stvtkges">Anzahl der abgegebenen Stimmzettel:</label>
-      <input id="stvtkges" name="stvtkges" class="anz" />
-      <a class="erlaeuterung">(nur bei geheimer Wahl)</a>
+      <input id="stvtkges" name="stvtkges" class="anz" />,
+      <label for="stvtkenth">davon Enthaltungen:</label>
+      <input id="stvtkenth" name="stvtkenth" class="anz" />
+      <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
     
     <h5>
