@@ -2,7 +2,7 @@
 pages:
   image:
     name: pandoc/core
-    entrypoint: ["/bin/bash", "-c"]
+    entrypoint: ["/bin/sh", "-c"]
   stage: deploy
   script:
     - mkdir .public
