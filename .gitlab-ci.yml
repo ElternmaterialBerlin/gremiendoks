@@ -1,9 +1,13 @@
 # copy all html files to public
 pages:
+  image:
+    name: pandoc/core
+    entrypoint: ["/bin/bash", "-c"]
   stage: deploy
   script:
     - mkdir .public
     - cp -r ev gev .public
+    - pandoc -s -o .public/index.html README.md
     - rm -rf public
     - mv .public public
   artifacts:
