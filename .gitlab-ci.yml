@@ -7,7 +7,7 @@ pages:
   script:
     - mkdir .public
     - cp -r ev gev .public
-    - pandoc -s -o .public/index.html README.md
+    - pandoc  --metadata lang=de --metadata title=" " -T "gremiendoks | Dokumente für Gremienarbeit (Kontaktlisten, Protokolle, etc.)" -s -o .public/index.html README.md
     - rm -rf public
     - mv .public public
   artifacts:
