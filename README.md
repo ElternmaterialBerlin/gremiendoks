@@ -7,10 +7,12 @@ oder [Github Pages](https://elternmaterialberlin.github.io/gremiendoks/) ansehen
 direkt und nicht als Quelltext angezeigt zu bekommen.
 
 ### Klassenelternversammlung (EV)
-* [Kontaktliste](ev/ev-kontaktliste.html) zum Sammeln von Mailadressen und Telefonnummern.
+* [Kontaktliste](ev/ev-kontaktliste.html) zum Sammeln von Mailadressen und Telefonnummern 
+([nicht ausfüllbare PDF-Version](ev/ev-kontaktliste.pdf)).
 
 ### Gesamtelternversammlung (GEV)
 * [Wahlprotokoll](gev/gev-wahlprotokoll.html) für Wahlen in der GEV. Es ähnelt in der Darstellung dem bisher über BEAs verbreiteten Protokoll, wurde aber komplett neu in HTML erstellt und enthält auch einige inhaltliche Änderungen.
+Es gibt auch eine bereits exportierte [PDF-Version](gev/gev-wahlprotokoll.pdf), falls das Drucken im Browser scheitert.
 * [Stimmzettel](gev/gev-stimmzettel.pdf) als PDF ([LuaLaTeX-Quelldatei](gev/gev-stimmzettel.tex) dazu). Da es hier auf genaue Darstellung zum Drucken ankommt, ist HTML ungeeignet. Die Stimmzettel enthalten Ankreuzoptionen für die gängigsten Wahlen und verzeichnen die Anzahl der zu wählenden (stellvertretenden) Mitglieder als Exponent bzw. Index.
 
 ## Mitmachen
