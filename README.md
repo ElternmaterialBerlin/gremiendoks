@@ -6,6 +6,9 @@ Die Links hier sind relativ. Diese Seite bitte über [GitLab Pages](https://elte
 oder [Github Pages](https://elternmaterialberlin.github.io/gremiendoks/) ansehen, um die HTML-Dateien
 direkt und nicht als Quelltext angezeigt zu bekommen.
 
+### für alle Gremien 
+* [Mitgliederliste](allgemein/mitglieder.html). Diese soll später zum Import für Anwesenheitslisten und Protokolle dienen.
+
 ### Klassenelternversammlung (EV)
 * [Kontaktliste](ev/ev-kontaktliste.html) zum Sammeln von Mailadressen und Telefonnummern 
 ([nicht ausfüllbare PDF-Version](ev/ev-kontaktliste.pdf)).

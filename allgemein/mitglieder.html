@@ -2,17 +2,17 @@
 <html lang="de">
 <head>
 <title>
-  Kontaktdaten für die Elternarbeit
+  Mitglieder
 </title>
 <meta charset="UTF-8"/>
 <meta name="description"
-  content="Mailadresse, Telefon etc. sammeln und Eltern über deren Verwendung informieren"/>
+  content="Mitglieder eines Gremiums oder einer Versammlung verwalten"/>
 <meta name=”robots” content="index, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style type="text/css">
   :root {
-    --year: "2021/2022";
+    --year: "2022/2023";
     --npages: "";
   }
   
@@ -323,13 +323,18 @@
     pointer-events: none;
   }
   
-  .spkind {
-    width: 2.5cm;
+  .spaus {
+    width: 1cm;
     text-align: left;
   }
   
-  .spnamen {
-    width: 4cm;
+  .spname {
+    width: 5cm;
+    text-align: left;
+  }
+  
+  .spamt {
+    width: 2cm;
     text-align: left;
   }
   
@@ -338,13 +343,13 @@
     text-align: left;
   }
   
-  .spmail {
+  .spkont {
 /*     width: 5cm; */
     text-align: left;
   }
   
-  .sp1o, .sp2o, .sp3o {
-    width: 4mm;
+  .spodl, .spstr {
+    width: 6mm;
   }
   
   input {
@@ -567,6 +572,114 @@
   
   const exportFields = function(){
     exportObjStore(selffn+"_daten.json",fieldPrefix);
+  };
+  
+  const prepareExportList = function(){
+    let cols = [];
+    let ths = document.getElementById(
+      "mitgliederdaten").firstElementChild.firstElementChild.children;
+    for (const th of ths){
+      cols.push(th.className.substr(2));
+    }
+    const firstNrows = document.getElementById(
+      "mitgliederdaten").tBodies[0].rows.length;
+    const furtherNrows = document.getElementById(
+      "mitgliederdaten2").tBodies[0].rows.length;
+    const ncl = nclones["mgdatenforts"] || 1;
+    const obj = objStore[selffn+"_"+fieldPrefix] || {};
+    const mglist = [];
+    let firstEmptySeen = false;
+    for(let i=0;i<firstNrows;i++){
+      let mg = {};
+      for (const col of cols){
+        mg[col] = obj["mitgliederdaten_"+col+i]
+      }
+      if(mg.name){
+        mglist.push(mg);
+      }
+    }
+    for(let p=1;p<=ncl;p++){
+      let prefix = p > 1 ? ("mgdatenforts_"+p+"_"): "";
+      for(let i=0;i<furtherNrows;i++){
+        let mg = {};
+        for (const col of cols){
+          mg[col] = obj[prefix+"mitgliederdaten2_"+col+i]
+        }
+        if(mg.name){
+          mglist.push(mg);
+        }
+      }
+    }
+    return { grem : obj.grem || "", list: mglist};
+  };
+  
+  const exportList = function(){
+    let mgstore = prepareExportList();
+    download("Mitglieder_"+mgstore.grem+".json",
+      JSON.stringify(mgstore));
+    alert(JSON.stringify(mgstore));
+    listToTables(mgstore.list);
+  };
+  
+  const listToTables = function(mgstore){
+    let mglist = mgstore.list
+    setItem("grem",mgstore.grem,fieldPrefix);
+    let cols = [];
+    let ths = document.getElementById(
+      "mitgliederdaten").firstElementChild.firstElementChild.children;
+    for (const th of ths){
+      cols.push(th.className.substr(2));
+    }
+    const firstNrows = document.getElementById(
+      "mitgliederdaten").tBodies[0].rows.length;
+    const furtherNrows = document.getElementById(
+      "mitgliederdaten2").tBodies[0].rows.length;
+    let ncl = nclones["mgdatenforts"] == undefined ? 1 :
+      nclones["mgdatenforts"];
+    const nclneed = Math.ceil((mglist.length - firstNrows) /
+      furtherNrows)
+    let fspage = document.getElementById("mgdatenforts")
+    while(nclneed > ncl){
+      ncl++;
+      fspage = showPagePrintWorker(fspage);
+    }
+    
+    for(let i=0;i<firstNrows;i++){
+      let mg = mglist.shift();
+      if (!mg) break;
+      for (const col of cols){
+        setItem("mitgliederdaten_"+col+i,mg[col]||"",fieldPrefix);
+      }
+    }
+    
+    for(let p=1;p<=ncl;p++){
+      let prefix = p > 1 ? ("mgdatenforts_"+p+"_"): "";
+      for(let i=0;i<furtherNrows;i++){
+        let mg = mglist.shift();
+        if (!mg) break;
+        for (const col of cols){
+          setItem(prefix+"mitgliederdaten2_"+col+i,
+            mg[col]||"",fieldPrefix);
+        }
+      }
+    }
+    location.reload();
+  };
+  
+  const importList = function(){
+    upload(function(js){
+      let mgstore;
+      try {
+        mgstore = JSON.parse(js);
+        if (!mgstore || !typeof(mgstore) == "object"){
+          throw "Invalid import.";
+        }
+      } catch (e) {
+        alert("Import fehlgeschlagen, kein korrektes JSON-Objekt.")
+        return;
+      }
+      listToTables(mgstore);
+    });
   };
   
   const importFields = function(){
@@ -809,8 +922,7 @@
   };
   
   
-  const showPagePrint = function(plus){
-    const page = plus.parentNode.parentNode;
+  const showPagePrintWorker = function(page){
     if (page.className.indexOf("noprint") == -1){
       if (page.className.indexOf("cloneable") == -1){
         alert("Diese Seite kann nicht vervielfältigt werden.");
@@ -819,7 +931,7 @@
           warnEdit();
           return;
         }
-        clonePage(page);
+        return clonePage(page);
       }
     } else {
       page.classList.add("doprint");
@@ -832,6 +944,12 @@
       document.documentElement.style.setProperty("--npages",
         "'/ "+npages+"'");
     };
+    return page;
+  };
+  
+  const showPagePrint = function(plus){
+    const page = plus.parentNode.parentNode;
+    showPagePrintWorker(page);
   };
 </script>
 </head>
@@ -859,6 +977,10 @@
       Anleitungsseite nicht gedruckt. Weil das ganze Dokument
       nur aus einer HTML-Datei besteht, können Sie es einfach
       speichern, offline nutzen und weitergeben.
+      
+      <b>Dieses Formular  dient hauptsächliche dazu eine JSON-Datei zu
+      erstellen, die später für Protokolle und Anwesenheitslisten
+      genutzt wird.</b>
     </p>
     
     <h2>Datenschutz</h2>
@@ -892,8 +1014,8 @@
     
     <p class="haupttext">
       Die jeweils aktuelle Version finden Sie unter:<br/>
-      <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/ev-kontaktliste.html">
-        https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html</a><br/>
+      <a href="https://elternmaterialberlin.github.io/gremiendoks/allgemein/mitglieder.html">
+        https://elternmaterialberlin.github.io/gremiendoks/allgemein/mitglieder.html</a><br/>
       als Teil der Materialsammlung:<br/>
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
         https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
@@ -905,12 +1027,12 @@
     
     <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
-      <li> 2020-2021 Frank Fuhlbrück
+      <li> 2020-2022 Frank Fuhlbrück
     </ul>
     
     <h2>Inhaltliche Autor*innen (Texte)</h2>
     <ul>
-      <li> 2021 Frank Fuhlbrück
+      <li> 2022 Frank Fuhlbrück
     </ul>
     
     <h2>Haftungsausschluss</h2>
@@ -954,219 +1076,230 @@
 </div>  
 <div class="page doprint" id="kontakt">
   <div class="content">
-    <h1>Kontaktdaten für die Elternarbeit
+    <h1>Mitgliederliste <label for="schule">für:</label>
+          <input type="text" id="grem" name="grem" value="" />
     </h1>
     
-    <table class="tabelleohnerahmen">
-      <tr>
-        <td id="schulez"><!--
-          --><label for="schule">Schule:</label>
-          <input type="text" id="schule" name="schule" value="" />
-        </td>
-        <td id="klassez"><!--
-          --><label for="klasse">Klasse:</label>
-          <input type="text" id="klasse" name="klasse" value="" />
-        </td>
-        <td id="datumz">
-          <label for="datum">Datum:</label>
-          <input type="text" id="datum" name="datum" value="" />
-        </td>
-      </tr>
-    </table>
-    <h2>1. Zweck der Datenspeicherung</h2>
-    <p class="haupttext">
-      Die Daten werden gespeichert, um Kontakt durch die
-      Elternsprecher*innen der Klasse zu ermöglichen. Bei
-      Zustimmung zu weiteren Optionen (s.u.) ist der Zweck die
-      Kommunikation zwischen den Eltern der Klasse.
-    </p>
-    <h2>2. Umfang der gespeicherten Daten</h2>
-    <p class="haupttext">
-      Die Angabe jeglicher Daten ist freiwillig. Sofern angeben,
-      werden die in der Kopfzeile der Tabelle ausgeführten Daten gespeichert.
-    </p>
-    <h2>3. Ort der Speicherung und Senden von Daten</h2>
-    <p class="haupttext">
-      Die unten aufgeführte Tabelle wird in digitaler Form auf den Privatgeräten
-      der Elternsprecher*innen der Klasse gespeichert.
-      Im Falle der Zustimmung zur Weitergabe, werden die Daten per
-      E-Mail an die Mailingliste gesendet. Wird der Eintragung 
-      in die Mailingliste zugestimmt, so wird die Mailadresse auf dem
-      Mailinglistenserver gespeichert. Mails an die Mailingliste
-      werden über diesen so versendet, dass die Empfangsadressen
-      nicht für die anderen sichtbar sind, die Absendeadresse
-      ist hingegen sichtbar.
-    </p>
-    <h2>4. Dauer der Speicherung</h2>
-    <p class="haupttext">
-      Die Daten werden höchstens für die Dauer des Besuchs der Klasse
-      durch das eigene Kind gespeichert und jederzeit auf Wunsch
-      gelöscht. Jährlich erfolgt eine Erinnerung, ob Wunsch auf Löschung
-      besteht.
-    </p>
-    
-    <h2>Optionen</h2>
+    <h2>Bedeutung</h2>
     <ol class="haupttext">
-      <li>Aufnahme in Mailingliste</li>
-      <li>Weitergabe der Mailadresse an Eltern auf der Mailingliste</li>
-      <li>Weitergabe der Telefonnummer an Eltern auf der Mailingliste</li>
+      <li>aus: entsendende(s) Versammlung/Gremium:
+      in der GEV ist das die Klasse oder GK, GSV für die beratenden Mitglieder,
+      im BEA die Schule. In der Klasse kann man das natürlich auch für
+      das Kind nutzen, dann Überschrift ändern.
+      </li>
+      <li>odl: ordentliches Mitglied (auch beratende Mitglieder
+      sind ordentlich)
+      </li>
+      <li>StR: Stimmrecht (nur ordentliche Mitglieder mit
+      Stimmrecht)
+      </li>
+      <li>Ämter: Vorsitz (z.B. Schulelternsprecher*in), Mitglied
+      in weiteren Gremien oder z.B. Vorstand Förderverein
+      </li>
     </ol> 
 
     
-    <table id="kontaktdaten" class="tabellebreit">
+    <table id="mitgliederdaten" class="tabellebreit">
       <thead><tr>
-        <th class="spkind">Vorname Kind</th>
-        <th class="spnamen">Name Elternteil</th>
-        <th class="spmail">E-Mail</th>
-        <th class="sptel">Telefon</th>
-        <th class="sp1o">1</th>
-        <th class="sp2o">2</th>
-        <th class="sp3o">3</th>
+        <th class="spaus">aus</th>
+        <th class="spodl">odl</th>
+        <th class="spstr">StR</th>
+        <th class="spname">Name</th>
+        <th class="spkont">Kontakt (E-Mail / Telefon)</th>
+        <th class="spamt">Ämter</th>
       </tr></thead>
       <tbody>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
           <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
           <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
         </tr>
       <tbody>
     </table>
@@ -1190,303 +1323,271 @@
     <a class="guielement_small" 
       onclick="clearFields();">Daten löschen</a>
     <a class="guielement_small" 
-      onclick="exportFields();">Daten exportieren</a>
+      onclick="exportList();">Liste exportieren</a>
     <a class="guielement_small" 
-      onclick="importFields();">Daten importieren</a>
+      onclick="importList();">Liste importieren</a>
   </div>
 <!-- ENDE GUI-Header erste Seite -->
 </div><!--
---><div class="page doprint cloneable" id="kontaktforts">
+--><div class="page doprint cloneable" id="mgdatenforts">
   <div class="content">
-    <table id="kontaktdaten2" class="tabellebreit">
+    <table id="mitgliederdaten2" class="tabellebreit">
       <thead><tr>
-        <th class="spkind">Vorname Kind</th>
-        <th class="spnamen">Name Elternteil</th>
-        <th class="spmail">E-Mail</th>
-        <th class="sptel">Telefon</th>
-        <th class="sp1o">1</th>
-        <th class="sp2o">2</th>
-        <th class="sp3o">3</th>
+        <th class="spaus">aus</th>
+        <th class="spodl">odl</th>
+        <th class="spstr">StR</th>
+        <th class="spname">Name</th>
+        <th class="spkont">Kontakt (E-Mail / Telefon)</th>
+        <th class="spamt">Ämter</th>
       </tr></thead>
       <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
+       <tr>
           <td><input class="iptab"/></td>
           <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
+          <td><input class="iptab"/></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
+          <td><input type="checkbox" class="ipcb"/><a></a></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
         </tr>
       <tbody>
     </table>
