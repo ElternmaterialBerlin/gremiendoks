@@ -10,7 +10,7 @@ direkt und nicht als Quelltext angezeigt zu bekommen.
 * [Kontaktliste](ev/ev-kontaktliste.html) zum Sammeln von Mailadressen und Telefonnummern 
 ([nicht ausfüllbare PDF-Version](ev/ev-kontaktliste.pdf)).
 * [Wahlprotokoll](ev/ev-wahlprotokoll.html) für Wahlen in der EV. Es ähnelt in der Darstellung dem bisher über BEAs verbreiteten Protokoll, wurde aber komplett neu in HTML erstellt und enthält auch einige inhaltliche Änderungen.
-Es gibt auch eine bereits exportierte [PDF-Version](ev/ev-wahlprotokoll-mit-erl.pdf) mit Erläuterungen und eine [PDF-Version](ev/ev-wahlprotokoll.pdf) ohne Erläuterungen, falls das Drucken im Browser scheitert.
+Es gibt auch eine bereits exportierte [PDF-Version](ev/ev-wahlprotokoll-mit-erl.pdf) mit Erläuterungen und eine [PDF-Version](ev/ev-wahlprotokoll.pdf) ohne Erläuterungen (die [Erläuterungen](ev/ev-wahlprotokoll-mit-erl.pdf) einzeln), falls das Drucken im Browser scheitert.
 
 ### Gesamtelternversammlung (GEV)
 * [Wahlprotokoll](gev/gev-wahlprotokoll.html) für Wahlen in der GEV. Es ähnelt in der Darstellung dem bisher über BEAs verbreiteten Protokoll, wurde aber komplett neu in HTML erstellt und enthält auch einige inhaltliche Änderungen.

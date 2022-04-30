@@ -13,7 +13,7 @@
 
 <style type="text/css">
   :root {
-    --year: "2021/2022";
+    --year: "2022/2023";
     --npages: "";
   }
   
@@ -34,7 +34,7 @@
   .page {
     box-sizing: border-box;
     position: relative;
-    display: inline-block;
+    display: block;
     margin: 0mm;
     padding: 0mm;
     width: 210mm;
@@ -213,17 +213,19 @@
     text-decoration: underline;
     text-decoration-thickness: 0.5pt;
     text-underline-offset: 1pt;
+    padding: 0pt;
   }
   
   h5 {/*Wahlergebnis*/
     text-align: left;
     font-weight: bold;
     font-size: 11pt;
-    margin-top: 4mm;
-    margin-bottom: 2mm;
+    margin-top: 3mm;
+    margin-bottom: 1mm;
+/*     border: 2pt solid #808080; */
+/*     padding: 0pt 1pt 0pt 1pt; */
+    color : white;
     background-color: #808080;
-    color: white;
-    display: inline-block;
   }
   
   p {
@@ -287,12 +289,21 @@
   }
   
   .wahlerg {
-    background-color: #d9d9d9;
+/*     background-color: #d9d9d9; */
+    
+    border: 2pt solid #808080;
+/*     margin-bottom: -2pt; */
 /*     margin-bottom: 4mm; */
   }
-  .wahlerg .iptab {
-    background-color: #d9d9d9;
+  
+  .wahlerg th {
+    border: 2pt solid #808080;
+    background-color: #808080;
+    color: white;
   }
+/*  .wahlerg .iptab {
+    background-color: #d9d9d9;
+  }*/
   
   .tabelleohnerahmen {
     width: 100%;
@@ -856,6 +867,16 @@
       speichern, offline nutzen und weitergeben.
     </p>
     
+    <h2>Datenschutz</h2>
+    Das Formular verwendet den localStorage der
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">
+    Web Storage API</a>. Das bedeutet, dass die Felddaten automatisch
+    von Ihrem Browser gespeichert werden und auch nach einem
+    Browserneustart verfügbar sind. Das Formular arbeitet komplett
+    offline, es werden keine Felddaten an Server gesendet.
+    <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und 
+    löschen Sie die Dateien am Ende (z.B. nach Druck in Datei).</b>
+    
     <h2>Weitergabe</h2>
     <p class="haupttext">
       Dieses Werk ist lizenziert unter der Lizenz
@@ -890,8 +911,9 @@
     <ul>
       <li> 2013-2021 (Wordvorlage: Schriftstile, Anordnung;
         Quelle s.u.)
-      <li> 2020-2021 Frank Fuhlbrück
-        (editierbare Umsetzung in HTML/CSS/Javsacript)</li>
+      <li> 2020-2022 Frank Fuhlbrück
+        (editierbare Umsetzung in HTML/CSS/Javsacript, Wahlergebnisse
+        auf weißem Grund)</li>
     </ul>
     
     <h2>Inhaltliche Autor*innen (Texte)</h2>
@@ -925,7 +947,7 @@
     
     <h2>Warum HTML?</h2>
     <p class="haupttext">
-      Zum Zeitpunkt der ersten Erstellung (2020-2021) ist die
+      Zum Zeitpunkt der ersten Erstellung (2020-2022) ist die
       Druckdarstellung über die drei wichtigsten Desktopbrowser hinweg
       relativ konsistent. Die gewählte Implementierung erlaubt zudem
       das Anpassen von Teilen des Dokuments ohne HTML-Kenntnisse.
