@@ -36,14 +36,28 @@
     display: block;
     margin: 0mm;
     padding: 0mm;
-    width: 210mm;
-    height: 296.6mm;
+    height: 210mm;
+    width: 296.6mm;
     /*Normale Werte:*/
     font-size: 11pt;
     /*Das macht nicht alles konsistent, siehe
       https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
     line-height: 1.1;
   }
+  .vhpage {/*variable Höhe*/
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    margin: 0mm;
+    padding: 10mm;
+    width: 296.6mm;
+    /*Normale Werte:*/
+    font-size: 11pt;
+    /*Das macht nicht alles konsistent, siehe
+      https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
+    line-height: 1.1;
+  }
+
   .content {
     margin: 0px;
     padding: 0px;
@@ -52,6 +66,10 @@
     right: 10mm;
     top: 10mm;
     bottom: 10mm;
+  }
+  .vhpage .content {
+    position: static;
+    height: auto;
   }
   .expl {/*kleine erläuternde Texte*/
     font-size: 9pt;
@@ -116,7 +134,7 @@
     }
   }
   @media screen {
-    .page {
+    .page, .vhpage {
       background-color: #efefff;
       border: solid 1px;
     }
@@ -324,7 +342,7 @@
   }
   
   .spkind {
-    width: 2.5cm;
+    width: 3cm;
     text-align: left;
   }
   
@@ -334,7 +352,7 @@
   }
   
   .sptel {
-    width: 3cm;
+    width: 4cm;
     text-align: left;
   }
   
@@ -836,7 +854,7 @@
 </script>
 </head>
 <body onload="ol()">
-<div class="page anleitung" id="anl">
+<div class="vhpage anleitung" id="anl">
   <div class="content">
     <h2>Anleitung</h2>
     <p class="haupttext">
@@ -905,12 +923,12 @@
     
     <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
-      <li> 2020-2021 Frank Fuhlbrück
+      <li> 2020-2022 Frank Fuhlbrück</li>
     </ul>
     
     <h2>Inhaltliche Autor*innen (Texte)</h2>
     <ul>
-      <li> 2021 Frank Fuhlbrück
+      <li> 2021-2022 Frank Fuhlbrück</li>
     </ul>
     
     <h2>Haftungsausschluss</h2>
@@ -950,6 +968,11 @@
       wählt man <i>Teilen</i> und dann <i>Drucker</i>
       (auch für PDF-Export).
     </p>
+    
+    <h2>Änderungen:</h2>
+    <ul>
+      <li> Juli 2022: Querformat und kleine Textänderungen</li>
+    </ul>
   </div>
 </div>  
 <div class="page doprint" id="kontakt">
@@ -994,20 +1017,21 @@
       in die Mailingliste zugestimmt, so wird die Mailadresse auf dem
       Mailinglistenserver gespeichert. Mails an die Mailingliste
       werden über diesen so versendet, dass die Empfangsadressen
-      nicht für die anderen sichtbar sind, die Absendeadresse
+      <strong>nicht für die anderen sichtbar sind</strong>, die Absendeadresse
       ist hingegen sichtbar.
     </p>
     <h2>4. Dauer der Speicherung</h2>
     <p class="haupttext">
-      Die Daten werden höchstens für die Dauer des Besuchs der Klasse
-      durch das eigene Kind gespeichert und jederzeit auf Wunsch
-      gelöscht. Jährlich erfolgt eine Erinnerung, ob Wunsch auf Löschung
+      Die Daten werden höchstens bis zum Ende des Schuljahres gespeichert,
+      in denen das eigene Kind die Klasse besucht und jederzeit auf Wunsch
+      gelöscht. Jährlich erfolgt eine Erinnerung mit der Einladung zur
+      ersten Elternversammlung, ob Wunsch auf Löschung
       besteht.
     </p>
     
     <h2>Optionen</h2>
     <ol class="haupttext">
-      <li>Aufnahme in Mailingliste</li>
+      <li><strong>Keine</strong> Aufnahme in Mailingliste</li>
       <li>Weitergabe der Mailadresse an Eltern auf der Mailingliste</li>
       <li>Weitergabe der Telefonnummer an Eltern auf der Mailingliste</li>
     </ol> 
@@ -1024,78 +1048,6 @@
         <th class="sp3o">3</th>
       </tr></thead>
       <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
         <tr>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
@@ -1209,96 +1161,6 @@
         <th class="sp3o">3</th>
       </tr></thead>
       <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-          <td><input type="checkbox" class="ipcb"/><a></a></td>
-        </tr>
         <tr>
           <td><input class="iptab"/></td>
           <td><input class="iptab"/></td>
