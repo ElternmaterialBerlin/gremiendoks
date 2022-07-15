@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>
+  Gremien-Protokoll
+</title>
+<meta charset="UTF-8"/>
+<meta name="description"
+  content="Mailadresse, Telefon etc. sammeln und Eltern über deren Verwendung informieren"/>
+<meta name=”robots” content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style type="text/css">
+  :root {
+    --sitzung: "x.x.xxxx";
+    --npages: "";
+  }
+  
+  body {
+    position: absolute;
+    height:100%;
+    width:100%;
+    box-sizing: border-box;
+    padding: 0cm;
+    margin: 0mm;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    /*Verhindert Abstände zwischen Seiten:*/
+    line-height: 0pt;
+    font-size: 0pt;
+    counter-reset: pn; 
+  }
+  .page {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    margin: 0mm;
+    padding: 0mm;
+    width: 210mm;
+    height: 296.6mm;
+    /*Normale Werte:*/
+    font-size: 11pt;
+    /*Das macht nicht alles konsistent, siehe
+      https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
+    line-height: 1.1;
+  }
+  .vhpage {/*variable Höhe*/
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    margin: 0mm;
+    padding: 10mm;
+    width: 210mm;
+    /*Normale Werte:*/
+    font-size: 11pt;
+    /*Das macht nicht alles konsistent, siehe
+      https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
+    line-height: 1.1;
+  }
+
+  .content {
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    left: 10mm;
+    right: 10mm;
+    top: 10mm;
+    bottom: 10mm;
+  }
+  .vhpage .content {
+    position: static;
+    height: auto;
+  }
+  .expl {/*kleine erläuternde Texte*/
+    font-size: 9pt;
+  }
+  .footerl {
+    font-size: 8pt;
+    position: absolute;
+    bottom: 5mm;
+    height: 10mm;
+    left: 10mm;
+  }
+  .footerr {
+    font-size: 8pt;
+    position: absolute;
+    bottom: 5mm;
+    height: 10mm;
+    right: 10mm;
+  }
+  .doprint .pn::after {
+    counter-increment: pn;
+    content: counter(pn);
+  }
+  .np::after {
+    content: var(--npages);
+  }
+  .sz::after {
+    content: var(--sitzung);
+  }
+  
+  @media print {
+    @page {
+      size: auto;
+      margin: 0mm;
+    }
+    .page {
+      /*nur für Debugging:*/
+/*       background-color: #efefff;
+       border: solid 1px; */
+      /*Ende Debugging*/
+      
+/*       break-after: page; */
+      break-inside: avoid-page;
+    }
+    .guiheader, .guiheader_proto, .guiheader_top {
+      display: none;
+    }
+    .noprint {
+      display: none;
+    }
+    .anleitung {
+      display: none;
+    }
+    
+    select {
+      appearance: none;
+      border-bottom: 1px solid;
+    }
+    
+    a:link {
+      text-decoration: inherit;
+      color: inherit;
+    }
+  }
+  @media screen {
+    .page, .vhpage {
+      background-color: #efefff;
+      border: solid 1px;
+    }
+    .content {
+  /*     border: dashed; */
+      background-color: white;
+    }
+    .guiheader {
+      font-size: 8pt;
+      position: absolute;
+      top: 0mm;
+      height: 10mm;
+      padding-left: 2mm;
+      padding-right: 2mm;
+      right: 0mm;
+      text-align: center;
+      background-color: #b0ff80;
+    }
+    .guiheader_edit {
+      left: 0mm;
+      right: auto;
+    }
+    .guiheader_proto {
+      display: block;
+      position: fixed;
+      font-size: 14pt;
+      border: 4px groove #bebebe;
+      left: 60%;
+      top: 40mm;
+      height: auto;
+      padding: 5px;
+      background-color: #bebebe;
+      line-height: 1.1;
+    }
+    .guiheader_top {
+      display: inline-block;
+      padding-left: 3px;
+      padding-right: 3px;
+      text-align: center;
+      background-color: #b0ff80;
+    }
+    #guiheader_proto_grab {
+      cursor: move;
+      display: block;
+    }
+    #guiheader_proto_grab hr {
+      margin: 5px;
+      margin-top: -4px;
+      margin-left: -4px;
+      width: 100%;
+    }
+    .guielement {
+      cursor: pointer;
+      color: red;
+      font-size:25pt;
+      margin-left: 1mm;
+    }
+    .guiheader_top .guielement {
+      font-size: inherit;
+      margin-left: 2px;
+    }
+    .guielement_proto {
+      display: inline-block;
+      padding: 2px;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+      font-size:14pt;
+/*       height: 90%; */
+      box-sizing: border-box;
+      vertical-align: top;
+      text-align: left;
+      max-width: 15mm;
+/*       width: 15mm; */
+      margin-top: 1mm;
+      margin-right: 1mm;
+      background-color: white;
+    }
+    .cloneable .morepages::after {
+      content: "+";
+    }
+    .noprint .morepages::after {
+      content: "+";
+    }
+    .doprint .lesspages::after {
+      content: "x";
+    }
+    .noprint .lesspages::after {
+      content: "";
+    }
+    
+    .guielement_small {
+      display: inline-block;
+      max-width: 18mm;
+      cursor: pointer;
+      color: red;
+      margin-left: 1mm;
+      margin-top: 1mm;
+    }
+    
+    .noprint {
+      filter: contrast(50%);
+    }
+  }
+  
+  h1 {/*Hauptüberschrift*/
+    text-align: center;
+    font-size: 21pt;
+    margin-top: 5mm;
+    margin-bottom: 0.5mm;
+  }
+  
+  .subhead {/*Untertitel*/
+    text-align: center;
+    font-size: 8pt;
+    margin-top: 0pt;
+    margin-bottom: 2mm;
+  }
+  
+  h2 {/*kleine Zwischenüberschrift*/
+    text-align: left;
+    font-weight: bold;
+    font-size: 11pt;
+    margin-top: 2mm;
+    margin-bottom: 0pt;
+  }
+  
+  h3 {/*größere Zwischenüberschrift*/
+    text-align: left;
+    font-weight: bold;
+    font-size: 14pt;
+    margin-top: 0pt;
+    margin-bottom: 2mm;
+  }
+  
+  h4 {/*gleichrangig und zugehörig zu h5, idR davor*/
+    text-align: left;
+    font-weight: normal;
+    font-size: 11pt;
+    margin-top: 4mm;
+    margin-bottom: 2mm;
+    text-decoration: underline;
+    text-decoration-thickness: 0.5pt;
+    text-underline-offset: 1pt;
+  }
+  
+  h5 {/*gleichrangig und zugehörig zu h4, idR danach*/
+    text-align: left;
+    font-weight: bold;
+    font-size: 11pt;
+    margin-top: 4mm;
+    margin-bottom: 2mm;
+    background-color: #808080;
+    color: white;
+    display: inline-block;
+  }
+  
+  p {
+    padding: 0mm;
+    margin: 0mm;
+    margin-top: 3mm;
+    margin-bottom: 3mm;
+  }
+  
+  .erlaeuterung {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 0pt;
+    text-align: justify;
+    font-size: 8pt;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  
+  ul, ol {
+    margin-top: 2mm;
+    padding-top: 0pt;
+    margin-bottom: 2mm;
+    padding-bottom: 0pt;
+  }
+  
+  .haupttext {
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 0pt;
+    text-align: justify;
+    font-size: 11pt;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  
+  td, th {
+    margin: 0mm;
+    padding: 1pt;
+  }
+  
+  .tabellebreit {
+    box-sizing: border-box;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tabellebreit th {
+    box-sizing: content-box;
+    border: 1pt solid;
+    height: 4.7mm;
+    font-size: 11pt;
+    font-weight: normal;
+  }
+  .tabellebreit td {
+    box-sizing: content-box;
+    border: 1pt solid;
+    height: 7mm;
+  }
+  
+  .doppelzeilen td {
+    height: 14mm;
+    vertical-align: top;
+  }
+  
+  .wahlerg {
+    background-color: #d9d9d9;
+/*     margin-bottom: 4mm; */
+  }
+  .wahlerg .iptab {
+    background-color: #d9d9d9;
+  }
+  
+  .tabelleohnerahmen {
+    width: 100%;
+    padding: 0px;
+    border-spacing: 0pt;
+  }
+  
+  .iptab {
+    border: none;
+    height: 100%;
+    margin: 0pt;
+    box-sizing: border-box;
+    width: 100%;
+    resize: none;
+  }
+  
+  .ipcb {
+    margin: 0pt;
+    border: none;
+    padding: 0pt;
+    width: 100%;
+    filter: opacity(0%);
+    margin-right: -70%;
+  }
+  
+  .ipcb:checked ~ a::after{
+    font-size: 100%;
+    content: "X";
+    pointer-events: none;
+  }
+  
+  .spkind {
+    width: 3cm;
+    text-align: left;
+  }
+  
+  .spnamen {
+    width: 4cm;
+    text-align: left;
+  }
+  
+  .sptel {
+    width: 4cm;
+    text-align: left;
+  }
+  
+  .spmail {
+/*     width: 5cm; */
+    text-align: left;
+  }
+  
+  .sp1o, .sp2o, .sp3o {
+    width: 4mm;
+  }
+  
+  input {
+    font: inherit;
+    border: none;
+    border-bottom: 1pt solid;
+    padding: 1pt;
+    margin: 0pt;
+  }
+  
+  label {
+/*     font-size: 11pt; */
+    padding: 0pt;
+    margin-left: 0pt;
+  }
+  
+  select {
+    font: inherit;
+    border: none;
+    border-bottom: 1px solid;
+    background-color: inherit;
+    padding: 0pt;
+    margin: 0pt;
+  }
+  
+  #gremz {
+    padding: 0pt;
+    margin-left: 0pt;
+  }
+  
+  #gremium {
+    width: 6cm;
+  }
+  
+  #sitzung {
+    width: 2cm;
+  }
+  
+  #datumz {
+    text-align: right;
+  }
+  
+  #anwesend {
+    width: 1.2cm;
+  }
+  
+  #wahlleitung {
+    width: 15cm;
+  }
+  
+  .anz  {
+    width: 1.2cm;
+  }
+  
+  .wahltyp  {
+    width: 4cm;
+  }
+</style>
+<script>
+  "use strict";
+  const storage = window.localStorage;
+  var sitzung = (new Date()).toDateString();
+  const url = window.location.pathname;
+  const selffn = url.substring(url.lastIndexOf("/")+1);
+  const editPrefix = "..edit.";
+  const fieldPrefix = "..data.";
+  const objStore = {};
+  const getItem = function(id,prefix){
+    prefix = prefix ? prefix : "";
+    prefix = selffn+"_"+prefix;
+    const val = storage.getItem(prefix+id);
+    if(val){
+      objStore[prefix] = objStore[prefix] ? objStore[prefix] : {};
+      objStore[prefix][id] = val;
+    }
+    return val;
+  };
+  const setItem = function(id,val,prefix){
+    prefix = prefix ? prefix : "";
+    prefix = selffn+"_"+prefix;
+    objStore[prefix] = objStore[prefix] ? objStore[prefix] : {};
+    objStore[prefix][id] = val;
+    return storage.setItem(prefix+id,val);
+  };
+  const removeItem = function(id,prefix){
+    prefix = prefix ? prefix : "";
+    prefix = selffn+"_"+prefix;
+    objStore[prefix] = objStore[prefix] ? objStore[prefix] : {};
+    delete objStore[prefix][id];
+    return storage.removeItem(prefix+id);
+  };
+  
+  const download = function(fn,text) {
+    const el = document.createElement("a");
+    el.setAttribute("href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(text));
+    el.setAttribute("download", fn);
+    el.style.display = "none";
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
+  };
+  
+  const upload = function(cb) {
+    const fr = new FileReader();
+    fr.onload= function(){
+      cb(fr.result);
+    };
+    const el = document.createElement("input");
+    el.setAttribute("type","file");
+    el.onchange = function(){
+      fr.readAsText(this.files[0],'UTF-8');
+    }
+    el.style.display = "none";
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
+  };
+  
+  const dlSelf = function(){
+    if (hasClones()){
+      warnClones();
+      //Kein return, damit Änderungen dennoch gesichert werden können.
+    }
+    download(selffn,"<!DOCTYPE html>\n<html lang=\"de\">\n"+
+      document.documentElement.innerHTML+"\n</html>"
+    );
+  };
+  
+  const exportObjStore = function(fn,prefix){
+    const obj = prefix ? objStore[selffn+"_"+prefix] : objStore;
+    download(fn,JSON.stringify(obj));
+  };
+  
+  const importJsonToStores = function(js,prefix){
+  var obj;
+    try {
+      obj = JSON.parse(js);
+      if (!obj || !typeof(obj) == "object"){
+        throw "Invalid import.";
+      }
+    } catch (e) {
+      alert("Import fehlgeschlagen, kein korrektes JSON-Objekt.")
+      return;
+    }
+    for(const id in obj){
+      setItem(id,obj[id],prefix);
+    }
+  };
+  
+  const saveField = function(fld){
+    fld = fld instanceof HTMLElement ? fld : this;
+    if (fld.id && fld.id != ""){
+      switch(fld.type){
+        case "checkbox":
+          setItem(fld.id,fld.checked?"on":"off",fieldPrefix);
+          break;
+        default:
+          setItem(fld.id,fld.value,fieldPrefix);
+      }
+    }
+  };
+  
+  const loadField = function(fld){
+    fld = fld instanceof HTMLElement ? fld : this;
+    const stored = getItem(fld.id,fieldPrefix)
+    if (stored){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = (stored == "on");
+          break;
+        default:
+          fld.value = stored;
+      }
+    }
+  };
+  
+  const deleteSavedField = function(fld){
+    if (fld.id && fld.id != ""){
+      removeItem(fld.id,fieldPrefix);
+    }
+  };
+
+  const saveElement = function(el){
+    if (!el.id || el.id == ""){
+      return;
+    }
+    
+    if (el.id.substr(0,3) == "top") {
+      el = document.getElementById("tops");
+    };
+    
+    setItem(el.id,el.innerHTML,editPrefix);
+  };
+  
+  const loadElement = function(el){
+    if (el.id && el.id != ""){
+      const stored = getItem(el.id,editPrefix);
+      if (stored){
+        el.innerHTML = stored;
+      }
+    }
+  };
+  
+  const deleteSavedElement = function(el){
+    if (el.id && el.id != ""){
+      removeItem(el.id,editPrefix);
+    }
+  };
+  
+  const clearFields = function(){
+    const flds  = document.querySelectorAll("input,select,textarea");
+    for(const fld of flds){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = false;
+          break;
+        default:
+          fld.value = fld.defaultValue;
+      }
+      deleteSavedField(fld);
+    }
+    location.reload();
+  };
+  
+  const exportFields = function(){
+    exportObjStore(selffn+"_daten.json",fieldPrefix);
+  };
+  
+  const importFields = function(){
+    upload(function(js){
+      importJsonToStores(js,fieldPrefix);
+      location.reload();
+    });
+  };
+  
+  var allowEdits = false;
+  const edicls = ["top_titel","top_content"];
+  const editags = ["H1","H2"];
+  
+  const flipEdit = function(){
+    if(hasClones()){
+      warnClones();
+      return;
+    }
+    allowEdits = !allowEdits;
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(let i=0;i<cl.length;++i) {
+        cl[i].contentEditable = allowEdits;
+      }
+    }
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(let i=0;i<tl.length;++i) {
+        tl[i].contentEditable = allowEdits;
+      }
+    }
+  };
+  
+  const loadEdits = function(){
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(let i=0;i<cl.length;++i) {
+        const el = cl[i];
+        el.id = c+"_"+i;
+        loadElement(el);
+      }
+    }
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(let i=0;i<tl.length;++i) {
+        const el = tl[i];
+        el.id = t+"_"+i;
+        loadElement(el);
+      }
+    }
+  };
+  
+  const revertEdits = function(){
+    for (const c of edicls) {
+      const cl = document.getElementsByClassName(c);
+      for(let i=0;i<cl.length;++i) {
+        const el = cl[i];
+        el.id = c+"_"+i;
+        deleteSavedElement(el);
+      }
+    }
+    for (const t of editags) {
+      const tl = document.getElementsByTagName(t);
+      for(let i=0;i<tl.length;++i) {
+        const el = tl[i];
+        el.id = t+"_"+i;
+        deleteSavedElement(el);
+      }
+    }
+    deleteSavedElement(document.getElementById("tops"));
+    location.reload();
+  };
+  
+  var observer;
+  var npages;
+  var npagesChanged = function(){};
+  var nclones;
+  try {
+    nclones = JSON.parse(getItem("..nclones"));
+    if (!nclones || !typeof(nclones) == "object"){
+      throw "No nclones saved.";
+    }
+  } catch (e) {
+    nclones = {};
+  }
+  
+  
+  const elDragable = function(el,eld){
+    eld = eld || el;
+    var lastX,lastY,shiftX,shiftY;
+
+    const startDrag = function(e){
+      //markieren etc. verhindern
+      e.preventDefault();
+      e.stopPropagation();
+      lastX = e.clientX;
+      lastY = e.clientY;
+      document.onmouseup = stopDrag;
+      document.onmousemove = doDrag;
+    };
+
+    const doDrag = function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      shiftX = lastX - e.clientX;
+      shiftY = lastY - e.clientY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      el.style.top = (el.offsetTop - shiftY) + "px";
+      el.style.left = (el.offsetLeft - shiftX) + "px";
+    };
+
+    const stopDrag = function() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    };
+    
+    eld.onmousedown = startDrag;
+  };
+  
+  const ol = function(){
+    "use strict";
+    
+    elDragable(document.getElementById("guiheader_proto"),
+      document.getElementById("guiheader_proto_grab"));
+    const flds  = document.querySelectorAll("input,select,textarea");
+    const usedids = {};
+    for(const fld of flds){
+      if (!fld.id || fld.id == ""){
+        var par = fld.parentNode
+        var gp = par.parentNode
+        const colNr = Array.prototype.indexOf.call(gp.children,par)
+        par = gp;
+        gp = par.parentNode;
+        const tab = gp.parentNode;
+        const rowNr = Array.prototype.indexOf.call(gp.children,par);
+        const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
+        fld.id = tab.id+"_"+colid+rowNr;
+        
+        /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
+          copy and paste vermeiden.*/
+        if (usedids[fld.id]){
+          alert("Programmierfehler: id \"" + fld.id
+            + "\" mehrfach vergeben!")
+        } else {
+          usedids[fld.id] = true;
+        }
+      }
+      loadField(fld);
+      fld.oninput = saveField;
+    }
+    
+    observer = new MutationObserver(function(mutationsList,observer){
+      for(const mutation of mutationsList) {
+        const el = mutation.target.parentElement;
+        alert(el.id);
+        saveElement(el);
+      }
+    });
+    observer.observe(document,{characterData:true,subtree:true});
+    loadEdits();
+    loadElement(tops);
+    
+    for (const pageid in nclones){
+      const ncl = nclones[pageid];
+      let page = document.getElementById(pageid);
+      for (let i=2; i<=ncl; ++i){
+        page = clonePage(page);
+      }
+      if (ncl == 0){
+        page.ncopy = 0;
+        nclones[page.id] = 0;
+        page.classList.add("noprint");
+        page.classList.remove("doprint");
+      }
+    }
+    
+    npages = document.getElementsByClassName("doprint").length;
+    document.documentElement.style.setProperty("--sitzung","'"+sitzung+"'");
+    document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
+    npagesChanged();
+    
+    flipEdit();
+  };
+  
+  const removeClonedPage = function(page){
+    page.parentNode.removeChild(page);
+    const idsuffix = page.ncopy > 2 ? "_"+(page.ncopy-1): "";
+    const lastclone = document.getElementById(page.baseid+idsuffix);
+    lastclone.getElementsByClassName("guiheader")[0].style.display
+      = "";//auf CSS-Wert zurücksetzen
+    //wichtig ist hier nicht auf "initial" zu setzen, das würde auch
+    //den @print-Stil überschreiben
+    nclones[page.baseid] = lastclone.ncopy;
+    setItem("..nclones",JSON.stringify(nclones));
+  };
+  
+  const hidePagePrint = function(x){
+    const page = x.parentNode.parentNode;
+    if (page.ncopy && page.ncopy > 1){
+      const conf = confirm("Wollen Sie die Seite löschen? " +
+        "Sie wird nicht lediglich versteckt, sondern entfernt.");
+      if (!conf){
+        return;
+      }
+    }
+    if (page.className.indexOf("noprint") == -1){
+      npages -= 1;
+      document.documentElement.style.setProperty("--npages",
+        "'/ "+npages+"'");
+      npagesChanged();
+    }
+    if (page.ncopy && page.ncopy > 1){
+      removeClonedPage(page);
+    } else {
+      page.ncopy = 0;
+      nclones[page.id] = 0;
+      setItem("..nclones",JSON.stringify(nclones));
+      page.classList.add("noprint");
+      page.classList.remove("doprint");
+    }
+  };
+  
+  const clonePage = function(page){
+    const pagecl = page.cloneNode(true);
+    page.parentNode.insertBefore(pagecl,page.nextSibling);
+    npages += 1;
+    npagesChanged();
+    document.documentElement.style.setProperty("--npages",
+      "'/ "+npages+"'");
+    page.ncopy = page.ncopy ? page.ncopy:1;
+    page.baseid = page.baseid ? page.baseid : page.id;
+    pagecl.ncopy = page.ncopy + 1;
+    pagecl.baseid = page.baseid;
+    nclones[page.baseid] = pagecl.ncopy;
+    setItem("..nclones",JSON.stringify(nclones));
+    pagecl.id = page.baseid + "_" + pagecl.ncopy;
+    page.getElementsByClassName("guiheader")[0].style.display = "none";
+    const desc = pagecl.querySelectorAll("*");
+    for(const el of desc){
+      if(el.id){
+        el.baseid = el.baseid ? el.baseid : el.id;
+        el.id = pagecl.id + "_" + el.baseid;
+      }
+    }
+    const fdesc  = pagecl.querySelectorAll("input,select,textarea");
+    for(const fld of fdesc){
+      switch(fld.type){
+        case "checkbox":
+          fld.checked = false;
+          break;
+        default:
+          fld.value = fld.defaultValue;
+      }
+      fld.oninput = saveField;
+      loadField(fld);
+    }
+    return pagecl;
+  };
+  
+  const hasClones = function(){
+    for (const ncl of Object.values(nclones)){
+      if (ncl > 1){
+        return true;
+      }
+    }
+    return false;
+  };
+  
+  const warnClones = function(){
+      alert("Eine modifizierte Version des Dokuments sollte nicht " +
+      "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
+      "Bitte löschen Sie zunächst die Daten oder entfernen Sie " +
+      "alle vervielfältigten Seiten.");
+  };
+  
+  const warnEdit = function(){
+      alert("Eine modifizierte Version des Dokuments sollte nicht " +
+      "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
+      "Bitte speichern Sie Ihre modifizierte Version und stellen " +
+      "das Editieren ab, bevor Sie Seiten vervielfältigen.");
+  };
+  
+  
+  const showPagePrint = function(plus){
+    const page = plus.parentNode.parentNode;
+    if (page.className.indexOf("noprint") == -1){
+      if (page.className.indexOf("cloneable") == -1){
+        alert("Diese Seite kann nicht vervielfältigt werden.");
+      } else {
+        if (allowEdits){
+          warnEdit();
+          return;
+        }
+        clonePage(page);
+      }
+    } else {
+      page.classList.add("doprint");
+      page.classList.remove("noprint");
+      page.ncopy = 1;
+      nclones[page.id] = 1;
+      setItem("..nclones",JSON.stringify(nclones));
+      npages += 1;
+      npagesChanged();
+      document.documentElement.style.setProperty("--npages",
+        "'/ "+npages+"'");
+    };
+  };
+  
+  
+  const addTOP = function(){
+    const tops = document.getElementById("tops");
+    const top = document.getElementById("top_prototyp").cloneNode(true);
+    const ntops = document.getElementsByClassName("top_content").length;
+    top.id = "top"+ntops;
+    const topc = top.querySelector(".top_content");
+    topc.id = "top_content_"+ntops;
+    const topt = top.querySelector(".top_titel");
+    topt.id = "top_titel_"+ntops;
+    topt.innerHTML = topt.innerHTML.replace("X",ntops);
+    tops.insertBefore(top,null);
+    top.style.display = "block";
+    saveElement(tops);
+  };
+  
+  const removeTOP = function(x){
+    const top = x.parentNode.parentNode.parentNode;
+    top.parentNode.removeChild(top);
+    saveElement(tops);
+  };
+  
+  /*Wir benutzen die veraltete execCommand()-API in eigenen Funktionen
+  sodass sie sich schrittweise modernisieren lässt, *wenn* eine
+  Nachfolge-API existiert.
+  */
+  const selBold = function(){
+    const e = window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    document.execCommand("bold");
+  };
+  
+  const selItalic = function(){
+    const e = window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    document.execCommand("italic");
+  };
+  
+  const selUnderl = function(){
+    const e = window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    document.execCommand("underline");
+  };
+  
+  const selStrike = function(){
+    const e = window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    document.execCommand("strikeThrough");
+  };
+  
+  const selCol = function(col){
+    document.execCommand("foreColor",false,col);
+  };
+  
+</script>
+</head>
+<body onload="ol()">
+<div class="vhpage anleitung" id="anl">
+  <div class="content">
+    <h2>Anleitung</h2>
+    <p class="haupttext">
+      TODO
+    </p>
+    
+    <h2>Datenschutz</h2>
+    <p class="haupttext">
+      Diese Seite verwendet den localStorage der
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">
+      Web Storage API</a>. Das bedeutet, dass die alle Änderungen automatisch
+      von Ihrem Browser gespeichert werden und auch nach einem
+      Browserneustart verfügbar sind. Das Formular arbeitet komplett
+      offline, es werden keine Felddaten an Server gesendet.
+      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und 
+      löschen Sie die Dateien am Ende (z.B. nach Druck in Datei).</b>
+    </p>
+    
+    <h2>Weitergabe</h2>
+    <p class="haupttext">
+      Dieses Werk ist lizenziert unter der Lizenz
+      <a rel="license"
+        href="http://creativecommons.org/licenses/by-sa/4.0/">
+        Creative Commons Namensnennung - Weitergabe unter gleichen
+        Bedingungen 4.0</a>
+      (bekannt als CC-BY-SA 4.0).
+      Zusätzlich ist es gestattet, unter Nutzung dieses Dokuments eine
+      PDF-Version oder einen Ausdruck des ganzen Protokolls oder eines
+      Teils (insbesondere ohne Anleitungsseite) zu erstellen und
+      ohne Namensnennung zu verbreiten und zu archivieren. Wenn Sie nur
+      die GUI dieses Dokuments übernehmen und z.B. ein Dokument zu einem
+      anderen Zweck erstellen, genügt es die technischen Autor*innen
+      dieses Dokuments aufzulisten.
+    </p>
+    
+    <p class="haupttext">
+      Die jeweils aktuelle Version finden Sie unter:<br/>
+      <a href="https://elternmaterialberlin.github.io/gremiendoks/allgemein/protokoll.html">
+        https://elternmaterialberlin.github.io/gremiendoks/allgemein/protokoll.html</a><br/>
+      als Teil der Materialsammlung:<br/>
+      <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
+        https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
+      
+      Dort finden Sie auch weitere
+      Dokumente zur Elternarbeit und können eine verbesserte Version
+      dieses Dokuments einsenden.
+    </p>
+    
+    <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
+    <ul>
+      <li> 2020-2022 Frank Fuhlbrück</li>
+    </ul>
+    
+    <h2>Inhaltliche Autor*innen (Texte)</h2>
+    <ul>
+      <li> 2022 Frank Fuhlbrück</li>
+    </ul>
+    
+    <h2>Haftungsausschluss</h2>
+    <p class="haupttext">
+      Die Autor*innen sind in der Mehrheit aktive Eltern ohne
+      juristische Ausbildung. Entsprechend kann für die korrekte
+      Auslegung von Gesetzen (Schulgesetz, DSGVO, etc.) keine Garantie
+      gegeben werden. Falls Sie Fehler oder Unklarheiten feststellen,
+      bitten wir Sie die zuletzt aktiven Autor*innen zu kontaktieren.
+      keine Gewähr bei Datenverlust, sichern/drucken Sie regelmäßig.
+    </p>
+    
+    <h2>Warum HTML?</h2>
+    <p class="haupttext">
+      Zum Zeitpunkt der ersten Erstellung (2020-2021) ist die
+      Druckdarstellung über die drei wichtigsten Desktopbrowser hinweg
+      relativ konsistent. Die gewählte Implementierung erlaubt zudem
+      das Anpassen von Teilen des Dokuments ohne HTML-Kenntnisse.
+      Da die korrekte Verarbeitung von Stilen
+      in Office-Dokumenten über Anwendungen (und Anwender*innen) hinweg
+      immer wieder problematisch ist, wurde bewusst kein OOXML (.docx)
+      oder OpenDocument (.odt) eingesetzt. TeX würde zwar
+      konsistentere Druckdarstellung und bessere Langzeitnutzbarkeit
+      desselben Dokuments erlauben, ist aber für die Elternarbeit
+      zu wenig verbreitet und schließt daher viele Mitarbeitende aus.
+    </p>
+    
+    <h2>Drucktipps</h2>
+    <p class="haupttext">
+      Kopf- und Fußzeilen des Browsers müssen ausgestellt und
+      das Drucken von Hintergrundfarben erlaubt werden. Zudem sollten
+      keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
+      auf die Seite passt.
+      Falls Sie eine zusätzliche leere Seite in der Druckvorschau
+      bekommen (beobachtet in Safari), stellen Sie die Skalierung auf
+      99% oder weniger ein. Unter Android kann man direkt aus
+      Firefox seit Version 69 keine PDFs mehr erstellen, mit Chrome
+      wählt man <i>Teilen</i> und dann <i>Drucker</i>
+      (auch für PDF-Export).
+    </p>
+    
+    <h2>Änderungen:</h2>
+    <ul>
+      <li> Juli 2022: erste Version, unvollständig</li>
+    </ul>
+  </div>
+</div>  
+<div class="vhpage doprint" id="proto">
+  <div class="content">
+    <h1>Gremien-Protokolle im Browser (nicht benutzen, unfertig)
+    </h1>
+    
+    <table class="tabelleohnerahmen">
+      <tr>
+        <td id="gremz"><!--
+          --><label for="gremium">Gremium:</label>
+          <input type="text" id="gremium" name="gremium" value="" />
+        </td>
+        <td id="sitzungz"><!--
+          --><label for="sitzung">Sitzung:</label>
+          <input type="text" id="sitzung" name="sitzung" value="" />
+        </td>
+        <td id="datumz">
+          <label for="datum">Datum:</label>
+          <input type="text" id="datum" name="datum" value="" />
+        </td>
+      </tr>
+    </table>
+
+    <h2>Anwesende</h2>
+    <p>Klasse</p>
+    
+    <h2>Verlauf</h2>
+    <div id="top_prototyp" style="display:none;">
+      <h3 class="top_titel">TOP X: TOP-Titel
+      <div class="guiheader_top">
+        <a class="guielement" 
+          onclick="removeTOP(this);">x</a>
+        <a class="guielement" 
+          onclick="moveUpTOP(this);">▲</a>
+        <a class="guielement" 
+          onclick="moveDownTOP(this);">▼</a>
+      </div></h3>
+      <div class="top_content">
+        <ul>
+          <li>Inhalt</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div id="tops">
+    </div>
+    
+    
+    <br/><br/><br/><br/><br/>
+    
+  </div>
+  <div class="footerl">
+    Protokoll <a class="sz"></a><br/>
+  </div>
+  <div class="footerr">
+    Seite <a class="pn"></a>   <a class="np"></a>
+  </div>
+<!-- GUI-Header erste Seite -->
+  <div class="guiheader guiheader_edit">
+    <a class="guielement_small" 
+      onclick="flipEdit();">Editieren an/aus</a>
+    <a class="guielement_small" 
+      onclick="dlSelf();">Dokument speichern</a>
+    <a class="guielement_small" 
+      onclick="revertEdits();">Änderungen verwerfen</a>
+  </div>
+  <div class="guiheader">
+    <a class="guielement_small" 
+      onclick="clearFields();">Daten löschen</a>
+    <a class="guielement_small" 
+      onclick="exportFields();">Daten exportieren</a>
+    <a class="guielement_small" 
+      onclick="importFields();">Daten importieren</a>
+  </div>
+<!-- ENDE GUI-Header erste Seite -->
+</div>
+
+
+  <div class="guiheader_proto" id="guiheader_proto">
+    <div id="guiheader_proto_grab">
+    <hr />
+    <hr />
+    </div>
+    <a class="guielement_proto" 
+      onmousedown="addTOP();">TOP</a>
+    <a class="guielement_proto" 
+      onclick="">Liste</a>
+    <a class="guielement_proto" 
+      onclick="">Antr.</a>
+    <a class="guielement_proto" 
+      onclick="">Abst.</a>
+    <br/>
+    <a class="guielement_proto" 
+      onmousedown="selBold();" style="font-weight: 1000;">F</a>
+    <a class="guielement_proto" 
+      onmousedown="selItalic();" style="font-style: italic;">K</a>
+    <a class="guielement_proto" 
+      onmousedown="selUnderl();" style="text-decoration: underline;">U</a>
+    <a class="guielement_proto" 
+      onmousedown="selStrike();" style="text-decoration: line-through;">D</a>
+    <input class="guielement_proto" style="width:8mm;"
+      name="textcolor" id="textcolor" type="color" value="#000000"
+      onchange="selCol(this.value)" onmousedown="selCol(this.value)">
+  </div>
+  
+  <script>
+
+</script>
+
+</body></html>
