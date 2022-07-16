@@ -649,7 +649,7 @@
   };
   
   var allowEdits = false;
-  const edicls = ["top_titel","top_content"];
+  const edicls = ["top_content","top_titel_text"];
   const editags = ["H1","H2"];
   
   const flipEdit = function(){
@@ -759,6 +759,8 @@
     eld.onmousedown = startDrag;
   };
   
+  let tops;
+  
   const ol = function(){
     "use strict";
     
@@ -794,12 +796,13 @@
     observer = new MutationObserver(function(mutationsList,observer){
       for(const mutation of mutationsList) {
         const el = mutation.target.parentElement;
-        alert(el.id);
         saveElement(el);
       }
     });
     observer.observe(document,{characterData:true,subtree:true});
     loadEdits();
+    
+    tops = document.getElementById("tops");
     loadElement(tops);
     
     for (const pageid in nclones){
@@ -948,25 +951,72 @@
     };
   };
   
+  const renumberTOPs = function(){
+    const toplist = tops.querySelectorAll(".top");
+    var i = 0;
+    for (const top of toplist){
+      i++;
+      top.topnum = i;
+      top.id = "top_" +i;
+      const topc = top.querySelector(".top_content");
+      topc.id = "top_content_"+i;
+      const topt = top.querySelector(".top_titel");
+      topt.id = "top_titel_"+i;
+      top.querySelector(".top_nr").innerHTML = i;
+    }
+  };
+  
+  //geht vom selection anchor zum nächsthöheren Element und nutzt
+  //closest(s) -> sucht nächsthöheres El., das
+  //Selector s entspricht
+  const getClosestSel = function(s){
+    let el = document.getSelection().anchorNode;
+    while(el && !el.closest){
+      el = el.parentNode;
+    }
+    el = el && (el.closest || null) && el.closest(s);
+    return el;
+  };
   
   const addTOP = function(){
-    const tops = document.getElementById("tops");
+    let pos = getClosestSel(".top");
+    pos = pos && pos.nextElementSibling;
+    //pos ist nun der TOP nach dem aktuell markierten
+    //bzw. null, wenn nichts oder etwas im letzten markiert ist
+
     const top = document.getElementById("top_prototyp").cloneNode(true);
-    const ntops = document.getElementsByClassName("top_content").length;
-    top.id = "top"+ntops;
-    const topc = top.querySelector(".top_content");
-    topc.id = "top_content_"+ntops;
-    const topt = top.querySelector(".top_titel");
-    topt.id = "top_titel_"+ntops;
-    topt.innerHTML = topt.innerHTML.replace("X",ntops);
-    tops.insertBefore(top,null);
+    tops.insertBefore(top,pos);
     top.style.display = "block";
+    renumberTOPs();
     saveElement(tops);
   };
   
   const removeTOP = function(x){
     const top = x.parentNode.parentNode.parentNode;
-    top.parentNode.removeChild(top);
+    tops.removeChild(top);
+    renumberTOPs();
+    saveElement(tops);
+  };
+  
+  const moveUpTOP = function(x){
+    const top = x.parentNode.parentNode.parentNode;
+    const prev = top.previousElementSibling;
+    if (!prev){//bereits erster TOP
+      return;
+    }
+    tops.insertBefore(top,prev);
+    renumberTOPs();
+    saveElement(tops);
+  };
+  
+  const moveDownTOP = function(x){
+    const top = x.parentNode.parentNode.parentNode;
+    const next = top.nextElementSibling;
+    if (!next){//bereits letzter TOP
+      return;
+    }
+    tops.insertBefore(next,top);
+    renumberTOPs();
     saveElement(tops);
   };
   
@@ -1139,16 +1189,19 @@
     <p>Klasse</p>
     
     <h2>Verlauf</h2>
-    <div id="top_prototyp" style="display:none;">
-      <h3 class="top_titel">TOP X: TOP-Titel
-      <div class="guiheader_top">
-        <a class="guielement" 
-          onclick="removeTOP(this);">x</a>
-        <a class="guielement" 
-          onclick="moveUpTOP(this);">▲</a>
-        <a class="guielement" 
-          onclick="moveDownTOP(this);">▼</a>
-      </div></h3>
+    <div id="top_prototyp" style="display:none;" class="top">
+      <h3 class="top_titel">
+        TOP <span class="top_nr">X</span>: 
+        <span class="top_titel_text">TOP-Titel</span>
+        <div class="guiheader_top">
+          <a class="guielement" 
+            onclick="removeTOP(this);">x</a>
+          <a class="guielement" 
+            onclick="moveUpTOP(this);">▲</a>
+          <a class="guielement" 
+            onclick="moveDownTOP(this);">▼</a>
+        </div>
+      </h3>
       <div class="top_content">
         <ul>
           <li>Inhalt</li>
@@ -1189,7 +1242,7 @@
 <!-- ENDE GUI-Header erste Seite -->
 </div>
 
-
+<!-- ontouchstart  hinzufügen!-->
   <div class="guiheader_proto" id="guiheader_proto">
     <div id="guiheader_proto_grab">
     <hr />
