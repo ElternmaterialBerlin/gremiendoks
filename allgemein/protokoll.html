@@ -17,7 +17,9 @@
   }
   
   body {
-    position: absolute;
+/*  position: absolute scheint page-breaks in Chrom(e/ium) zu 
+    verhindern:*/
+/*     position: absolute; */
     height:100%;
     width:100%;
     box-sizing: border-box;
@@ -79,14 +81,14 @@
     position: absolute;
     bottom: 5mm;
     height: 10mm;
-    left: 10mm;
+    left: 0mm;
   }
   .footerr {
     font-size: 8pt;
     position: absolute;
     bottom: 5mm;
     height: 10mm;
-    right: 10mm;
+    right: 0mm;
   }
   .doprint .pn::after {
     counter-increment: pn;
@@ -121,6 +123,31 @@
     }
     .anleitung {
       display: none;
+    }
+    
+    .pagebreak {
+      position: relative;
+      width: 100%;
+    }
+    
+    .pbheader {
+      position: relative;
+      display: block;
+      break-before: always;
+      page-break-before: always;
+      height: 10mm;
+      margin: 0mm;
+      /*zum Debuggen: */
+/*       background-color: red; */
+    }
+    
+    .pbtext {
+      display: none;
+    }
+    
+    .top {
+      /*zum Debuggen: */
+/*       border: 1px solid red; */
     }
     
     select {
@@ -213,6 +240,15 @@
       margin-right: 1mm;
       background-color: white;
     }
+    
+    .top {
+      background-color: #f9f9f9;
+      border: 1px solid #c9c9c9;
+    }
+    .footerl, .footerr {
+      display: none;
+    }
+    
     .cloneable .morepages::after {
       content: "+";
     }
@@ -1021,8 +1057,8 @@
     saveElement(tops);
   };
   
-  const subTOPs = ["top_abst","top_antrag","top_ereignis","top_list"];
-  const subTOPsSel = ".top_abst, .top_antrag, .top_ereignis, .top_list";
+  const subTOPs = ["top_abst","top_antrag","top_ereignis","top_list","pagebreak"];
+  const subTOPsSel = ".top_abst, .top_antrag, .top_ereignis, .top_list, .pagebreak";
   
   const addSubTOP = function(type){
     let top = getClosestSel(".top");
@@ -1033,7 +1069,6 @@
     }
     
     let pos = getClosestSel(subTOPsSel);
-        alert(pos);
     pos = pos && pos.nextElementSibling;
     //pos ist nun der subTOP nach dem aktuell markierten
     //bzw. null, wenn nichts oder etwas im letzten markiert ist
@@ -1327,6 +1362,16 @@
           ⇒
           <span class="top_abst_erg">angenommen</span>
         </div>
+        <div class="pagebreak">
+          <div class="footerl">
+            Protokoll <a class="sz"></a><br/>
+          </div>
+          <div class="footerr">
+            Seite <a class="pn"></a>   <a class="np"></a>
+          </div>
+          <div class="pbtext">Seitenumbruch</div>
+          <div class="pbheader"></div>
+        </div>
     </div>
     
     <div id="top_prototyp" style="display:none;" class="top">
@@ -1355,12 +1400,6 @@
     
     <br/><br/><br/><br/><br/>
     
-  </div>
-  <div class="footerl">
-    Protokoll <a class="sz"></a><br/>
-  </div>
-  <div class="footerr">
-    Seite <a class="pn"></a>   <a class="np"></a>
   </div>
 <!-- GUI-Header erste Seite -->
   <div class="guiheader guiheader_edit">
@@ -1398,6 +1437,8 @@
       onmousedown="addSubTOP('.top_ereignis');">Ereig.</a>
     <a class="guielement_proto" 
       onmousedown="addSubTOP('.top_abst');">Abst.</a>
+    <a class="guielement_proto" 
+      onmousedown="addSubTOP('.pagebreak');">⎘</a>
 <!--         <div class="guiheader_top"> -->
           <a class="guielement_proto" 
             onmousedown="removeSubTOP();">x</a>
