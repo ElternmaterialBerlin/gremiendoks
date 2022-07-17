@@ -1021,6 +1021,82 @@
     saveElement(tops);
   };
   
+  const subTOPs = ["top_abst","top_antrag","top_ereignis","top_list"];
+  const subTOPsSel = ".top_abst, .top_antrag, .top_ereignis, .top_list";
+  
+  const addSubTOP = function(type){
+    let top = getClosestSel(".top");
+    top = top || tops.lastElementChild;
+    if (!top){
+      addTOP();
+      top = tops.lastElementChild;
+    }
+    
+    let pos = getClosestSel(subTOPsSel);
+        alert(pos);
+    pos = pos && pos.nextElementSibling;
+    //pos ist nun der subTOP nach dem aktuell markierten
+    //bzw. null, wenn nichts oder etwas im letzten markiert ist
+
+    const sub = document.getElementById("top_contprototyp").
+      querySelector(type).cloneNode(true);
+    const topc = top.querySelector(".top_content");
+    topc.insertBefore(sub,pos);
+    saveElement(tops);
+  };
+  
+  const removeSubTOP = function(){
+    let top = getClosestSel(".top");
+    top = top || tops.lastElementChild;
+    if (!top){
+      return;
+    }
+    
+    let sub = getClosestSel(subTOPsSel);
+    const topc = top.querySelector(".top_content");
+    topc.removeChild(sub);
+    
+    saveElement(tops);
+  };
+  
+  const moveUpSubTOP = function(){
+    let top = getClosestSel(".top");
+    top = top || tops.lastElementChild;
+    if (!top){
+      return;
+    }
+    
+    const sub = getClosestSel(subTOPsSel);
+    const prev = sub.previousElementSibling;
+    if (!prev){
+      return;
+    }
+    
+    const topc = top.querySelector(".top_content");
+    topc.insertBefore(sub,prev);
+    
+    saveElement(tops);
+  };
+  
+  const moveDownSubTOP = function(){
+    let top = getClosestSel(".top");
+    top = top || tops.lastElementChild;
+    if (!top){
+      return;
+    }
+    
+    const sub = getClosestSel(subTOPsSel);
+    const next = sub.nextElementSibling;
+    if (!next){
+      return;
+    }
+    
+    const topc = top.querySelector(".top_content");
+    topc.insertBefore(next,sub);
+    
+    saveElement(tops);
+  };
+  
   /*Wir benutzen die veraltete execCommand()-API in eigenen Funktionen
   sodass sie sich schrittweise modernisieren lässt, *wenn* eine
   Nachfolge-API existiert.
@@ -1085,10 +1161,9 @@
     saveElement(tops);
   };
   
-  const topClasses = ["top_list"];
   const sanitizeTopcontent = function(topc){
     for (const el of topc.children){
-      if(topClasses.indexOf(el.className) == -1){
+      if(subTOPs.indexOf(el.className) == -1){
         topc.removeChild(el);
       }
     }
@@ -1226,6 +1301,34 @@
     <p>Klasse</p>
     
     <h2>Verlauf</h2>
+    
+    <div id="top_contprototyp" style="display:none;">
+        <ul class="top_list">
+          <li>Liste</li>
+        </ul>
+        <div class="top_ereignis">
+          <span class="top_ereignis_zeit">XX:XX Uhr</span>
+          <span class="top_ereignis_text">z.B. XY geht</span>
+        </div>
+        <div class="top_antrag">
+          <span class="top_antrag_von">Name</span>
+          beantragt:
+          <span class="top_antrag_text">
+            Gremium möge beschließen: „“.
+          </span>
+        </div>
+        <div class="top_abst">
+          Abstimmung über
+          <span class="top_abst_ueber">obigen Antrag.</span>
+          Ergebnis (+/-/enth.):
+          <span class="top_abst_stimmen">
+            X:X:X
+          </span>
+          ⇒
+          <span class="top_abst_erg">angenommen</span>
+        </div>
+    </div>
+    
     <div id="top_prototyp" style="display:none;" class="top">
       <h3 class="top_titel">
         TOP <span class="top_nr">X</span>: 
@@ -1288,11 +1391,21 @@
     <a class="guielement_proto" 
       onmousedown="addTOP();">TOP</a>
     <a class="guielement_proto" 
-      onclick="">Liste</a>
+      onmousedown="addSubTOP('.top_list');">Liste</a>
     <a class="guielement_proto" 
-      onclick="">Antr.</a>
+      onmousedown="addSubTOP('.top_antrag');">Antr.</a>
     <a class="guielement_proto" 
-      onclick="">Abst.</a>
+      onmousedown="addSubTOP('.top_ereignis');">Ereig.</a>
+    <a class="guielement_proto" 
+      onmousedown="addSubTOP('.top_abst');">Abst.</a>
+<!--         <div class="guiheader_top"> -->
+          <a class="guielement_proto" 
+            onmousedown="removeSubTOP();">x</a>
+          <a class="guielement_proto" 
+            onmousedown="moveUpSubTOP();">▲</a>
+          <a class="guielement_proto" 
+            onmousedown="moveDownSubTOP();">▼</a>
+<!--         </div> -->
     <br/>
     <a class="guielement_proto" 
       onmousedown="selBold();" style="font-weight: 1000;">F</a>
