@@ -596,13 +596,13 @@
   };
 
   const saveElement = function(el){
-    if (!el.id || el.id == ""){
-      return;
+    if (tops.contains(el)) {
+      el = tops;
     }
     
-    if (el.id.substr(0,3) == "top") {
-      el = document.getElementById("tops");
-    };
+    if (!el || !el.id || el.id == ""){
+      return;
+    }
     
     setItem(el.id,el.innerHTML,editPrefix);
   };
@@ -649,7 +649,7 @@
   };
   
   var allowEdits = false;
-  const edicls = ["top_content","top_titel_text"];
+  const edicls = ["top_list","top_titel_text"];
   const editags = ["H1","H2"];
   
   const flipEdit = function(){
@@ -796,6 +796,7 @@
     observer = new MutationObserver(function(mutationsList,observer){
       for(const mutation of mutationsList) {
         const el = mutation.target.parentElement;
+
         saveElement(el);
       }
     });
@@ -1056,9 +1057,45 @@
     document.execCommand("foreColor",false,col);
   };
   
+  const selIndent = function(){
+    const e = window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    document.execCommand("indent");
+  };
+  
+  const selOutdent = function(){
+    const e = window.event;
+    e.preventDefault();
+    e.stopPropagation();
+    document.execCommand("outdent");
+  };
+  
+  const checkToplistNonempty = function(){
+    const tl = getClosestSel(".top_list");
+    if(!tl){
+      return;
+    }
+    sanitizeTopcontent(tl.parentNode);
+    if (tl.querySelector("li")){
+      return;
+    }
+    window.getSelection().removeAllRanges();
+    tl.innerHTML = "<li>"+tl.innerHTML+"</li>";
+    saveElement(tops);
+  };
+  
+  const topClasses = ["top_list"];
+  const sanitizeTopcontent = function(topc){
+    for (const el of topc.children){
+      if(topClasses.indexOf(el.className) == -1){
+        topc.removeChild(el);
+      }
+    }
+  };
 </script>
 </head>
-<body onload="ol()">
+<body onload="ol()" onkeydown="setTimeout(checkToplistNonempty,100)">
 <div class="vhpage anleitung" id="anl">
   <div class="content">
     <h2>Anleitung</h2>
@@ -1203,7 +1240,7 @@
         </div>
       </h3>
       <div class="top_content">
-        <ul>
+        <ul class="top_list">
           <li>Inhalt</li>
         </ul>
       </div>
@@ -1268,6 +1305,10 @@
     <input class="guielement_proto" style="width:8mm;"
       name="textcolor" id="textcolor" type="color" value="#000000"
       onchange="selCol(this.value)" onmousedown="selCol(this.value)">
+    <a class="guielement_proto" 
+      onmousedown="selIndent();" style="">⇥</a>
+    <a class="guielement_proto" 
+      onmousedown="selOutdent();" style="">⇤</a>
   </div>
   
   <script>
