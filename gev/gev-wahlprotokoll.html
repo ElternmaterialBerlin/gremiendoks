@@ -18,7 +18,10 @@
   }
   
   body {
-    position: absolute;
+/*  position: absolute scheint page-breaks in Chrom(e/ium) zu 
+    verhindern:*/
+/*     position: absolute; */
+    background-color: white;
     height:100%;
     width:100%;
     box-sizing: border-box;
@@ -45,6 +48,19 @@
       https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
     line-height: 1.1;
   }
+  .vhpage {/*variable Höhe*/
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    margin: 0mm;
+    padding: 10mm;
+    width: 210mm;
+    /*Normale Werte:*/
+    font-size: 11pt;
+    /*Das macht nicht alles konsistent, siehe
+      https://bugs.chromium.org/p/chromium/issues/detail?id=1023654 */
+    line-height: 1.1;
+  }
   .content {
     margin: 0px;
     padding: 0px;
@@ -53,6 +69,10 @@
     right: 10mm;
     top: 10mm;
     bottom: 10mm;
+  }
+  .vhpage .content {
+    position: static;
+    height: auto;
   }
   .expl {/*kleine erläuternde Texte*/
     font-size: 9pt;
@@ -117,7 +137,7 @@
     }
   }
   @media screen {
-    .page {
+    .page, .vhpage {
       background-color: #efefff;
       border: solid 1px;
     }
@@ -842,7 +862,7 @@
 </script>
 </head>
 <body onload="ol()">
-<div class="page anleitung" id="anl">
+<div class="vhpage anleitung" id="anl">
   <div class="content">
     <h2>Anleitung</h2>
     <p class="haupttext">
@@ -965,7 +985,8 @@
     <h2>Drucktipps</h2>
     <p class="haupttext">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken von Hintergrundfarben erlaubt werden. Zudem sollten
+      das Drucken vom Hintergrund (Firefox) bzw. 
+      Hintergrundgrafiken (Chrome) erlaubt werden. Zudem sollten
       keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
       auf die Seite passt.
       Falls Sie eine zusätzliche leere Seite in der Druckvorschau

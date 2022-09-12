@@ -12,12 +12,15 @@
 
 <style type="text/css">
   :root {
-    --year: "2021/2022";
+    --year: "2022/2023";
     --npages: "";
   }
   
   body {
-    position: absolute;
+/*  position: absolute scheint page-breaks in Chrom(e/ium) zu 
+    verhindern:*/
+/*     position: absolute; */
+    background-color: white;
     height:100%;
     width:100%;
     box-sizing: border-box;
@@ -958,7 +961,8 @@
     <h2>Drucktipps</h2>
     <p class="haupttext">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken von Hintergrundfarben erlaubt werden. Zudem sollten
+      das Drucken vom Hintergrund (Firefox) bzw. 
+      Hintergrundgrafiken (Chrome) erlaubt werden. Zudem sollten
       keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
       auf die Seite passt.
       Falls Sie eine zusätzliche leere Seite in der Druckvorschau
