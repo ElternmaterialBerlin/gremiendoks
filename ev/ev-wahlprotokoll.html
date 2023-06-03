@@ -432,6 +432,10 @@
 </style>
 <script>
   "use strict";
+  const loadScriptAsync = function(src){  
+    (async () => {await import(src)})()
+  }
+  
   const storage = window.localStorage;
   var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
@@ -474,6 +478,17 @@
     document.body.appendChild(el);
     el.click();
     document.body.removeChild(el);
+  };
+  
+  const downloadBlob = function(fn,blob) {
+    const el = document.createElement("a");
+    el.setAttribute("href",URL.createObjectURL(blob))
+    el.setAttribute("download", fn);
+    el.style.display = "none";
+    document.body.appendChild(el);
+    el.click();
+    document.body.removeChild(el);
+    URL.revokeObjectURL(el.href);
   };
   
   const upload = function(cb) {
@@ -664,6 +679,420 @@
       }
     }
     location.reload();
+  };
+  
+  const elToDocx = function(el){
+    const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
+      TableCell, WidthType, HeightRule, BorderStyle} = docx;
+    const tn = (el.tagName?el.tagName:"").toLowerCase();
+    const cl = el.className;
+    if (/h[0-9]/.test(tn)) {
+      return new Paragraph({ text: el.innerText,//textContent,
+        heading: HeadingLevel["HEADING_"+tn[1]],
+      });
+    } else if (/subhead|erlaeuterung/.test(cl)) {
+      return new Paragraph({ text: el.innerText,//textContent,
+        style: cl,
+      });
+    } else if (tn == "label") {
+        return new TextRun({text: el.textContent+" "});
+    } else if (/input|select/.test(tn)) {
+        const w = el.offsetWidth/16;
+        let s = el.value == "blank"? "": el.value;
+        while(s.length < w){
+          s = s + " ";
+        }
+        return [
+          new TextRun({text: s, style: "input"}),
+          new TextRun(" "),
+        ];
+    } else if  (cl == "haupttext") {
+      const children = [];
+      let first = true;
+      for (const ch of el.childNodes){
+        let r
+        if(ch.nodeType == Node.TEXT_NODE){
+          let t = ch.nodeValue.trim().replaceAll(/[\t\n\r ]+/ig," ");
+          t = t==""&&first?t:t+" " 
+          r = new TextRun(t)
+        } else if (ch.nodeType == Node.ELEMENT_NODE){
+          r = elToDocx(ch);
+        }
+        if (r && r.constructor.name == "Array"){
+          for (const ri of r){
+            children.push(ri);
+          }
+        } else if (r){
+          children.push(r);
+        }
+        first = false;
+      }
+      return new Paragraph({children: children,
+        style: "haupttext"});
+    } else if  (/tabellebreit/.test(cl)) {
+      const wahlerg = /wahlerg/.test(cl);
+      const doppelzeilen = /doppelzeilen/.test(cl);
+      const bdcolor = wahlerg?"808080":"000000";
+      const theadr = el.getElementsByTagName("thead")[0].
+        getElementsByTagName("tr")[0];
+      const hcells = [];
+      const spw = {spnamen:8, spunters: 6};
+      for (const ch of theadr.children){
+        hcells.push(new TableCell({
+          children: [new Paragraph({
+            children: [ new TextRun({
+              text: ch.innerText,
+              color: wahlerg?"FFFFFF":"000000",
+            })],
+            alignment: docx.AlignmentType.CENTER,
+            spacing: {
+              before: 0,
+              after: 0,
+              line: 240
+            },
+            })
+          ],
+          shading: {
+            // fill: "808080",
+            type: docx.ShadingType.SOLID,
+            color: wahlerg?"808080":"FFFFFF",
+          },
+          margins: {
+              top: 14,
+              bottom: 14,
+              left: 56,
+              right: 56,
+          },
+          borders: {
+            top: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+            bottom: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+            left: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+            right: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+          },
+          width: {
+            size: spw[ch.className]?spw[ch.className]*567:0,
+            type: spw[ch.className]?WidthType.DXA:WidthType.AUTO,
+          }
+        }));
+        console.log(ch.className);
+      }
+      const rows = [new TableRow({
+        children: hcells,
+        height: {
+          value: 266,//0.47*567
+          rule: HeightRule.EXACT,
+        }
+      })];
+      
+      for (const tr of el.getElementsByTagName("tbody")[0].
+        getElementsByTagName("tr")){
+        const trcells = [];
+        for (const ch of tr.children){
+          trcells.push(new TableCell({children:[
+            new Paragraph({children:[new TextRun("")],
+              spacing: {
+                before: 0,
+                after: 0,
+                line: 240
+              }})
+          ]}));
+        }
+        rows.push(new TableRow({
+          children: trcells,
+          height: {
+            value: (doppelzeilen?2:1)*7*56,
+            rule: HeightRule.EXACT,
+          }
+        }))
+      }
+
+      return new Table({rows: rows,
+        // columnWidths : cw,
+        width: {
+          size: 100,
+          type: docx.WidthType.PERCENTAGE,
+        },
+        borders: {
+          top: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+          bottom: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+          left: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+          right: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+          insideHorizontal: { color: "000000", size: 4, style: BorderStyle.SINGLE},
+          insideVertical: {color: "000000", size: 4, style: BorderStyle.SINGLE},
+        },
+      });
+    } else if  (/^p$|table/.test(tn)) {
+      const children = [];
+      // const children = [new TextRun({
+      //   text: cl+tn
+      // })];
+      for (const ch of el.children){
+        const r = elToDocx(ch);
+        if (r){
+          children.push(r);
+        }
+      }
+      return new Paragraph({children: children});
+    } else {
+          return new TextRun({
+                        text: cl+tn + el.innerText,
+                    });
+    }
+  }
+  
+  const saveDocx = async function(){
+    if (!confirm(
+      "Dies lädt externe JavaScript-Bibliotheken nach "+
+      "(funktioniert also nur online). Fortfahren?"
+    )){
+      return;
+    }
+    await import("https://unpkg.com/docx@8.0.4/build/index.js");
+    
+    const sections = [];
+    
+    const pages = document.getElementsByClassName("page");
+    let pn = 0;
+    for(let i=0;i<pages.length;++i) {
+      const page = pages[i];
+      if (page.className.indexOf("noprint") != -1){
+        continue;
+      }
+      pn++;
+      const cnt = page.getElementsByClassName("content")[0];
+      const secch = [];
+      
+      for(const el of cnt.children) {
+        secch.push(elToDocx(el));
+      }
+
+      //Alternative to way section.type to ensure a page break
+      // secch.push(new docx.Paragraph(
+      //   {children: [new docx.PageBreak()]}
+      // ));
+      sections.push({
+        properties: {
+          type: docx.SectionType.NEXT_PAGE,
+          page: {
+            margin: {
+              top: 1*567,//567=1cm
+              right: 1*567,
+              bottom: 1*567,
+              left: 1*567,
+            }
+          },
+        },
+        children:secch,
+        footers: {
+          default: new docx.Footer({
+            children: [new docx.Paragraph({
+              children : [
+                new docx.TextRun(
+                  page.getElementsByClassName("footerl")[0].textContent
+                  + year 
+                  +"\t\t"+
+                  "Seite "
+                  // page.getElementsByClassName("footerr")[0].textContent
+                  + pn + "/" + npages
+                ),
+              ],
+              tabStops: [
+                {
+                  type: docx.TabStopType.CENTER,
+                  position: docx.TabStopPosition.MAX /2,
+                },{
+                  type: docx.TabStopType.RIGHT,
+                  position: docx.TabStopPosition.MAX,
+                },
+              ],
+            })],
+          }),
+        },
+      });
+    }   
+      
+    const doc = new docx.Document({sections: sections,
+      styles: {
+        paragraphStyles: [
+          {
+            id: "Normal",
+            name: "Normal",
+            // basedOn: "Normal",
+            // next: "Normal",
+            quickFormat: true,
+            run: {
+              font: "Arial",
+              size: 2*11,
+            },
+            paragraph: {
+              spacing: {
+                before: 3*56,
+                after: 3*56,
+            //         line: 276,
+              },
+            //     indent: {
+            //         left: 720,
+            //     },
+            },
+          },{
+            id: "Heading1",
+            name: "Heading 1",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              size: 2*21
+            },
+            paragraph : {
+              alignment: docx.AlignmentType.CENTER,
+              spacing: {
+                before: 5*56,
+                after: 0.5*56,
+              },
+            }
+          },{
+            id: "subhead",
+            name: "Sub-Heading",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              size: 2*8
+            },
+            paragraph : {
+              alignment: docx.AlignmentType.CENTER,
+              spacing: {
+                before: 0*56,
+                after: 2*56,
+              },
+            }
+          },{
+            id: "Heading2",
+            name: "Heading 2",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              bold: true,
+              color: "000000",
+              size: 2*11
+            },
+            paragraph : {
+              spacing: {
+                before: 2*56,
+                after: 0*56,
+              },
+            }
+          },{
+            id: "Heading3",
+            name: "Heading 3",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              bold: true,
+              color: "000000",
+              size: 2*14
+            },
+            paragraph : {
+              spacing: {
+                before: 0*56,
+                after: 2*56,
+              },
+            }
+          },{
+            id: "Heading4",
+            name: "Heading 4",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              size: 2*11,
+              underline: {
+                type: docx.UnderlineType.SINGLE,
+              },
+            },
+            paragraph : {
+              spacing: {
+                before: 4*56,
+                after: 2*56,
+              },
+            }
+          },{
+            id: "Heading5",
+            name: "Heading 5",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              bold: true,
+              color: "FFFFFF",
+              size: 2*11,
+              // highlight: "darkGray",
+            },
+            paragraph : {
+              spacing: {
+                before: 3*56,
+                after: 1*56,
+              },
+              shading: {
+                fill: "808080",
+                type: docx.ShadingType.SOLID,
+                color: "808080",
+              },
+            }
+          },{
+            id: "erlaeuterung",
+            name: "Erläuterungen",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              size: 2*8
+            },
+            paragraph : {
+              alignment: docx.AlignmentType.LEFT,
+            }
+          },{
+            id: "haupttext",
+            name: "Haupttext",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              size: 2*11
+            },
+            paragraph : {
+              alignment: docx.AlignmentType.LEFT,
+            }
+          },
+        ],
+        characterStyles: [
+          {
+            id: "input",
+            name: "Eingabefeld",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              // size: 2*11,
+              underline: {
+                type: docx.UnderlineType.SINGLE,
+              },
+            },
+          },
+        ]
+    }});
+
+    docx.Packer.toBlob(doc).then((blob) => {
+        downloadBlob("ev-wahlprotokoll.docx",blob)
+    });
   };
   
   var observer;
@@ -926,7 +1355,7 @@
     <p class="haupttext">
       Die jeweils aktuelle Version finden Sie unter:<br/>
       <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/ev-wahlprotokoll.html">
-        https://elternmaterialberlin.github.io/gremiendoks/gev/gev-wahlprotokoll.html</a><br/>
+        https://elternmaterialberlin.github.io/gremiendoks/ev/ev-wahlprotokoll.html</a><br/>
       als Teil der Materialsammlung:<br/>
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
         https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
@@ -1206,6 +1635,8 @@
       onclick="dlSelf();">Dokument speichern</a>
     <a class="guielement_small" 
       onclick="revertEdits();">Änderungen verwerfen</a>
+<!--    <a class="guielement_small" 
+      onclick="saveDocx();">als docx speichern</a>-->
   </div>
   <div class="guiheader">
     <a class="guielement_small" 
