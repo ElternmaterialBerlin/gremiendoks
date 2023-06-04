@@ -681,9 +681,36 @@
     location.reload();
   };
   
-  const elToDocx = function(el){
+  const childNodesToDocx = function(el){
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle} = docx;
+    const children = [];
+    let first = true;
+    for (const ch of el.childNodes){
+      let r
+      if(ch.nodeType == Node.TEXT_NODE){
+        let t = ch.nodeValue.replaceAll(/[\t\n\r ]+/ig," ");
+        if (first) t = t.trimStart();
+        r = new TextRun(t)
+      } else if (ch.nodeType == Node.ELEMENT_NODE){
+        r = elToDocx(ch);
+      }
+      if (r && r.constructor.name == "Array"){
+        for (const ri of r){
+          children.push(ri);
+        }
+      } else if (r){
+        children.push(r);
+      }
+      first = false;
+    }
+    return children;
+  };
+  
+  const elToDocx = function(el){
+    const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
+      TableCell, WidthType, HeightRule, BorderStyle,
+      ExternalHyperlink} = docx;
     const tn = (el.tagName?el.tagName:"").toLowerCase();
     const cl = el.className;
     if (/h[0-9]/.test(tn)) {
@@ -695,7 +722,19 @@
         style: cl,
       });
     } else if (tn == "label") {
-        return new TextRun({text: el.textContent+" "});
+        return new TextRun({text: el.innerText});
+    } else if (tn == "a") {
+        return new ExternalHyperlink({
+          link: el.href,
+          children: [new TextRun({
+            text: el.innerText,
+            style: "Hyperlink"})
+          ]
+        });
+    } else if (/strong|^b$/.test(tn)) {
+        return new TextRun({text: el.innerText, bold: true});
+    } else if (tn == "em") {
+        return new TextRun({text: el.innerText, italics: true});
     } else if (/input|select/.test(tn)) {
         const w = el.offsetWidth/16;
         let s = el.value == "blank"? "": el.value;
@@ -707,32 +746,13 @@
           new TextRun(" "),
         ];
     } else if  (cl == "haupttext") {
-      const children = [];
-      let first = true;
-      for (const ch of el.childNodes){
-        let r
-        if(ch.nodeType == Node.TEXT_NODE){
-          let t = ch.nodeValue.trim().replaceAll(/[\t\n\r ]+/ig," ");
-          t = t==""&&first?t:t+" " 
-          r = new TextRun(t)
-        } else if (ch.nodeType == Node.ELEMENT_NODE){
-          r = elToDocx(ch);
-        }
-        if (r && r.constructor.name == "Array"){
-          for (const ri of r){
-            children.push(ri);
-          }
-        } else if (r){
-          children.push(r);
-        }
-        first = false;
-      }
-      return new Paragraph({children: children,
+      return new Paragraph({children: childNodesToDocx(el),
         style: "haupttext"});
     } else if  (/tabellebreit/.test(cl)) {
       const wahlerg = /wahlerg/.test(cl);
       const doppelzeilen = /doppelzeilen/.test(cl);
       const bdcolor = wahlerg?"808080":"000000";
+      const parstyle = wahlerg?"wahlergTH":"tabhead";
       const theadr = el.getElementsByTagName("thead")[0].
         getElementsByTagName("tr")[0];
       const hcells = [];
@@ -740,10 +760,8 @@
       for (const ch of theadr.children){
         hcells.push(new TableCell({
           children: [new Paragraph({
-            children: [ new TextRun({
-              text: ch.innerText,
-              color: wahlerg?"FFFFFF":"000000",
-            })],
+            children: childNodesToDocx(ch),
+            style: parstyle,
             alignment: docx.AlignmentType.CENTER,
             spacing: {
               before: 0,
@@ -774,7 +792,6 @@
             type: spw[ch.className]?WidthType.DXA:WidthType.AUTO,
           }
         }));
-        console.log(ch.className);
       }
       const rows = [new TableRow({
         children: hcells,
@@ -788,13 +805,11 @@
         getElementsByTagName("tr")){
         const trcells = [];
         for (const ch of tr.children){
+          const ip = ch.getElementsByTagName("input")[0];
           trcells.push(new TableCell({children:[
-            new Paragraph({children:[new TextRun("")],
-              spacing: {
-                before: 0,
-                after: 0,
-                line: 240
-              }})
+            new Paragraph({children:[new TextRun(ip?ip.value:"")],
+              style: "tabcellpg"
+              })
           ]}));
         }
         rows.push(new TableRow({
@@ -821,6 +836,52 @@
           insideVertical: {color: "000000", size: 4, style: BorderStyle.SINGLE},
         },
       });
+    } else if  (/tabelleohnerahmen/.test(cl)) {
+      const spw = {schulez: 10, klassez: 1, datumz: 3};
+      const rows = [];
+      
+      for (const tr of el.getElementsByTagName("tbody")[0].
+        getElementsByTagName("tr")){
+        const trcells = [];
+        for (const ch of tr.children){
+          console.log(ch.id)
+          trcells.push(new TableCell({
+            children:[
+              new Paragraph({
+                children:childNodesToDocx(ch),
+                style: "tabcellpg",
+                })
+            ],
+            width: {
+              size: spw[ch.id]?spw[ch.id]*567:0,
+              type: spw[ch.id]?WidthType.DXA:WidthType.AUTO,
+            }
+          }));
+        }
+        rows.push(new TableRow({
+          children: trcells,
+          height: {
+            value: 7*56,
+            rule: HeightRule.EXACT,
+          }
+        }))
+      }
+
+      return new Table({rows: rows,
+        // columnWidths : cw,
+        width: {
+          size: 100,
+          type: docx.WidthType.PERCENTAGE,
+        },
+        // borders: {
+        //   top: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+        //   bottom: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+        //   left: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+        //   right: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+        //   insideHorizontal: { color: "000000", size: 4, style: BorderStyle.SINGLE},
+        //   insideVertical: {color: "000000", size: 4, style: BorderStyle.SINGLE},
+        // },
+      });
     } else if  (/^p$|table/.test(tn)) {
       const children = [];
       // const children = [new TextRun({
@@ -834,9 +895,10 @@
       }
       return new Paragraph({children: children});
     } else {
-          return new TextRun({
-                        text: cl+tn + el.innerText,
-                    });
+      return new TextRun({
+        color: "FF0000",
+        text: "unsupported: <" + cl+tn + el.innerText+">",
+      });
     }
   }
   
@@ -1044,6 +1106,37 @@
                 color: "808080",
               },
             }
+          },{
+            id: "tabcellpg",
+            name: "TabCellPG",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            paragraph : {
+              spacing: {
+                before: 0,
+                after: 0,
+                line: 240
+              },
+            }
+          },{
+            id: "tabhead",
+            name: "Tabhead",
+            basedOn: "tabcellpg",
+            next: "Normal",
+            quickFormat: true,
+            paragraph : {
+              alignment: docx.AlignmentType.CENTER,
+            }
+          },{
+            id: "wahlergTH",
+            name: "wahlergTH",
+            basedOn: "tabhead",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "FFFFFF",
+            },
           },{
             id: "erlaeuterung",
             name: "Erläuterungen",
