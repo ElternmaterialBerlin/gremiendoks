@@ -429,6 +429,10 @@
   .wahltyp  {
     width: 2cm;
   }
+  
+  .docxonly {
+    display: none;
+  }
 </style>
 <script>
   "use strict";
@@ -437,6 +441,7 @@
   }
   
   const storage = window.localStorage;
+  var cmperpx;
   var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
   const url = window.location.pathname;
@@ -685,15 +690,17 @@
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle} = docx;
     const children = [];
-    let first = true;
+    let trim = true;
     for (const ch of el.childNodes){
       let r
       if(ch.nodeType == Node.TEXT_NODE){
         let t = ch.nodeValue.replaceAll(/[\t\n\r ]+/ig," ");
-        if (first) t = t.trimStart();
+        if (trim) t = t.trimStart();
+        trim = false;
         r = new TextRun(t)
       } else if (ch.nodeType == Node.ELEMENT_NODE){
         r = elToDocx(ch);
+        trim = ch.tagName.toLowerCase() == "br";
       }
       if (r && r.constructor.name == "Array"){
         for (const ri of r){
@@ -702,7 +709,6 @@
       } else if (r){
         children.push(r);
       }
-      first = false;
     }
     return children;
   };
@@ -713,17 +719,21 @@
       ExternalHyperlink} = docx;
     const tn = (el.tagName?el.tagName:"").toLowerCase();
     const cl = el.className;
+    if (/htmlonly/.test(cl)){
+      return null;
+    }
+    
     if (/h[0-9]/.test(tn)) {
       return new Paragraph({ text: el.innerText,//textContent,
         heading: HeadingLevel["HEADING_"+tn[1]],
       });
-    } else if (/subhead|erlaeuterung/.test(cl)) {
+    } else if (tn =="p" && /subhead|erlaeuterung/.test(cl)) {
       return new Paragraph({ text: el.innerText,//textContent,
         style: cl,
       });
     } else if (tn == "label") {
         return new TextRun({text: el.innerText});
-    } else if (tn == "a") {
+    } else if (tn == "a" && el.href) {
         return new ExternalHyperlink({
           link: el.href,
           children: [new TextRun({
@@ -731,12 +741,19 @@
             style: "Hyperlink"})
           ]
         });
+    } else if (tn == "a" && cl=="erlaeuterung") {
+        return new TextRun({
+          text: el.innerText,
+          style: "erlaeuterungInline"
+        });
     } else if (/strong|^b$/.test(tn)) {
         return new TextRun({text: el.innerText, bold: true});
-    } else if (tn == "em") {
+    } else if (/^i$|em/.test(tn)) {
         return new TextRun({text: el.innerText, italics: true});
+    } else if (tn == "br") {
+        return new TextRun({text: "", break: 1});
     } else if (/input|select/.test(tn)) {
-        const w = el.offsetWidth/16;
+        const w = el.offsetWidth/18;
         let s = el.value == "blank"? "": el.value;
         while(s.length < w){
           s = s + " ";
@@ -745,18 +762,20 @@
           new TextRun({text: s, style: "input"}),
           new TextRun(" "),
         ];
-    } else if  (cl == "haupttext") {
+    } else if  (/haupttext/.test(cl)) {
       return new Paragraph({children: childNodesToDocx(el),
         style: "haupttext"});
     } else if  (/tabellebreit/.test(cl)) {
       const wahlerg = /wahlerg/.test(cl);
       const doppelzeilen = /doppelzeilen/.test(cl);
       const bdcolor = wahlerg?"808080":"000000";
+      const bdsize = wahlerg?16:8;
       const parstyle = wahlerg?"wahlergTH":"tabhead";
       const theadr = el.getElementsByTagName("thead")[0].
         getElementsByTagName("tr")[0];
       const hcells = [];
-      const spw = {spnamen:8, spunters: 6};
+      // const spw = {spnamen:8, spunters: 6};
+      const cw = [];
       for (const ch of theadr.children){
         hcells.push(new TableCell({
           children: [new Paragraph({
@@ -782,21 +801,22 @@
               right: 56,
           },
           borders: {
-            top: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-            bottom: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-            left: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-            right: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+            top: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
+            bottom: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
+            left: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
+            right: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
           },
           width: {
-            size: spw[ch.className]?spw[ch.className]*567:0,
-            type: spw[ch.className]?WidthType.DXA:WidthType.AUTO,
+            size: Math.floor(ch.offsetWidth*cmperpx*567),
+            type: WidthType.DXA,
           }
         }));
+        cw.push(Math.floor(ch.offsetWidth*cmperpx*567));
       }
       const rows = [new TableRow({
         children: hcells,
         height: {
-          value: 266,//0.47*567
+          value: Math.floor(0.9*theadr.firstElementChild.clientHeight*cmperpx*567),//266,//0.47*567
           rule: HeightRule.EXACT,
         }
       })];
@@ -815,36 +835,39 @@
         rows.push(new TableRow({
           children: trcells,
           height: {
-            value: (doppelzeilen?2:1)*7*56,
+            value: Math.floor(0.9*tr.firstElementChild.clientHeight*cmperpx*567),//(doppelzeilen?2:1)*7*56,
             rule: HeightRule.EXACT,
           }
         }))
       }
 
       return new Table({rows: rows,
-        // columnWidths : cw,
+        columnWidths : cw,
         width: {
           size: 100,
           type: docx.WidthType.PERCENTAGE,
         },
         borders: {
-          top: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-          bottom: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-          left: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-          right: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
+          top: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
+          bottom: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
+          left: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
+          right: { color: bdcolor, size: bdsize, style: BorderStyle.SINGLE},
           insideHorizontal: { color: "000000", size: 4, style: BorderStyle.SINGLE},
           insideVertical: {color: "000000", size: 4, style: BorderStyle.SINGLE},
         },
       });
     } else if  (/tabelleohnerahmen/.test(cl)) {
-      const spw = {schulez: 10, klassez: 1, datumz: 3};
+      const spw = {schulez: 10, klassez: 1};
+      let first = true;
+      const cw = [];
       const rows = [];
       
       for (const tr of el.getElementsByTagName("tbody")[0].
         getElementsByTagName("tr")){
         const trcells = [];
         for (const ch of tr.children){
-          console.log(ch.id)
+          console.log(ch.offsetWidth*cmperpx);
+          console.log(document.getElementsByClassName("content")[0].offsetWidth*cmperpx);
           trcells.push(new TableCell({
             children:[
               new Paragraph({
@@ -852,35 +875,45 @@
                 style: "tabcellpg",
                 })
             ],
+            margins: {
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            },
             width: {
-              size: spw[ch.id]?spw[ch.id]*567:0,
-              type: spw[ch.id]?WidthType.DXA:WidthType.AUTO,
+              size: Math.floor(ch.offsetWidth*cmperpx*567),
+              type: WidthType.DXA,
             }
           }));
+          if (first){
+            cw.push(Math.floor(ch.offsetWidth*cmperpx*567));
+          }
         }
         rows.push(new TableRow({
           children: trcells,
           height: {
-            value: 7*56,
+            value: tr.offsetHeight*cmperpx*567,
             rule: HeightRule.EXACT,
           }
         }))
+        first = false;
       }
 
       return new Table({rows: rows,
-        // columnWidths : cw,
+        columnWidths : cw,//[3800,1000,2000],
         width: {
           size: 100,
           type: docx.WidthType.PERCENTAGE,
         },
-        // borders: {
-        //   top: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-        //   bottom: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-        //   left: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-        //   right: { color: bdcolor, size: 8, style: BorderStyle.SINGLE},
-        //   insideHorizontal: { color: "000000", size: 4, style: BorderStyle.SINGLE},
-        //   insideVertical: {color: "000000", size: 4, style: BorderStyle.SINGLE},
-        // },
+        borders: {
+          top: {style: BorderStyle.NONE},
+          bottom: {style: BorderStyle.NONE},
+          left: {style: BorderStyle.NONE},
+          right: {style: BorderStyle.NONE},
+          insideHorizontal: {style: BorderStyle.NONE},
+          insideVertical: {style: BorderStyle.NONE},
+        },
       });
     } else if  (/^p$|table/.test(tn)) {
       const children = [];
@@ -894,6 +927,20 @@
         }
       }
       return new Paragraph({children: children});
+    } else if  (tn == "ul") {
+      const ret = [];
+
+      for (const ch of el.children){
+        const r = elToDocx(ch);
+        if (r){
+          ret.push(r);
+        }
+      }
+      return ret;
+    } else if  (tn == "li") {
+      return new Paragraph({children: childNodesToDocx(el),
+        bullet: {level: 0}
+      });
     } else {
       return new TextRun({
         color: "FF0000",
@@ -905,7 +952,9 @@
   const saveDocx = async function(){
     if (!confirm(
       "Dies lädt externe JavaScript-Bibliotheken nach "+
-      "(funktioniert also nur online). Fortfahren?"
+      "(funktioniert also nur online). Die Formular-Daten werden "+
+      "weiterhin ausschließlich im Browser verarbeitet. "+
+      "Fortfahren?"
     )){
       return;
     }
@@ -913,22 +962,40 @@
     
     const sections = [];
     
-    const pages = document.getElementsByClassName("page");
+    const pages = document.querySelectorAll(".page,.vhpage");
     let pn = 0;
     for(let i=0;i<pages.length;++i) {
       const page = pages[i];
       if (page.className.indexOf("noprint") != -1){
         continue;
       }
-      pn++;
       const cnt = page.getElementsByClassName("content")[0];
       const secch = [];
       
       for(const el of cnt.children) {
-        secch.push(elToDocx(el));
+        const ch = elToDocx(el);
+        if(ch){
+          if (ch.constructor.name == "Array"){
+            for(const gch of ch){
+              secch.push(gch);
+            }
+          } else {
+            secch.push(ch);
+          }
+        }
       }
 
-      //Alternative to way section.type to ensure a page break
+      const flcontent = page.getElementsByClassName("footerl")[0]?
+        page.getElementsByClassName("footerl")[0].textContent:
+        "";
+      const frexists = page.getElementsByClassName("footerr")[0] &&
+        true;
+      let frcontent = "";
+      if(frexists){
+        pn++;
+        frcontent = "Seite " + pn + "/" + npages;
+      }
+      //Alternative way to usage of section.type to ensure a page break
       // secch.push(new docx.Paragraph(
       //   {children: [new docx.PageBreak()]}
       // ));
@@ -950,12 +1017,10 @@
             children: [new docx.Paragraph({
               children : [
                 new docx.TextRun(
-                  page.getElementsByClassName("footerl")[0].textContent
+                  flcontent
                   + year 
                   +"\t\t"+
-                  "Seite "
-                  // page.getElementsByClassName("footerr")[0].textContent
-                  + pn + "/" + npages
+                  frcontent
                 ),
               ],
               tabStops: [
@@ -985,6 +1050,9 @@
             run: {
               font: "Arial",
               size: 2*11,
+              language: {
+                value: "de-DE",
+              },
             },
             paragraph: {
               spacing: {
@@ -1144,8 +1212,7 @@
             next: "Normal",
             quickFormat: true,
             run: {
-              color: "000000",
-              size: 2*8
+              style: "erlaeuterungInline"
             },
             paragraph : {
               alignment: docx.AlignmentType.LEFT,
@@ -1178,6 +1245,16 @@
               underline: {
                 type: docx.UnderlineType.SINGLE,
               },
+            },
+          },{
+            id: "erlaeuterungInline",
+            name: "Erläuterung",
+            basedOn: "Normal",
+            next: "Normal",
+            quickFormat: true,
+            run: {
+              color: "000000",
+              size: 2*8
             },
           },
         ]
@@ -1257,6 +1334,8 @@
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
     npagesChanged();
+    
+    cmperpx = 21/document.getElementsByClassName("page")[0].offsetWidth;
   };
   
   const removeClonedPage = function(page){
@@ -1394,7 +1473,7 @@
 <div class="vhpage anleitung" id="anl">
   <div class="content">
     <h2>Anleitung</h2>
-    <p class="haupttext">
+    <p class="haupttext htmlonly">
       Dieses Dokument ist im Browser ausfüllbar. Überschriften,
       Fließtext und Tabellenköpfe sind nach Drücken der
       Schaltfläche auch editierbar und anschließend kann eine
@@ -1415,9 +1494,13 @@
       nur aus einer HTML-Datei besteht, können Sie es einfach
       speichern, offline nutzen und weitergeben.
     </p>
+    <p class="haupttext docxonly">
+      Dies ist ein docx-Export, für die ursprüngliche Web-Version
+      siehe unten.
+    </p>
     
-    <h2>Datenschutz</h2>
-    <p class="haupttext">
+    <h2 class="htmlonly">Datenschutz</h2>
+    <p class="haupttext htmlonly">
       Das Formular verwendet den localStorage der
       <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API">
       Web Storage API</a>. Das bedeutet, dass die Felddaten automatisch
@@ -1461,10 +1544,10 @@
     <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
       <li> 2013-2021 (Wordvorlage: Schriftstile, Anordnung;
-        Quelle s.u.)
-      <li> 2020-2022 Frank Fuhlbrück
-        (editierbare Umsetzung in HTML/CSS/Javsacript, Wahlergebnisse
-        auf weißem Grund)</li>
+        Quelle s.u.)</li>
+      <li> 2020-2023 Frank Fuhlbrück
+        (2020: editierbare Umsetzung in HTML/CSS/Javascript; 2022: Wahlergebnisse
+        auf weißem Grund; 2023: docx-Export)</li>
     </ul>
     
     <h2>Inhaltliche Autor*innen (Texte)</h2>
@@ -1508,10 +1591,13 @@
       konsistentere Druckdarstellung und bessere Langzeitnutzbarkeit
       desselben Dokuments erlauben, ist aber für die Elternarbeit
       zu wenig verbreitet und schließt daher viele Mitarbeitende aus.
+      Seit 2023 ist Export als docx möglich, diese Datei wird
+      direkt aus der HTML-Seite generiert, profitiert also von
+      zukünftigen Änderungen dieser.
     </p>
     
-    <h2>Drucktipps</h2>
-    <p class="haupttext">
+    <h2 class="htmlonly">Drucktipps</h2>
+    <p class="haupttext htmlonly">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
       das Drucken vom Hintergrund (Firefox) bzw. 
       Hintergrundgrafiken (Chrome) erlaubt werden. Zudem sollten
@@ -1568,7 +1654,6 @@
     </p>
     
     <h2>3. Durchführung der Wahl und Erfassung der Kandidierenden</h2>
-    <p></p>
     
     <h4>
       Kandidierende als Elternsprecherin oder
@@ -1728,8 +1813,6 @@
       onclick="dlSelf();">Dokument speichern</a>
     <a class="guielement_small" 
       onclick="revertEdits();">Änderungen verwerfen</a>
-<!--    <a class="guielement_small" 
-      onclick="saveDocx();">als docx speichern</a>-->
   </div>
   <div class="guiheader">
     <a class="guielement_small" 
@@ -1738,6 +1821,8 @@
       onclick="exportFields();">Daten exportieren</a>
     <a class="guielement_small" 
       onclick="importFields();">Daten importieren</a>
+    <a class="guielement_small" 
+      onclick="saveDocx();">als docx speichern</a>
   </div>
 <!-- ENDE GUI-Header erste Seite -->
 </div>
