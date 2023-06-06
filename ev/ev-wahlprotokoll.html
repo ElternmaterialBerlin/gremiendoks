@@ -767,7 +767,9 @@
         }
         return [
           new TextRun({text: s, style: "input"}),
-          new TextRun(" "),
+          //kleiner hack, um unterstrichenen Whitespace auch
+          //anzuzeigen (Word/OnlyOffice):
+          new TextRun({text:".", color: "FFFFFF"}),
         ];
     } else if  (/haupttext/.test(cl)) {
       return new Paragraph({children: childNodesToDocx(el),
@@ -1503,7 +1505,12 @@
     </p>
     <p class="haupttext docxonly">
       Dies ist ein docx-Export, für die ursprüngliche Web-Version
-      siehe unten.
+      siehe unten. Die Formularfelder (Schule: etc.) sind als
+      unterstrichener Leerraum umgesetzt, da sich echte
+      Formularelemente (Fill-In) als weniger nutzbar herausgestellt
+      haben. Das Dokument wird mit OnlyOffice (und seltener
+      LibreOffice) getestet, kleiner Fehler in MS Office sind nicht
+      auszuschließen. 
     </p>
     
     <h2 class="htmlonly">Datenschutz</h2>
