@@ -12,7 +12,7 @@
 
 <style type="text/css">
   :root {
-    --year: "2022/2023";
+    --year: "2023/2024";
     --npages: "";
   }
   
@@ -27,7 +27,6 @@
     padding: 0cm;
     margin: 0mm;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 11pt;
     /*Verhindert Abstände zwischen Seiten:*/
     line-height: 0pt;
     font-size: 0pt;
@@ -442,6 +441,14 @@
   
   const storage = window.localStorage;
   var cmperpx;
+  const globRules = {};
+  const woUnit = function(s){
+    return s.replace(/#|pt|mm|cm|px/,"");
+  };
+  const firstFont = function(fts){
+    return fts.replace(/,.*/,"");
+  };
+  
   var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
   const url = window.location.pathname;
@@ -767,14 +774,12 @@
         style: "haupttext"});
     } else if  (/tabellebreit/.test(cl)) {
       const wahlerg = /wahlerg/.test(cl);
-      const doppelzeilen = /doppelzeilen/.test(cl);
       const bdcolor = wahlerg?"808080":"000000";
       const bdsize = wahlerg?16:8;
       const parstyle = wahlerg?"wahlergTH":"tabhead";
       const theadr = el.getElementsByTagName("thead")[0].
         getElementsByTagName("tr")[0];
       const hcells = [];
-      // const spw = {spnamen:8, spunters: 6};
       const cw = [];
       for (const ch of theadr.children){
         hcells.push(new TableCell({
@@ -835,7 +840,7 @@
         rows.push(new TableRow({
           children: trcells,
           height: {
-            value: Math.floor(0.9*tr.firstElementChild.clientHeight*cmperpx*567),//(doppelzeilen?2:1)*7*56,
+            value: Math.floor(0.9*tr.firstElementChild.clientHeight*cmperpx*567),
             rule: HeightRule.EXACT,
           }
         }))
@@ -857,7 +862,6 @@
         },
       });
     } else if  (/tabelleohnerahmen/.test(cl)) {
-      const spw = {schulez: 10, klassez: 1};
       let first = true;
       const cw = [];
       const rows = [];
@@ -866,8 +870,6 @@
         getElementsByTagName("tr")){
         const trcells = [];
         for (const ch of tr.children){
-          console.log(ch.offsetWidth*cmperpx);
-          console.log(document.getElementsByClassName("content")[0].offsetWidth*cmperpx);
           trcells.push(new TableCell({
             children:[
               new Paragraph({
@@ -1036,9 +1038,13 @@
           }),
         },
       });
-    }   
-      
-    const doc = new docx.Document({sections: sections,
+    }  
+    
+    const doc = new docx.Document({
+      creator: "ElternmaterialBerlin",
+      title: document.title,
+      description: document.querySelector("meta[name='description']").content,
+      sections: sections,
       styles: {
         paragraphStyles: [
           {
@@ -1048,16 +1054,17 @@
             // next: "Normal",
             quickFormat: true,
             run: {
-              font: "Arial",
-              size: 2*11,
+              color: "000000",
+              font: firstFont(globRules.body.fontFamily),
+              size: woUnit(globRules.Cpage.fontSize)*2,//pt->half points
               language: {
                 value: "de-DE",
               },
             },
             paragraph: {
               spacing: {
-                before: 3*56,
-                after: 3*56,
+                before: woUnit(globRules.p.marginTop)*56,//unit mm
+                after: woUnit(globRules.p.marginBottom)*56,
             //         line: 276,
               },
             //     indent: {
@@ -1071,14 +1078,13 @@
             next: "Normal",
             quickFormat: true,
             run: {
-              color: "000000",
-              size: 2*21
+              size: 2*woUnit(globRules.h1.fontSize)
             },
             paragraph : {
               alignment: docx.AlignmentType.CENTER,
               spacing: {
-                before: 5*56,
-                after: 0.5*56,
+                before: woUnit(globRules.h1.marginTop)*56,
+                after: woUnit(globRules.h1.marginBottom)*56,
               },
             }
           },{
@@ -1088,14 +1094,13 @@
             next: "Normal",
             quickFormat: true,
             run: {
-              color: "000000",
-              size: 2*8
+              size: woUnit(globRules.Csubhead.fontSize)*2
             },
             paragraph : {
               alignment: docx.AlignmentType.CENTER,
               spacing: {
-                before: 0*56,
-                after: 2*56,
+                before: woUnit(globRules.Csubhead.marginTop)*56,
+                after: woUnit(globRules.Csubhead.marginBottom)*56,
               },
             }
           },{
@@ -1106,13 +1111,12 @@
             quickFormat: true,
             run: {
               bold: true,
-              color: "000000",
-              size: 2*11
+              size: woUnit(globRules.h2.fontSize)*2
             },
             paragraph : {
               spacing: {
-                before: 2*56,
-                after: 0*56,
+                before: woUnit(globRules.h2.marginTop)*56,
+                after: woUnit(globRules.h2.marginBottom)*56,
               },
             }
           },{
@@ -1123,13 +1127,12 @@
             quickFormat: true,
             run: {
               bold: true,
-              color: "000000",
-              size: 2*14
+              size: woUnit(globRules.h3.fontSize)*2
             },
             paragraph : {
               spacing: {
-                before: 0*56,
-                after: 2*56,
+                before: woUnit(globRules.h3.marginTop)*56,
+                after: woUnit(globRules.h3.marginBottom)*56,
               },
             }
           },{
@@ -1139,16 +1142,15 @@
             next: "Normal",
             quickFormat: true,
             run: {
-              color: "000000",
-              size: 2*11,
+              size: woUnit(globRules.h4.fontSize)*2,
               underline: {
                 type: docx.UnderlineType.SINGLE,
               },
             },
             paragraph : {
               spacing: {
-                before: 4*56,
-                after: 2*56,
+                before: woUnit(globRules.h4.marginTop)*56,
+                after: woUnit(globRules.h4.marginBottom)*56,
               },
             }
           },{
@@ -1160,16 +1162,14 @@
             run: {
               bold: true,
               color: "FFFFFF",
-              size: 2*11,
-              // highlight: "darkGray",
+              size: woUnit(globRules.h5.fontSize)*2,
             },
             paragraph : {
               spacing: {
-                before: 3*56,
-                after: 1*56,
+                before: woUnit(globRules.h5.marginTop)*56,
+                after: woUnit(globRules.h5.marginBottom)*56,
               },
               shading: {
-                fill: "808080",
                 type: docx.ShadingType.SOLID,
                 color: "808080",
               },
@@ -1225,7 +1225,7 @@
             quickFormat: true,
             run: {
               color: "000000",
-              size: 2*11
+              size: woUnit(globRules.Chaupttext.fontSize)*2
             },
             paragraph : {
               alignment: docx.AlignmentType.LEFT,
@@ -1254,7 +1254,7 @@
             quickFormat: true,
             run: {
               color: "000000",
-              size: 2*8
+              size: woUnit(globRules.Cerlaeuterung.fontSize)*2,
             },
           },
         ]
@@ -1336,6 +1336,13 @@
     npagesChanged();
     
     cmperpx = 21/document.getElementsByClassName("page")[0].offsetWidth;
+    
+    const gR = document.styleSheets[0].cssRules;
+    for (const r of gR){
+      if(r.selectorText){
+        globRules[r.selectorText.replace(".","C").replace("#","I")] = r.style;
+      }
+    }
   };
   
   const removeClonedPage = function(page){
