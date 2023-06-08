@@ -752,11 +752,12 @@
         let s = el.value;
         if (tn == "select"){
           if(el.selectedIndex == -1 ||
-              el.options[el.selectedIndex].innerText.trim() == ""){
+              el.options[el.selectedIndex].value == "none"){
             let first = true;
             s = "";
             for (const o of el.options){
-              s = s+(first?"":"/")+o.innerText.trim();
+              s = s+(first?"":"/")+
+                (o.value=="none"?"":o.innerText.trim());
               first = (s == "");
             }
           } else {
@@ -2722,6 +2723,7 @@
   <div class="content">
     <h3>
       <select id="tekotsv">
+        <option value="none">Gremium wählen:</option>
         <option value="teko">Teilkonferenz der Lehrkräfte</option>
         <option value="tsv">Teilschülervertretung</option>
       </select>

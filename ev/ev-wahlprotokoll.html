@@ -763,11 +763,12 @@
         let s = el.value;
         if (tn == "select"){
           if(el.selectedIndex == -1 ||
-              el.options[el.selectedIndex].innerText.trim() == ""){
+              el.options[el.selectedIndex].value == "none"){
             let first = true;
             s = "";
             for (const o of el.options){
-              s = s+(first?"":"/")+o.innerText.trim();
+              s = s+(first?"":"/")+
+                (o.vlaue=="none"?"":o.innerText.trim());
               first = (s == "");
             }
           } else {
@@ -1861,7 +1862,7 @@
       auch als (stellvertretende) Mitglieder der Klassenkonferenz
       zu bestimmen:
       <select id="kespauchklkonf">
-        <option value="blank"></option>
+        <option value="none">ja/nein?</option>
         <option value="ja">ja</option>
         <option value="nein">nein</option>
       </select>
