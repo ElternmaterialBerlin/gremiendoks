@@ -731,12 +731,12 @@
     }
     
     if (/h[0-9]/.test(tn)) {
-      return new Paragraph({ text: el.innerText,//textContent,
+      return new Paragraph({ children: childNodesToDocx(el),//textContent,
         heading: HeadingLevel["HEADING_"+tn[1]],
       });
-    } else if (tn =="p" && /subhead|erlaeuterung/.test(cl)) {
-      return new Paragraph({ text: el.innerText,//textContent,
-        style: cl,
+    } else if (tn =="p" && /subhead|erlaeuterung|haupttext/.test(cl)) {
+      return new Paragraph({ children: childNodesToDocx(el),//textContent,
+        style: cl.match(/subhead|erlaeuterung|haupttext/),
       });
     } else if (tn == "label") {
         return new TextRun({text: el.innerText});
@@ -748,7 +748,7 @@
             style: "Hyperlink"})
           ]
         });
-    } else if (tn == "a" && cl=="erlaeuterung") {
+    } else if (/span|^a$/.test(tn) && cl=="erlaeuterung") {
         return new TextRun({
           text: el.innerText,
           style: "erlaeuterungInline"
@@ -760,20 +760,31 @@
     } else if (tn == "br") {
         return new TextRun({text: "", break: 1});
     } else if (/input|select/.test(tn)) {
+        let s = el.value;
+        if (tn == "select"){
+          if(el.selectedIndex == -1 ||
+              el.options[el.selectedIndex].innerText.trim() == ""){
+            let first = true;
+            s = "";
+            for (const o of el.options){
+              s = s+(first?"":"/")+o.innerText.trim();
+              first = (s == "");
+            }
+          } else {
+            s = el.options[el.selectedIndex].innerText.trim();
+          }
+        }
+        
         const w = el.offsetWidth/18;
-        let s = el.value == "blank"? "": el.value;
         while(s.length < w){
           s = s + " ";
         }
         return [
           new TextRun({text: s, style: "input"}),
-          //kleiner hack, um unterstrichenen Whitespace auch
+          //kleiner Hack, um unterstrichenen Whitespace auch
           //anzuzeigen (Word/OnlyOffice):
           new TextRun({text:".", color: "FFFFFF"}),
         ];
-    } else if  (/haupttext/.test(cl)) {
-      return new Paragraph({children: childNodesToDocx(el),
-        style: "haupttext"});
     } else if  (/tabellebreit/.test(cl)) {
       const wahlerg = /wahlerg/.test(cl);
       const bdcolor = wahlerg?"808080":"000000";
@@ -989,9 +1000,11 @@
         }
       }
 
-      const flcontent = page.getElementsByClassName("footerl")[0]?
-        page.getElementsByClassName("footerl")[0].textContent:
-        "";
+      const footerl = page.getElementsByClassName("footerl")[0];
+      const flMain = (footerl && footerl.getAttribute("data-main"))?
+        footerl.getAttribute("data-main"):defaultFooterMain;
+      const flSub = (footerl && footerl.getAttribute("data-sub"))?
+        footerl.getAttribute("data-sub"):"";
       const frexists = page.getElementsByClassName("footerr")[0] &&
         true;
       let frcontent = "";
@@ -1020,12 +1033,9 @@
           default: new docx.Footer({
             children: [new docx.Paragraph({
               children : [
-                new docx.TextRun(
-                  flcontent
-                  + year 
-                  +"\t\t"+
-                  frcontent
-                ),
+                new docx.TextRun(flMain+" "+year+"\t\t"+frcontent),
+                new docx.TextRun({text: "", break: 1}),
+                new docx.TextRun(flSub)
               ],
               tabStops: [
                 {
@@ -1048,6 +1058,13 @@
       description: document.querySelector("meta[name='description']").content,
       sections: sections,
       styles: {
+        default: {
+          listParagraph : {
+            run: {
+              size: woUnit(globRules.Cpage.fontSize)*2,//pt->half points
+            }
+          }
+        },
         paragraphStyles: [
           {
             id: "Normal",
@@ -1058,7 +1075,6 @@
             run: {
               color: "000000",
               font: firstFont(globRules.body.fontFamily),
-              size: woUnit(globRules.Cpage.fontSize)*2,//pt->half points
               language: {
                 value: "de-DE",
               },
@@ -1214,9 +1230,15 @@
             next: "Normal",
             quickFormat: true,
             run: {
-              style: "erlaeuterungInline"
+              //scheint nicht zu funktionieren, daher darunter erneut:
+              // style: "erlaeuterungInline",
+              color: "000000",
+              size: woUnit(globRules.Cerlaeuterung.fontSize)*2,
             },
             paragraph : {
+              //eigentlich docx.AlignmentType.JUSTIFIED, aber
+              //die Algorithmen für Blocksatz in Office-Programmen
+              //sind zu schlecht.
               alignment: docx.AlignmentType.LEFT,
             }
           },{
@@ -1230,6 +1252,9 @@
               size: woUnit(globRules.Chaupttext.fontSize)*2
             },
             paragraph : {
+              //eigentlich docx.AlignmentType.JUSTIFIED, aber
+              //die Algorithmen für Blocksatz in Office-Programmen
+              //sind zu schlecht.
               alignment: docx.AlignmentType.LEFT,
             }
           },
@@ -1267,6 +1292,39 @@
     });
   };
   
+  const defaultFooterMain = "Wahlprotokoll Klassen-EV";
+  const updateFooters = function(){
+    for (const footerl of document.getElementsByClassName("footerl")){
+      const main = footerl["data-main"]?footerl["data-main"]:defaultFooterMain;
+      const sub = footerl.getAttribute("data-sub")?
+        footerl.getAttribute("data-sub"):"";
+      footerl.innerHTML = main+" "+year + "<br/>"+sub
+    }
+  };
+  
+  
+  const createTableRows = function(){
+    for (const tab of document.getElementsByTagName("table")){
+      const nrows = tab.getAttribute("data-nrows");
+      if (!nrows) continue;
+      const ncols = tab.getElementsByTagName("th").length;
+      if (ncols == 0) continue;
+      const tbody = tab.getElementsByTagName("tbody")[0];
+      if (!tbody) continue;
+      
+      let cellstr = "";
+      for(let i=0;i<nrows;i++){
+        cellstr = cellstr + "<tr>\n";
+        for(let j=0;j<ncols;j++){
+          cellstr = cellstr + "  <td><input class='iptab'/></td>\n";
+        }
+        cellstr = cellstr + "</tr>\n";
+      }
+      
+      tbody.innerHTML = cellstr;
+    }
+  };
+    
   var observer;
   var npages;
   var npagesChanged = function(){};
@@ -1281,6 +1339,8 @@
   }
   const ol = function(){
     "use strict";
+    
+    createTableRows();
     
     const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
@@ -1345,6 +1405,8 @@
         globRules[r.selectorText.replace(".","C").replace("#","I")] = r.style;
       }
     }
+    
+    updateFooters();
   };
   
   const removeClonedPage = function(page){
@@ -1505,11 +1567,12 @@
     </p>
     <p class="haupttext docxonly">
       Dies ist ein docx-Export, für die ursprüngliche Web-Version
-      siehe unten. Die Formularfelder (Schule: etc.) sind als
+      siehe unten. Die Formularfelder (Schule, Anzahl abgegebener
+      Stimmen etc.) sind als
       unterstrichener Leerraum umgesetzt, da sich echte
       Formularelemente (Fill-In) als weniger nutzbar herausgestellt
       haben. Das Dokument wird mit OnlyOffice (und seltener
-      LibreOffice) getestet, kleiner Fehler in MS Office sind nicht
+      LibreOffice) getestet, kleine Fehler in MS Office sind nicht
       auszuschließen. 
     </p>
     
@@ -1522,7 +1585,7 @@
       Browserneustart verfügbar sind. Das Formular arbeitet komplett
       offline, es werden keine Felddaten an Server gesendet.
       <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und 
-      löschen Sie die Dateien am Ende (z.B. nach Druck in Datei).</b>
+      löschen Sie die Daten am Ende (z.B. nach Druck in Datei).</b>
     </p>
     
     <h2>Weitergabe</h2>
@@ -1577,9 +1640,9 @@
         <a href="https://beas-mh.de/aktuell/307-willkommenspaket-2021">
           Marzahn-Hellersdorf</a>)
       </li>
-      <li> 2022 Frank Fuhlbrück (u.a. detailliertere Erläuterungen
+      <li> 2022-2023 Frank Fuhlbrück (2022: u.a. detailliertere Erläuterungen
         Abfrage der Stellvertreter*innenzahl und Feld für die 
-        Personalunion)
+        Personalunion, 2023: Erläuterungen zur Rolle der Stellvertretenden)
       </li>
     </ul>
     
@@ -1620,7 +1683,8 @@
       Falls Sie eine zusätzliche leere Seite in der Druckvorschau
       bekommen (beobachtet in Safari), stellen Sie die Skalierung auf
       99% oder weniger ein. Unter Android kann man direkt aus
-      Firefox seit Version 69 keine PDFs mehr erstellen, mit Chrome
+      Firefox seit Version 69 keine PDFs mehr erstellen
+      (zumindest nicht mit den nötigen Einstellungen), mit Chrome
       wählt man <i>Teilen</i> und dann <i>Drucker</i>
       (auch für PDF-Export).
     </p>
@@ -1674,29 +1738,12 @@
       Elternsprecher der Klasse
     </h4>
     
-    <table id=kandkesp class="tabellebreit">
+    <table id=kandkesp class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spanz">Anzahl der Stimmen</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
@@ -1716,21 +1763,12 @@
       Wahlergebnis Klassenelternsprecherinnen / Klassenelternsprecher
     </h5>
     
-    <table id=wekesp class="tabellebreit wahlerg">
+    <table id=wekesp class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
     
     <h4>
@@ -1746,29 +1784,12 @@
       <a class="erlaeuterung">(maximal 4)</a>
     </p>
     
-    <table id=kandstvkesp class="tabellebreit">
+    <table id=kandstvkesp class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spanz">Anzahl der Stimmen</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
@@ -1788,29 +1809,12 @@
       Wahlergebnis stellvertretende Klassenelternsprecherinnen / Klassenelternsprecher
     </h5>
     
-    <table id=westvkesp class="tabellebreit wahlerg">
+    <table id=westvkesp class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
   </div>
   <div class="footerl">
@@ -1858,30 +1862,17 @@
       zu bestimmen:
       <select id="kespauchklkonf">
         <option value="blank"></option>
-        <option value="nein">nein</option>
         <option value="ja">ja</option>
+        <option value="nein">nein</option>
       </select>
     </p>
     
-    <table id=kandklko class="tabellebreit">
+    <table id=kandklko class="tabellebreit" data-nrows="3">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spanz">Anzahl der Stimmen</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
     <p class="erlaeuterung">
       (bei mehr als drei Kandidierenden bitte eigenes Blatt verwenden)
@@ -1901,21 +1892,12 @@
       Wahlergebnis Mitglieder der Klassenkonferenz
     </h5>
     
-    <table id=weklko class="tabellebreit wahlerg">
+    <table id=weklko class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
     
     <h4>
@@ -1930,25 +1912,12 @@
       <a class="erlaeuterung">(maximal 4)</a>
     </p>
     
-    <table id=kandstvklko class="tabellebreit">
+    <table id=kandstvklko class="tabellebreit" data-nrows="3">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spanz">Anzahl der Stimmen</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
+      <tbody></tbody>
     </table>
     <p class="erlaeuterung">
       (bei mehr als drei Kandidierenden bitte eigenes Blatt verwenden)
@@ -1968,30 +1937,12 @@
       Wahlergebnis stellvertretende Mitglieder der Klassenkonferenz
     </h5>
     
-    <table id=westvklko class="tabellebreit wahlerg">
+    <table id=westvklko class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><input class="iptab"/></td>
-        </tr>
-      <tbody>
-    </table>
+      <tbody></table>
     <p></p>
   
   <h2>4. Einspruchsrecht und Unterschrift(en) der Wahlleitung</h2>
@@ -2004,8 +1955,7 @@
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spwg">
-          <strong>nicht</strong> geleitete
-          Wahlen
+          geleitete Wahlen
         </th>
         <th class="spunters">Unterschrift</th>
       </tr></thead>
@@ -2020,7 +1970,7 @@
           <td><textarea class="iptab"></textarea></td>
           <td></td>
         </tr>
-      <tbody>
+      </tbody>
     </table>
     
   </div>
@@ -2097,6 +2047,26 @@
       gewählt wurden.
       Bei Stimmengleichheit findet (sofern nötig) eine Stichwahl
       statt, besteht diese fort, wird gelost.
+    </p>
+    
+    <h2>4. Rolle der stellvertretenden Klassenelternsprecher*innen</h2>
+    <p class="haupttext">
+      Das Schulgesetz sieht nur für die/den Elternsprecher*in
+      der ganzen Schule explizit Stellvertretende vor. Allerdings
+      sind für jedes Gremienmitglied 1-2 Stellvertretende
+      zu wählen. Da die Gesamtelternvertretung ein Gremium ist
+      und die Klassenelternsprecher*innen dort Mitglied sind,
+      sind also zumindest für diese Funktion auch Stellvertretende
+      zu wählen. Dass diese auch die Elternversammlung bei Abwesenheit
+      der Klassenelternsprecher*innen vorbereiten und leiten,
+      ist so nicht vorgesehen. Alle weiteren De-Facto-Aufgaben
+      für die Eltern der Klasse (mancherorts Klassenkasse,
+      Kommunikation, Basare u.ä.) sind ohnehin nicht im Gesetz
+      angelegt und können beliebig verteilt werden. In der Praxis
+      besteht der Unterschied zwischen Klassenelternsprecher*innen
+      und Stellvertretenden also v.a. im aktiven und passiven
+      Wahlrecht in der GEV, ansonsten bietet es sich an, alle als Team
+      zu sehen.
     </p>
   </div>
   
