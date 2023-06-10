@@ -720,7 +720,7 @@
     return children;
   };
   
-  const elToDocx = function(el){
+  const elToDocx = function(el,opt){
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle,
       ExternalHyperlink} = docx;
@@ -943,20 +943,29 @@
         }
       }
       return new Paragraph({children: children});
-    } else if  (tn == "ul") {
+    } else if  (/^ul$|^ol$/.test(tn)) {
       const ret = [];
 
       for (const ch of el.children){
-        const r = elToDocx(ch);
+        const r = elToDocx(ch,{listType:tn});
         if (r){
           ret.push(r);
         }
       }
       return ret;
     } else if  (tn == "li") {
-      return new Paragraph({children: childNodesToDocx(el),
-        bullet: {level: 0}
-      });
+      if (opt && opt.listType == "ol"){
+        return new Paragraph({children: childNodesToDocx(el),
+          numbering: {
+            reference: "global",
+            level: 0,
+          },
+        });
+      } else {
+        return new Paragraph({children: childNodesToDocx(el),
+          bullet: {level: 0}
+        });
+      }
     } else {
       return new TextRun({
         color: "FF0000",
@@ -985,6 +994,7 @@
       if (page.className.indexOf("noprint") != -1){
         continue;
       }
+      const isVH = /vhpage/.test(page.className);
       const cnt = page.getElementsByClassName("content")[0];
       const secch = [];
       
@@ -1021,6 +1031,13 @@
         properties: {
           type: docx.SectionType.NEXT_PAGE,
           page: {
+            size: {
+              orientation: (isVH ||
+                woUnit(globRules.Cpage.height)>
+                woUnit(globRules.Cpage.width))?"portrait":"landscape",
+              width: 11907,
+              height: 16839,
+            },
             margin: {
               top: 1*567,//567=1cm
               right: 1*567,
@@ -1058,6 +1075,25 @@
       title: document.title,
       description: document.querySelector("meta[name='description']").content,
       sections: sections,
+      numbering: {
+        config: [{
+            reference: "global",
+            levels: [{
+                  level: 0,
+                  format: docx.LevelFormat.DECIMAL,
+                  text: "%1.",
+              },{
+                  level: 1,
+                  format: docx.LevelFormat.DECIMAL,
+                  text: "%1.%2.",
+              },{
+                  level: 2,
+                  format: docx.LevelFormat.DECIMAL,
+                  text: "%1.%2.%3.",
+              },
+            ],
+        }],
+      },
       styles: {
         default: {
           listParagraph : {
