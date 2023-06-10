@@ -768,7 +768,7 @@
             s = "";
             for (const o of el.options){
               s = s+(first?"":"/")+
-                (o.vlaue=="none"?"":o.innerText.trim());
+                (o.value=="none"?"":o.innerText.trim());
               first = (s == "");
             }
           } else {
@@ -1312,12 +1312,17 @@
       if (ncols == 0) continue;
       const tbody = tab.getElementsByTagName("tbody")[0];
       if (!tbody) continue;
+      const tr = tbody.getElementsByTagName("tr")[0];
       
       let cellstr = "";
       for(let i=0;i<nrows;i++){
         cellstr = cellstr + "<tr>\n";
-        for(let j=0;j<ncols;j++){
-          cellstr = cellstr + "  <td><input class='iptab'/></td>\n";
+        if (tr){
+          cellstr = cellstr + tr.innerHTML;
+        } else {
+          for(let j=0;j<ncols;j++){
+            cellstr = cellstr + "  <td><input class='iptab'/></td>\n";
+          }
         }
         cellstr = cellstr + "</tr>\n";
       }
