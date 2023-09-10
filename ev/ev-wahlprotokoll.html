@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <title>
-  Wahlprotokoll der Klassenelternversammlung
+  Wahlprotokoll der Klassenelternversammlung (Berlin)
 </title>
 <meta charset="UTF-8"/>
 <meta name="description"
@@ -15,9 +15,9 @@
     --year: "2023/2024";
     --npages: "";
   }
-  
+
   body {
-/*  position: absolute scheint page-breaks in Chrom(e/ium) zu 
+/*  position: absolute scheint page-breaks in Chrom(e/ium) zu
     verhindern:*/
 /*     position: absolute; */
     background-color: white;
@@ -30,7 +30,7 @@
     /*Verhindert Abstände zwischen Seiten:*/
     line-height: 0pt;
     font-size: 0pt;
-    counter-reset: pn; 
+    counter-reset: pn;
   }
   .page {
     box-sizing: border-box;
@@ -99,7 +99,7 @@
   .yr::after {
     content: var(--year);
   }
-  
+
   @media print {
     @page {
       size: auto;
@@ -110,7 +110,7 @@
 /*       background-color: #efefff;
        border: solid 1px; */
       /*Ende Debugging*/
-      
+
 /*       break-after: page; */
       break-inside: avoid-page;
     }
@@ -123,12 +123,12 @@
     .anleitung {
       display: none;
     }
-    
+
     select {
       appearance: none;
       border-bottom: 1px solid;
     }
-    
+
     a:link {
       text-decoration: inherit;
       color: inherit;
@@ -177,7 +177,7 @@
     .noprint .lesspages::after {
       content: "";
     }
-    
+
     .guielement_small {
       display: inline-block;
       max-width: 18mm;
@@ -186,26 +186,26 @@
       margin-left: 1mm;
       margin-top: 1mm;
     }
-    
+
     .noprint {
       filter: contrast(50%);
     }
   }
-  
+
   h1 {/*Wahlprotokoll fuer ...*/
     text-align: center;
     font-size: 21pt;
     margin-top: 5mm;
     margin-bottom: 0.5mm;
   }
-  
+
   .subhead {/*basierend...*/
     text-align: center;
     font-size: 8pt;
     margin-top: 0pt;
     margin-bottom: 2mm;
   }
-  
+
   h2 {/*Schritte der Wahl*/
     text-align: left;
     font-weight: bold;
@@ -213,7 +213,7 @@
     margin-top: 2mm;
     margin-bottom: 0pt;
   }
-  
+
   h3 {/*Gremien/Ämter*/
     text-align: left;
     font-weight: bold;
@@ -221,7 +221,7 @@
     margin-top: 0pt;
     margin-bottom: 2mm;
   }
-  
+
   h4 {/*Kandidierende*/
     text-align: left;
     font-weight: normal;
@@ -233,7 +233,7 @@
     text-underline-offset: 1pt;
     padding: 0pt;
   }
-  
+
   h5 {/*Wahlergebnis*/
     text-align: left;
     font-weight: bold;
@@ -245,14 +245,14 @@
     color : white;
     background-color: #808080;
   }
-  
+
   p {
     padding: 0mm;
     margin: 0mm;
     margin-top: 3mm;
     margin-bottom: 3mm;
   }
-  
+
   .erlaeuterung {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
@@ -261,14 +261,14 @@
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  
+
   ul, ol {
     margin-top: 2mm;
     padding-top: 0pt;
     margin-bottom: 2mm;
     padding-bottom: 0pt;
   }
-  
+
   .haupttext {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
@@ -277,12 +277,12 @@
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  
+
   td, th {
     margin: 0mm;
     padding: 1pt;
   }
-  
+
   .tabellebreit {
     box-sizing: border-box;
     width: 100%;
@@ -300,20 +300,20 @@
     border: 1pt solid;
     height: 7mm;
   }
-  
+
   .doppelzeilen td {
     height: 14mm;
     vertical-align: top;
   }
-  
+
   .wahlerg {
 /*     background-color: #d9d9d9; */
-    
+
     border: 2pt solid #808080;
 /*     margin-bottom: -2pt; */
 /*     margin-bottom: 4mm; */
   }
-  
+
   .wahlerg th {
     border: 2pt solid #808080;
     background-color: #808080;
@@ -322,13 +322,13 @@
 /*  .wahlerg .iptab {
     background-color: #d9d9d9;
   }*/
-  
+
   .tabelleohnerahmen {
     width: 100%;
     padding: 0px;
     border-spacing: 0pt;
   }
-  
+
   .iptab {
     border: none;
     height: 100%;
@@ -337,7 +337,7 @@
     width: 100%;
     resize: none;
   }
-  
+
   .ipcb {
     margin: 0pt;
     border: none;
@@ -346,29 +346,29 @@
     filter: opacity(0%);
     margin-right: -70%;
   }
-  
+
   .ipcb:checked ~ a::after{
     font-size: 100%;
     content: "X";
     pointer-events: none;
   }
-  
+
   .spnamen {
     width: 8cm;
   }
-  
+
   .sprang {
     width: 4mm;
   }
-  
+
   .spfach {
     width: 2cm;
   }
-  
+
   .spunters {
     width: 6cm;
   }
-  
+
   input {
     font: inherit;
     border: none;
@@ -376,13 +376,13 @@
     padding: 1pt;
     margin: 0pt;
   }
-  
+
   label {
 /*     font-size: 11pt; */
     padding: 0pt;
     margin-left: 0pt;
   }
-  
+
   select {
     font: inherit;
     border: none;
@@ -391,54 +391,54 @@
     padding: 0pt;
     margin: 0pt;
   }
-  
+
   #schulez {
     padding: 0pt;
     margin-left: 0pt;
   }
-  
+
   #schule {
     width: 10cm;
   }
-  
+
   #klasse {
     width: 1cm;
   }
-  
+
   #datumz {
     text-align: right;
   }
-  
+
   #datum {
     width: 3cm;
   }
-  
+
   #anwesend, #stimmen {
     width: 1.2cm;
   }
-  
+
   #wahlleitung {
     width: 15cm;
   }
-  
+
   .anz  {
     width: 1cm;
   }
-  
+
   .wahltyp  {
     width: 2cm;
   }
-  
+
   .docxonly {
     display: none;
   }
 </style>
 <script>
   "use strict";
-  const loadScriptAsync = function(src){  
+  const loadScriptAsync = function(src){
     (async () => {await import(src)})()
   }
-  
+
   const storage = window.localStorage;
   var cmperpx;
   const globRules = {};
@@ -448,7 +448,7 @@
   const firstFont = function(fts){
     return fts.replace(/,.*/,"");
   };
-  
+
   var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
   const url = window.location.pathname;
@@ -480,7 +480,7 @@
     delete objStore[prefix][id];
     return storage.removeItem(prefix+id);
   };
-  
+
   const download = function(fn,text) {
     const el = document.createElement("a");
     el.setAttribute("href",
@@ -491,7 +491,7 @@
     el.click();
     document.body.removeChild(el);
   };
-  
+
   const downloadBlob = function(fn,blob) {
     const el = document.createElement("a");
     el.setAttribute("href",URL.createObjectURL(blob))
@@ -502,7 +502,7 @@
     document.body.removeChild(el);
     URL.revokeObjectURL(el.href);
   };
-  
+
   const upload = function(cb) {
     const fr = new FileReader();
     fr.onload= function(){
@@ -518,7 +518,7 @@
     el.click();
     document.body.removeChild(el);
   };
-  
+
   const dlSelf = function(){
     if (hasClones()){
       warnClones();
@@ -528,12 +528,12 @@
       document.documentElement.innerHTML+"\n</html>"
     );
   };
-  
+
   const exportObjStore = function(fn,prefix){
     const obj = prefix ? objStore[selffn+"_"+prefix] : objStore;
     download(fn,JSON.stringify(obj));
   };
-  
+
   const importJsonToStores = function(js,prefix){
   var obj;
     try {
@@ -549,7 +549,7 @@
       setItem(id,obj[id],prefix);
     }
   };
-  
+
   const saveField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     if (fld.id && fld.id != ""){
@@ -562,7 +562,7 @@
       }
     }
   };
-  
+
   const loadField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     const stored = getItem(fld.id,fieldPrefix)
@@ -576,7 +576,7 @@
       }
     }
   };
-  
+
   const deleteSavedField = function(fld){
     if (fld.id && fld.id != ""){
       removeItem(fld.id,fieldPrefix);
@@ -588,7 +588,7 @@
       setItem(el.id,el.innerHTML,editPrefix);
     }
   };
-  
+
   const loadElement = function(el){
     if (el.id && el.id != ""){
       const stored = getItem(el.id,editPrefix);
@@ -597,13 +597,13 @@
       }
     }
   };
-  
+
   const deleteSavedElement = function(el){
     if (el.id && el.id != ""){
       removeItem(el.id,editPrefix);
     }
   };
-  
+
   const clearFields = function(){
     const flds  = document.querySelectorAll("input,select,textarea");
     for(const fld of flds){
@@ -618,22 +618,22 @@
     }
     location.reload();
   };
-  
+
   const exportFields = function(){
     exportObjStore(selffn+"_daten.json",fieldPrefix);
   };
-  
+
   const importFields = function(){
     upload(function(js){
       importJsonToStores(js,fieldPrefix);
       location.reload();
     });
   };
-  
+
   var allowEdits = false;
   const edicls = ["haupttext","erlaeuterung"];
   const editags = ["H1","H2","H3","H4","H5","TH","OL","UL"];
-  
+
   const flipEdit = function(){
     if(hasClones()){
       warnClones();
@@ -653,7 +653,7 @@
       }
     }
   };
-  
+
   const loadEdits = function(){
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -672,7 +672,7 @@
       }
     }
   };
-  
+
   const revertEdits = function(){
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -692,7 +692,7 @@
     }
     location.reload();
   };
-  
+
   const childNodesToDocx = function(el){
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle} = docx;
@@ -719,7 +719,7 @@
     }
     return children;
   };
-  
+
   const elToDocx = function(el,opt){
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle,
@@ -729,7 +729,7 @@
     if (/htmlonly/.test(cl)){
       return null;
     }
-    
+
     if (/h[0-9]/.test(tn)) {
       return new Paragraph({ children: childNodesToDocx(el),//textContent,
         heading: HeadingLevel["HEADING_"+tn[1]],
@@ -775,7 +775,7 @@
             s = el.options[el.selectedIndex].innerText.trim();
           }
         }
-        
+
         const w = el.offsetWidth/18;
         while(s.length < w){
           s = s + " ";
@@ -839,7 +839,7 @@
           rule: HeightRule.EXACT,
         }
       })];
-      
+
       for (const tr of el.getElementsByTagName("tbody")[0].
         getElementsByTagName("tr")){
         const trcells = [];
@@ -879,7 +879,7 @@
       let first = true;
       const cw = [];
       const rows = [];
-      
+
       for (const tr of el.getElementsByTagName("tbody")[0].
         getElementsByTagName("tr")){
         const trcells = [];
@@ -973,7 +973,7 @@
       });
     }
   }
-  
+
   const saveDocx = async function(){
     if (!confirm(
       "Dies lädt externe JavaScript-Bibliotheken nach "+
@@ -984,9 +984,9 @@
       return;
     }
     await import("https://unpkg.com/docx@8.0.4/build/index.js");
-    
+
     const sections = [];
-    
+
     const pages = document.querySelectorAll(".page,.vhpage");
     let pn = 0;
     for(let i=0;i<pages.length;++i) {
@@ -997,7 +997,7 @@
       const isVH = /vhpage/.test(page.className);
       const cnt = page.getElementsByClassName("content")[0];
       const secch = [];
-      
+
       for(const el of cnt.children) {
         const ch = elToDocx(el);
         if(ch){
@@ -1068,8 +1068,8 @@
           }),
         },
       });
-    }  
-    
+    }
+
     const doc = new docx.Document({
       creator: "ElternmaterialBerlin",
       title: document.title,
@@ -1328,7 +1328,7 @@
         downloadBlob("ev-wahlprotokoll.docx",blob)
     });
   };
-  
+
   const defaultFooterMain = "Wahlprotokoll Klassen-EV";
   const updateFooters = function(){
     for (const footerl of document.getElementsByClassName("footerl")){
@@ -1338,8 +1338,8 @@
       footerl.innerHTML = main+" "+year + "<br/>"+sub
     }
   };
-  
-  
+
+
   const createTableRows = function(){
     for (const tab of document.getElementsByTagName("table")){
       const nrows = tab.getAttribute("data-nrows");
@@ -1349,7 +1349,7 @@
       const tbody = tab.getElementsByTagName("tbody")[0];
       if (!tbody) continue;
       const tr = tbody.getElementsByTagName("tr")[0];
-      
+
       let cellstr = "";
       for(let i=0;i<nrows;i++){
         cellstr = cellstr + "<tr>\n";
@@ -1362,11 +1362,11 @@
         }
         cellstr = cellstr + "</tr>\n";
       }
-      
+
       tbody.innerHTML = cellstr;
     }
   };
-    
+
   var observer;
   var npages;
   var npagesChanged = function(){};
@@ -1381,9 +1381,9 @@
   }
   const ol = function(){
     "use strict";
-    
+
     createTableRows();
-    
+
     const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
     for(const fld of flds){
@@ -1397,7 +1397,7 @@
         const rowNr = Array.prototype.indexOf.call(gp.children,par);
         const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
         fld.id = tab.id+"_"+colid+rowNr;
-        
+
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
           copy and paste vermeiden.*/
         if (usedids[fld.id]){
@@ -1410,7 +1410,7 @@
       loadField(fld);
       fld.oninput = saveField;
     }
-    
+
     observer = new MutationObserver(function(mutationsList,observer){
       for(const mutation of mutationsList) {
         const el = mutation.target.parentElement;
@@ -1419,7 +1419,7 @@
     });
     observer.observe(document,{characterData:true,subtree:true});
     loadEdits();
-    
+
     for (const pageid in nclones){
       const ncl = nclones[pageid];
       let page = document.getElementById(pageid);
@@ -1433,24 +1433,24 @@
         page.classList.remove("doprint");
       }
     }
-    
+
     npages = document.getElementsByClassName("doprint").length;
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
     npagesChanged();
-    
+
     cmperpx = 21/document.getElementsByClassName("page")[0].offsetWidth;
-    
+
     const gR = document.styleSheets[0].cssRules;
     for (const r of gR){
       if(r.selectorText){
         globRules[r.selectorText.replace(".","C").replace("#","I")] = r.style;
       }
     }
-    
+
     updateFooters();
   };
-  
+
   const removeClonedPage = function(page){
     page.parentNode.removeChild(page);
     const idsuffix = page.ncopy > 2 ? "_"+(page.ncopy-1): "";
@@ -1462,7 +1462,7 @@
     nclones[page.baseid] = lastclone.ncopy;
     setItem("..nclones",JSON.stringify(nclones));
   };
-  
+
   const hidePagePrint = function(x){
     const page = x.parentNode.parentNode;
     if (page.ncopy && page.ncopy > 1){
@@ -1488,7 +1488,7 @@
       page.classList.remove("doprint");
     }
   };
-  
+
   const clonePage = function(page){
     const pagecl = page.cloneNode(true);
     page.parentNode.insertBefore(pagecl,page.nextSibling);
@@ -1525,7 +1525,7 @@
     }
     return pagecl;
   };
-  
+
   const hasClones = function(){
     for (const ncl of Object.values(nclones)){
       if (ncl > 1){
@@ -1534,22 +1534,22 @@
     }
     return false;
   };
-  
+
   const warnClones = function(){
       alert("Eine modifizierte Version des Dokuments sollte nicht " +
       "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
       "Bitte löschen Sie zunächst die Daten oder entfernen Sie " +
       "alle vervielfältigten Seiten.");
   };
-  
+
   const warnEdit = function(){
       alert("Eine modifizierte Version des Dokuments sollte nicht " +
       "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
       "Bitte speichern Sie Ihre modifizierte Version und stellen " +
       "das Editieren ab, bevor Sie Seiten vervielfältigen.");
   };
-  
-  
+
+
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
@@ -1575,7 +1575,7 @@
     };
   };
 
-  
+
 //lokale Nutzung des Callbacks npagesChanged:
   npagesChanged = function(){
 //     document.getElementById("seiten").defaultValue = npages;
@@ -1585,6 +1585,32 @@
 <body onload="ol()">
 <div class="vhpage anleitung" id="anl">
   <div class="content">
+    <h2>Was ist das?</h2>
+    <p class="haupttext htmlonly">
+      Dies ist die im Browser ausfüllbare Version eines Protokolls
+      für Wahlen in Elternversammlungen in Klassen,
+      Lerngruppen und Jahrgängen in Berlin. Sie können es
+      nach dem Ausfüllen (z.B. als PDF) drucken oder als .docx-Datei
+      exportieren. Was gibt es sonst noch?
+    </p>
+    <ul>
+      <li>Dieses Protokoll gibt es auch in einer
+      <a href="ev-wahlprotokoll.docx">Word-Version</a>
+      und einer <a href="ev-wahlprotokoll.pdf">PDF-Version</a>.
+      </li>
+      <li>Für die Gesamtelternvertretung (GEV) gibt es ebenfalls
+      ein <a href="../gev/gev-wahlprotokoll.html">Wahlprotokoll</a>
+      (<a href="../gev/gev-wahlprotokoll.docx">Word</a> |
+      <a href="../gev/gev-wahlprotokoll.pdf">PDF</a>).
+      </li>
+      <li>Weitere Materialien (z.B. Kontaktliste) gibt es
+      <a href="https://github.com/ElternmaterialBerlin/gremiendoks">hier</a>.
+      </li>
+      <li>Die leicht unterschiedlichen Varianten der BEAs,
+      auf denen dieses Protokoll beruht, sind unten bei Autor:innen verlinkt.
+      </li>
+    </ul>
+
     <h2>Anleitung</h2>
     <p class="haupttext htmlonly">
       Dieses Dokument ist im Browser ausfüllbar. Überschriften,
@@ -1615,9 +1641,9 @@
       Formularelemente (Fill-In) als weniger nutzbar herausgestellt
       haben. Das Dokument wird mit OnlyOffice (und seltener
       LibreOffice) getestet, kleine Fehler in MS Office sind nicht
-      auszuschließen. 
+      auszuschließen.
     </p>
-    
+
     <h2 class="htmlonly">Datenschutz</h2>
     <p class="haupttext htmlonly">
       Das Formular verwendet den localStorage der
@@ -1626,10 +1652,10 @@
       von Ihrem Browser gespeichert werden und auch nach einem
       Browserneustart verfügbar sind. Das Formular arbeitet komplett
       offline, es werden keine Felddaten an Server gesendet.
-      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und 
+      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und
       löschen Sie die Daten am Ende (z.B. nach Druck in Datei).</b>
     </p>
-    
+
     <h2>Weitergabe</h2>
     <p class="haupttext">
       Dieses Werk ist lizenziert unter der Lizenz
@@ -1643,10 +1669,10 @@
       Teils (insbesondere ohne Anleitungsseite) zu erstellen und
       ohne Namensnennung zu verbreiten und zu archivieren. Wenn Sie nur
       die GUI dieses Dokuments übernehmen und z.B. ein Dokument zu einem
-      anderen Zweck erstellen, genügt es die technischen Autor*innen
+      anderen Zweck erstellen, genügt es die technischen Autor:innen
       dieses Dokuments aufzulisten.
     </p>
-    
+
     <p class="haupttext">
       Die jeweils aktuelle Version finden Sie unter:<br/>
       <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/ev-wahlprotokoll.html">
@@ -1654,13 +1680,13 @@
       als Teil der Materialsammlung:<br/>
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
         https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
-      
+
       Dort finden Sie auch weitere
       Dokumente zur Elternarbeit und können eine verbesserte Version
       dieses Dokuments einsenden.
     </p>
-    
-    <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
+
+    <h2>Technische Autor:innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
       <li> 2013-2021 (Wordvorlage: Schriftstile, Anordnung;
         Quelle s.u.)</li>
@@ -1668,35 +1694,35 @@
         (2020: editierbare Umsetzung in HTML/CSS/Javascript; 2022: Wahlergebnisse
         auf weißem Grund; 2023: docx-Export)</li>
     </ul>
-    
-    <h2>Inhaltliche Autor*innen (Texte)</h2>
+
+    <h2>Inhaltliche Autor:innen (Texte)</h2>
     <ul>
       <li> 2013-2021 Ursprungsversion:
         <a href="https://berliner-elternvideos.de/elternfortbildner/">
-          Elternfortbilder*innen für Mitwirkungsfragen
+          Elternfortbilder:innen für Mitwirkungsfragen
         </a>
       </li>
-      <li> 2013-2021 Anpassungen durch Bezirkselternausschüsse (u.a. 
+      <li> 2013-2021 Anpassungen durch Bezirkselternausschüsse (u.a.
         <a href="https://bea-sz.de/dokumente/willkommenspaket-2021/wahlprotokoll-gev.html">
           Steglitz-Zehlendorf</a>,
         <a href="https://beas-mh.de/aktuell/307-willkommenspaket-2021">
           Marzahn-Hellersdorf</a>)
       </li>
       <li> 2022-2023 Frank Fuhlbrück (2022: u.a. detailliertere Erläuterungen
-        Abfrage der Stellvertreter*innenzahl und Feld für die 
+        Abfrage der Stellvertreter:innenzahl und Feld für die
         Personalunion, 2023: Erläuterungen zur Rolle der Stellvertretenden)
       </li>
     </ul>
-    
+
     <h2>Haftungsausschluss</h2>
     <p class="haupttext">
-      Die Autor*innen sind in der Mehrheit aktive Eltern ohne
+      Die Autor:innen sind in der Mehrheit aktive Eltern ohne
       juristische Ausbildung. Entsprechend kann für die korrekte
       Auslegung von Gesetzen (Schulgesetz, DSGVO, etc.) keine Garantie
       gegeben werden. Falls Sie Fehler oder Unklarheiten feststellen,
-      bitten wir Sie die zuletzt aktiven Autor*innen zu kontaktieren.
+      bitten wir Sie die zuletzt aktiven Autor:innen zu kontaktieren.
     </p>
-    
+
     <h2>Warum HTML?</h2>
     <p class="haupttext">
       Zum Zeitpunkt der ersten Erstellung (2020-2022) ist die
@@ -1704,7 +1730,7 @@
       relativ konsistent. Die gewählte Implementierung erlaubt zudem
       das Anpassen von Teilen des Dokuments ohne HTML-Kenntnisse.
       Da die korrekte Verarbeitung von Stilen
-      in Office-Dokumenten über Anwendungen (und Anwender*innen) hinweg
+      in Office-Dokumenten über Anwendungen (und Anwender:innen) hinweg
       immer wieder problematisch ist, wurde bewusst kein OOXML (.docx)
       oder OpenDocument (.odt) eingesetzt. TeX würde zwar
       konsistentere Druckdarstellung und bessere Langzeitnutzbarkeit
@@ -1714,11 +1740,11 @@
       direkt aus der HTML-Seite generiert, profitiert also von
       zukünftigen Änderungen dieser.
     </p>
-    
+
     <h2 class="htmlonly">Drucktipps</h2>
     <p class="haupttext htmlonly">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken vom Hintergrund (Firefox) bzw. 
+      das Drucken vom Hintergrund (Firefox) bzw.
       Hintergrundgrafiken (Chrome) erlaubt werden. Zudem sollten
       keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
       auf die Seite passt.
@@ -1731,13 +1757,13 @@
       (auch für PDF-Export).
     </p>
   </div>
-</div>  
+</div>
 <div class="page doprint" id="kesp">
   <div class="content">
     <h1>Wahlprotokoll der Klassenelternversammlung
     </h1>
     <p class="subhead">
-      (basierend auf dem Schulgesetz des Landes 
+      (basierend auf dem Schulgesetz des Landes
       Berlin und der Wahlordnung zum Schulverfassungsgesetz)
     </p>
     <table class="tabelleohnerahmen">
@@ -1766,20 +1792,20 @@
       <label for="stimmen">Stimmen</label>
       (siehe Anwesenheitsliste als Anlage).
     </p>
-    
+
     <h2>2. Wahl der Wahlleitung</h2>
     <p class="haupttext">
       <label for="wahlleitung">Wahlleitung:</label>
       <input type="text" id="wahlleitung" name="wahlleitung" value="" />
     </p>
-    
+
     <h2>3. Durchführung der Wahl und Erfassung der Kandidierenden</h2>
-    
+
     <h4>
       Kandidierende als Elternsprecherin oder
       Elternsprecher der Klasse
     </h4>
-    
+
     <table id=kandkesp class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1790,7 +1816,7 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="kesptyp">Wahlart:</label>
       <input id="kesptyp" name="kesptyp" class="wahltyp" />
@@ -1800,11 +1826,11 @@
       <label for="kespenth">davon Enth.:</label>
       <input id="kespenth" name="kespenth" class="anz" />
     </p>
-    
+
     <h5>
       Wahlergebnis Klassenelternsprecherinnen / Klassenelternsprecher
     </h5>
-    
+
     <table id=wekesp class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1812,12 +1838,12 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <h4>
       Kandidierende für stellvertretende Elternsprecherinnen oder
       Elternsprecher der Klasse
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvkesp">Es sollen </label>
       <input id="stvkesp" name="stvkesp" class="anz" />
@@ -1825,7 +1851,7 @@
       Elternsprecher gewählt werden.
       <a class="erlaeuterung">(maximal 4)</a>
     </p>
-    
+
     <table id=kandstvkesp class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1836,7 +1862,7 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvkesptyp">Wahlart:</label>
       <input id="stvkesptyp" name="stvkesptyp" class="wahltyp" />
@@ -1846,11 +1872,11 @@
       <label for="stvkespenth">davon Enth.:</label>
       <input id="stvkespenth" name="stvkespenth" class="anz" />
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Klassenelternsprecherinnen / Klassenelternsprecher
     </h5>
-    
+
     <table id=westvkesp class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1867,21 +1893,21 @@
   </div>
 <!-- GUI-Header erste Seite -->
   <div class="guiheader guiheader_edit">
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="flipEdit();">Editieren an/aus</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="dlSelf();">Dokument speichern</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="revertEdits();">Änderungen verwerfen</a>
   </div>
   <div class="guiheader">
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="clearFields();">Daten löschen</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="exportFields();">Daten exportieren</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="importFields();">Daten importieren</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="saveDocx();">als docx speichern</a>
   </div>
 <!-- ENDE GUI-Header erste Seite -->
@@ -1890,15 +1916,15 @@
 
 <div class="page doprint" id="stvkesp">
   <div class="content">
-    
+
     <h4>
       Kandidierende für die Mitglieder der Klassenkonferenz
     </h4>
-    
+
     <p class="haupttext">
       Die Klassenelternversammlung hat mit einfacher Mehrheit
       beschlossen, die (stellvertretenden)
-      Klassenelternsprecherinnen und Klassenelternsprecher 
+      Klassenelternsprecherinnen und Klassenelternsprecher
       in Personalunion
       auch als (stellvertretende) Mitglieder der Klassenkonferenz
       zu bestimmen:
@@ -1908,7 +1934,7 @@
         <option value="nein">nein</option>
       </select>
     </p>
-    
+
     <table id=kandklko class="tabellebreit" data-nrows="3">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1919,7 +1945,7 @@
     <p class="erlaeuterung">
       (bei mehr als drei Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="klkotyp">Wahlart:</label>
       <input id="klkotyp" name="klkotyp" class="wahltyp" />
@@ -1929,11 +1955,11 @@
       <label for="klkoenth">davon Enth.:</label>
       <input id="klkoenth" name="klkoenth" class="anz" />
     </p>
-    
+
     <h5>
       Wahlergebnis Mitglieder der Klassenkonferenz
     </h5>
-    
+
     <table id=weklko class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1941,11 +1967,11 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <h4>
       Kandidierende für stellvertretende Mitglieder der Klassenkonferenz
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvklko">Es sollen </label>
       <input id="stvklko" name="stvklko" class="anz" />
@@ -1953,7 +1979,7 @@
       Elternsprecher gewählt werden.
       <a class="erlaeuterung">(maximal 4)</a>
     </p>
-    
+
     <table id=kandstvklko class="tabellebreit" data-nrows="3">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1964,7 +1990,7 @@
     <p class="erlaeuterung">
       (bei mehr als drei Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvklkotyp">Wahlart:</label>
       <input id="stvklkotyp" name="stvklkotyp" class="wahltyp" />
@@ -1974,11 +2000,11 @@
       <label for="stvklkoenth">davon Enth.:</label>
       <input id="stvklkoenth" name="stvklkoenth" class="anz" />
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Klassenkonferenz
     </h5>
-    
+
     <table id=westvklko class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1986,13 +2012,13 @@
       </tr></thead>
       <tbody></table>
     <p></p>
-  
+
   <h2>4. Einspruchsrecht und Unterschrift(en) der Wahlleitung</h2>
     <p class="haupttext">
     Einspruch gegen die Wahlen oder Wahldurchführung sind schriftlich
     begründet bei der Wahlleitung einzulegen.
     </p>
-  
+
     <table id=wahlleitus class="tabellebreit doppelzeilen">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2014,10 +2040,10 @@
         </tr>
       </tbody>
     </table>
-    
+
   </div>
 
-  
+
   <div class="footerl">
     Wahlprotokoll Klassen-EV <a class="yr"></a><br/>
   </div>
@@ -2028,11 +2054,11 @@
 
 <div class="page doprint" id="erlaeuterungen">
   <div class="content">
-    
+
     <h3>
       Erläuterungen zum Wahlprotokoll der Klassenelternversammlung
     </h3>
-    
+
     <h2>1. Feststellung der anwesenden Wahlberechtigten und der Stimmenzahl</h2>
     <p class="haupttext">
       Wahlberechtigt/stimmberechtigt sind bei einer Elternversammlung
@@ -2049,13 +2075,13 @@
       anvertraut ist; das Einverständnis ist der Schule auf Verlangen
       schriftlich nachzuweisen.</em>
       Dies ist aber auf enge Vertraute des Kindes beschränkt
-      (siehe 
+      (siehe
       <a href="https://pardok.parlament-berlin.de/starweb/adis/citat/VT/17/KlAnfr/ka17-12242.pdf">
       AGH Drucksache 17/12242</a>).
       Jede Person darf maximal vier Stimmen abgeben (wichtig z.B.
       bei Geschwistern in einer Klasse).
     </p>
-    
+
     <h2>2. Wahl der Wahlleitung</h2>
     <p class="haupttext">
       Für die Durchführung wird eine Wahlleitung gewählt.
@@ -2066,13 +2092,13 @@
       Das Schulgesetz macht keine Angaben zur Besetzung der Wahlleitung.
       Nach § 20 der Wahlordnung zum aufgehobenen SchulVerfG soll es
       Erziehungsberechtigte*r oder Klassenlehrer*in sein (oder andere
-      von der/dem Schulleiter*in bestimmte Lehrer*in). 
+      von der/dem Schulleiter*in bestimmte Lehrer*in).
     </p>
-    
+
     <h2>3. Durchführung der Wahl und Erfassung der Kandidierenden</h2>
     <p class="haupttext">
-      Wahlen sind grundsätzlich geheim und müssen daher per 
-      Stimmzettel durchgeführt werden. Dabei wird der Name der 
+      Wahlen sind grundsätzlich geheim und müssen daher per
+      Stimmzettel durchgeführt werden. Dabei wird der Name der
       kandidierenden Person(en) auf Zettel geschrieben. Auf Antrag und
       durch einstimmigen Beschluss der anwesenden Wahlberechtigten
       kann offen gewählt werden. Jede/jeder Wahlberechtigte
@@ -2082,49 +2108,49 @@
       der wiederum mehrere Personen enthalten darf.</b>
       Bei einer einstimmigen offenen Wahl im Block erhalten allen
       Kandidierenden beispielsweise die Gesamtzahl der Stimmen.
-      
-      Bevor Stellvertreter*innen gewählt werden, wird
-      deren Anzahl abgestimmt. Stellvertreter*innen können
+
+      Bevor Stellvertreter:innen gewählt werden, wird
+      deren Anzahl abgestimmt. Stellvertreter:innen können
       nur gewählt werden, wenn alle stimmberechtigten Mitglieder
       gewählt wurden.
       Bei Stimmengleichheit findet (sofern nötig) eine Stichwahl
       statt, besteht diese fort, wird gelost.
     </p>
-    
-    <h2>4. Rolle der stellvertretenden Klassenelternsprecher*innen</h2>
+
+    <h2>4. Rolle der stellvertretenden Klassenelternsprecher:innen</h2>
     <p class="haupttext">
       Das Schulgesetz sieht nur für die/den Elternsprecher*in
       der ganzen Schule explizit Stellvertretende vor. Allerdings
       sind für jedes Gremienmitglied 1-2 Stellvertretende
       zu wählen. Da die Gesamtelternvertretung ein Gremium ist
-      und die Klassenelternsprecher*innen dort Mitglied sind,
+      und die Klassenelternsprecher:innen dort Mitglied sind,
       sind also zumindest für diese Funktion auch Stellvertretende
       zu wählen. Dass diese auch die Elternversammlung bei Abwesenheit
-      der Klassenelternsprecher*innen vorbereiten und leiten,
+      der Klassenelternsprecher:innen vorbereiten und leiten,
       ist so nicht vorgesehen. Alle weiteren De-Facto-Aufgaben
       für die Eltern der Klasse (mancherorts Klassenkasse,
       Kommunikation, Basare u.ä.) sind ohnehin nicht im Gesetz
       angelegt und können beliebig verteilt werden. In der Praxis
-      besteht der Unterschied zwischen Klassenelternsprecher*innen
+      besteht der Unterschied zwischen Klassenelternsprecher:innen
       und Stellvertretenden also v.a. im aktiven und passiven
       Wahlrecht in der GEV, ansonsten bietet es sich an, alle als Team
       zu sehen.
     </p>
   </div>
-  
+
   <div class="footerl">
     Wahlprotokoll Klassen-EV - Erläuterungen <a class="yr"> </a><br/>
   </div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
-  
+
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>

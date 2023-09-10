@@ -3,7 +3,7 @@
 <head>
 <title>
   Wahlprotokoll für die
-  Funktionen in der Gesamtelternvertretung
+  Funktionen in der Gesamtelternvertretung (GEV)
 </title>
 <meta charset="UTF-8"/>
 <meta name="description"
@@ -16,9 +16,9 @@
     --year: "2023/2024";
     --npages: "";
   }
-  
+
   body {
-/*  position: absolute scheint page-breaks in Chrom(e/ium) zu 
+/*  position: absolute scheint page-breaks in Chrom(e/ium) zu
     verhindern:*/
 /*     position: absolute; */
     background-color: white;
@@ -31,7 +31,7 @@
     /*Verhindert Abstände zwischen Seiten:*/
     line-height: 0pt;
     font-size: 0pt;
-    counter-reset: pn; 
+    counter-reset: pn;
   }
   .page {
     box-sizing: border-box;
@@ -100,7 +100,7 @@
   .yr::after {
     content: var(--year);
   }
-  
+
   @media print {
     @page {
       size: auto;
@@ -111,7 +111,7 @@
 /*       background-color: #efefff;
        border: solid 1px; */
       /*Ende Debugging*/
-      
+
 /*       break-after: page; */
       break-inside: avoid-page;
     }
@@ -124,12 +124,12 @@
     .anleitung {
       display: none;
     }
-    
+
     select {
       appearance: none;
       border-bottom: 1px solid;
     }
-    
+
     a:link {
       text-decoration: inherit;
       color: inherit;
@@ -178,7 +178,7 @@
     .noprint .lesspages::after {
       content: "";
     }
-    
+
     .guielement_small {
       display: inline-block;
       max-width: 18mm;
@@ -187,26 +187,26 @@
       margin-left: 1mm;
       margin-top: 1mm;
     }
-    
+
     .noprint {
       filter: contrast(50%);
     }
   }
-  
+
   h1 {/*Wahlprotokoll fuer ...*/
     text-align: center;
     font-size: 21pt;
     margin-top: 5mm;
     margin-bottom: 0.5mm;
   }
-  
+
   .subhead {/*basierend...*/
     text-align: center;
     font-size: 8pt;
     margin-top: 0pt;
     margin-bottom: 2mm;
   }
-  
+
   h2 {/*Schritte der Wahl*/
     text-align: left;
     font-weight: bold;
@@ -214,7 +214,7 @@
     margin-top: 2mm;
     margin-bottom: 0pt;
   }
-  
+
   h3 {/*Gremien/Ämter*/
     text-align: left;
     font-weight: bold;
@@ -222,7 +222,7 @@
     margin-top: 0pt;
     margin-bottom: 2mm;
   }
-  
+
   h4 {/*Kandidierende*/
     text-align: left;
     font-weight: normal;
@@ -234,7 +234,7 @@
     text-underline-offset: 1pt;
     padding: 0pt;
   }
-  
+
   h5 {/*Wahlergebnis*/
     text-align: left;
     font-weight: bold;
@@ -246,14 +246,14 @@
     color : white;
     background-color: #808080;
   }
-  
+
   p {
     padding: 0mm;
     margin: 0mm;
     margin-top: 3mm;
     margin-bottom: 3mm;
   }
-  
+
   .erlaeuterung {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
@@ -262,14 +262,14 @@
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  
+
   ul, ol {
     margin-top: 2mm;
     padding-top: 0pt;
     margin-bottom: 2mm;
     padding-bottom: 0pt;
   }
-  
+
   .haupttext {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
@@ -278,12 +278,12 @@
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  
+
   td, th {
     margin: 0mm;
     padding: 1pt;
   }
-  
+
   .tabellebreit {
     box-sizing: border-box;
     width: 100%;
@@ -301,20 +301,20 @@
     border: 1pt solid;
     height: 7mm;
   }
-  
+
   .doppelzeilen td {
     height: 14mm;
     vertical-align: top;
   }
-  
+
   .wahlerg {
 /*     background-color: #d9d9d9; */
-    
+
     border: 2pt solid #808080;
 /*     margin-bottom: -2pt; */
 /*     margin-bottom: 4mm; */
   }
-  
+
   .wahlerg th {
     border: 2pt solid #808080;
     background-color: #808080;
@@ -323,13 +323,13 @@
 /*  .wahlerg .iptab {
     background-color: #d9d9d9;
   }*/
-  
+
   .tabelleohnerahmen {
     width: 100%;
     padding: 0px;
     border-spacing: 0pt;
   }
-  
+
   .iptab {
     border: none;
     height: 100%;
@@ -338,7 +338,7 @@
     width: 100%;
     resize: none;
   }
-  
+
   .ipcb {
     margin: 0pt;
     border: none;
@@ -347,29 +347,29 @@
     filter: opacity(0%);
     margin-right: -70%;
   }
-  
+
   .ipcb:checked ~ a::after{
     font-size: 100%;
     content: "X";
     pointer-events: none;
   }
-  
+
   .spnamen {
     width: 8cm;
   }
-  
+
   .sprang {
     width: 4mm;
   }
-  
+
   .spfach {
     width: 2cm;
   }
-  
+
   .spunters {
     width: 6cm;
   }
-  
+
   input {
     font: inherit;
     border: none;
@@ -377,13 +377,13 @@
     padding: 1pt;
     margin: 0pt;
   }
-  
+
   label {
 /*     font-size: 11pt; */
     padding: 0pt;
     margin-left: 0pt;
   }
-  
+
   select {
     font: inherit;
     border: none;
@@ -392,36 +392,36 @@
     padding: 0pt;
     margin: 0pt;
   }
-  
+
   #schulez {
     padding: 0pt;
     margin-left: 0pt;
   }
-  
+
   #schule {
     width: 10cm;
   }
-  
+
   #datumz {
     text-align: right;
   }
-  
+
   #anwesend {
     width: 1.2cm;
   }
-  
+
   #wahlleitung {
     width: 15cm;
   }
-  
+
   .anz  {
     width: 1.2cm;
   }
-  
+
   .wahltyp  {
     width: 4cm;
   }
-  
+
   .docxonly {
     display: none;
   }
@@ -437,7 +437,7 @@
   const firstFont = function(fts){
     return fts.replace(/,.*/,"");
   };
-  
+
   var year = (new Date()).getFullYear();
   year = year + "/" + (year+1);
   const url = window.location.pathname;
@@ -469,7 +469,7 @@
     delete objStore[prefix][id];
     return storage.removeItem(prefix+id);
   };
-  
+
   const download = function(fn,text) {
     const el = document.createElement("a");
     el.setAttribute("href",
@@ -480,7 +480,7 @@
     el.click();
     document.body.removeChild(el);
   };
-  
+
   const downloadBlob = function(fn,blob) {
     const el = document.createElement("a");
     el.setAttribute("href",URL.createObjectURL(blob))
@@ -491,7 +491,7 @@
     document.body.removeChild(el);
     URL.revokeObjectURL(el.href);
   };
-  
+
   const upload = function(cb) {
     const fr = new FileReader();
     fr.onload= function(){
@@ -507,7 +507,7 @@
     el.click();
     document.body.removeChild(el);
   };
-  
+
   const dlSelf = function(){
     if (hasClones()){
       warnClones();
@@ -517,12 +517,12 @@
       document.documentElement.innerHTML+"\n</html>"
     );
   };
-  
+
   const exportObjStore = function(fn,prefix){
     const obj = prefix ? objStore[selffn+"_"+prefix] : objStore;
     download(fn,JSON.stringify(obj));
   };
-  
+
   const importJsonToStores = function(js,prefix){
   var obj;
     try {
@@ -538,7 +538,7 @@
       setItem(id,obj[id],prefix);
     }
   };
-  
+
   const saveField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     if (fld.id && fld.id != ""){
@@ -551,7 +551,7 @@
       }
     }
   };
-  
+
   const loadField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     const stored = getItem(fld.id,fieldPrefix)
@@ -565,7 +565,7 @@
       }
     }
   };
-  
+
   const deleteSavedField = function(fld){
     if (fld.id && fld.id != ""){
       removeItem(fld.id,fieldPrefix);
@@ -577,7 +577,7 @@
       setItem(el.id,el.innerHTML,editPrefix);
     }
   };
-  
+
   const loadElement = function(el){
     if (el.id && el.id != ""){
       const stored = getItem(el.id,editPrefix);
@@ -586,13 +586,13 @@
       }
     }
   };
-  
+
   const deleteSavedElement = function(el){
     if (el.id && el.id != ""){
       removeItem(el.id,editPrefix);
     }
   };
-  
+
   const clearFields = function(){
     const flds  = document.querySelectorAll("input,select,textarea");
     for(const fld of flds){
@@ -607,22 +607,22 @@
     }
     location.reload();
   };
-  
+
   const exportFields = function(){
     exportObjStore(selffn+"_daten.json",fieldPrefix);
   };
-  
+
   const importFields = function(){
     upload(function(js){
       importJsonToStores(js,fieldPrefix);
       location.reload();
     });
   };
-  
+
   var allowEdits = false;
   const edicls = ["haupttext","erlaeuterung"];
   const editags = ["H1","H2","H3","H4","H5","TH","OL","UL"];
-  
+
   const flipEdit = function(){
     if(hasClones()){
       warnClones();
@@ -642,7 +642,7 @@
       }
     }
   };
-  
+
   const loadEdits = function(){
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -661,7 +661,7 @@
       }
     }
   };
-  
+
   const revertEdits = function(){
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -681,7 +681,7 @@
     }
     location.reload();
   };
-  
+
   const childNodesToDocx = function(el){
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle} = docx;
@@ -708,7 +708,7 @@
     }
     return children;
   };
-  
+
   const elToDocx = function(el,opt){
     const {Paragraph, TextRun, HeadingLevel, Table, TableRow,
       TableCell, WidthType, HeightRule, BorderStyle,
@@ -718,7 +718,7 @@
     if (/htmlonly/.test(cl)){
       return null;
     }
-    
+
     if (/h[0-9]/.test(tn)) {
       return new Paragraph({ children: childNodesToDocx(el),//textContent,
         heading: HeadingLevel["HEADING_"+tn[1]],
@@ -764,7 +764,7 @@
             s = el.options[el.selectedIndex].innerText.trim();
           }
         }
-        
+
         const w = el.offsetWidth/18;
         while(s.length < w){
           s = s + " ";
@@ -828,7 +828,7 @@
           rule: HeightRule.EXACT,
         }
       })];
-      
+
       for (const tr of el.getElementsByTagName("tbody")[0].
         getElementsByTagName("tr")){
         const trcells = [];
@@ -868,7 +868,7 @@
       let first = true;
       const cw = [];
       const rows = [];
-      
+
       for (const tr of el.getElementsByTagName("tbody")[0].
         getElementsByTagName("tr")){
         const trcells = [];
@@ -962,7 +962,7 @@
       });
     }
   }
-  
+
   const saveDocx = async function(){
     if (!confirm(
       "Dies lädt externe JavaScript-Bibliotheken nach "+
@@ -973,9 +973,9 @@
       return;
     }
     await import("https://unpkg.com/docx@8.0.4/build/index.js");
-    
+
     const sections = [];
-    
+
     const pages = document.querySelectorAll(".page,.vhpage");
     let pn = 0;
     for(let i=0;i<pages.length;++i) {
@@ -986,7 +986,7 @@
       const isVH = /vhpage/.test(page.className);
       const cnt = page.getElementsByClassName("content")[0];
       const secch = [];
-      
+
       for(const el of cnt.children) {
         const ch = elToDocx(el);
         if(ch){
@@ -1057,8 +1057,8 @@
           }),
         },
       });
-    }  
-    
+    }
+
     const doc = new docx.Document({
       creator: "ElternmaterialBerlin",
       title: document.title,
@@ -1317,7 +1317,7 @@
         downloadBlob("gev-wahlprotokoll.docx",blob)
     });
   };
-  
+
   const defaultFooterMain = "Wahlprotokoll GEV";
   const updateFooters = function(){
     for (const footerl of document.getElementsByClassName("footerl")){
@@ -1327,8 +1327,8 @@
       footerl.innerHTML = main+" "+year + "<br/>"+sub
     }
   };
-  
-  
+
+
   const createTableRows = function(){
     for (const tab of document.getElementsByTagName("table")){
       const nrows = tab.getAttribute("data-nrows");
@@ -1338,7 +1338,7 @@
       const tbody = tab.getElementsByTagName("tbody")[0];
       if (!tbody) continue;
       const tr = tbody.getElementsByTagName("tr")[0];
-      
+
       let cellstr = "";
       for(let i=0;i<nrows;i++){
         cellstr = cellstr + "<tr>\n";
@@ -1351,11 +1351,11 @@
         }
         cellstr = cellstr + "</tr>\n";
       }
-      
+
       tbody.innerHTML = cellstr;
     }
   };
-    
+
   var observer;
   var npages;
   var npagesChanged = function(){};
@@ -1370,9 +1370,9 @@
   }
   const ol = function(){
     "use strict";
-    
+
     createTableRows();
-    
+
     const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
     for(const fld of flds){
@@ -1386,7 +1386,7 @@
         const rowNr = Array.prototype.indexOf.call(gp.children,par);
         const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
         fld.id = tab.id+"_"+colid+rowNr;
-        
+
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
           copy and paste vermeiden.*/
         if (usedids[fld.id]){
@@ -1399,7 +1399,7 @@
       loadField(fld);
       fld.oninput = saveField;
     }
-    
+
     observer = new MutationObserver(function(mutationsList,observer){
       for(const mutation of mutationsList) {
         const el = mutation.target.parentElement;
@@ -1408,7 +1408,7 @@
     });
     observer.observe(document,{characterData:true,subtree:true});
     loadEdits();
-    
+
     for (const pageid in nclones){
       const ncl = nclones[pageid];
       let page = document.getElementById(pageid);
@@ -1422,24 +1422,24 @@
         page.classList.remove("doprint");
       }
     }
-    
+
     npages = document.getElementsByClassName("doprint").length;
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
     npagesChanged();
-    
+
     cmperpx = 21/document.getElementsByClassName("page")[0].offsetWidth;
-    
+
     const gR = document.styleSheets[0].cssRules;
     for (const r of gR){
       if(r.selectorText){
         globRules[r.selectorText.replace(".","C").replace("#","I")] = r.style;
       }
     }
-    
+
     updateFooters();
   };
-  
+
   const removeClonedPage = function(page){
     page.parentNode.removeChild(page);
     const idsuffix = page.ncopy > 2 ? "_"+(page.ncopy-1): "";
@@ -1451,7 +1451,7 @@
     nclones[page.baseid] = lastclone.ncopy;
     setItem("..nclones",JSON.stringify(nclones));
   };
-  
+
   const hidePagePrint = function(x){
     const page = x.parentNode.parentNode;
     if (page.ncopy && page.ncopy > 1){
@@ -1477,7 +1477,7 @@
       page.classList.remove("doprint");
     }
   };
-  
+
   const clonePage = function(page){
     const pagecl = page.cloneNode(true);
     page.parentNode.insertBefore(pagecl,page.nextSibling);
@@ -1514,7 +1514,7 @@
     }
     return pagecl;
   };
-  
+
   const hasClones = function(){
     for (const ncl of Object.values(nclones)){
       if (ncl > 1){
@@ -1523,22 +1523,22 @@
     }
     return false;
   };
-  
+
   const warnClones = function(){
       alert("Eine modifizierte Version des Dokuments sollte nicht " +
       "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
       "Bitte löschen Sie zunächst die Daten oder entfernen Sie " +
       "alle vervielfältigten Seiten.");
   };
-  
+
   const warnEdit = function(){
       alert("Eine modifizierte Version des Dokuments sollte nicht " +
       "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
       "Bitte speichern Sie Ihre modifizierte Version und stellen " +
       "das Editieren ab, bevor Sie Seiten vervielfältigen.");
   };
-  
-  
+
+
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
@@ -1564,7 +1564,7 @@
     };
   };
 
-  
+
 //lokale Nutzung des Callbacks npagesChanged:
   npagesChanged = function(){
     document.getElementById("seiten").defaultValue = npages;
@@ -1574,6 +1574,32 @@
 <body onload="ol()">
 <div class="vhpage anleitung" id="anl">
   <div class="content">
+    <h2>Was ist das?</h2>
+    <p class="haupttext htmlonly">
+      Dies ist die im Browser ausfüllbare Version eines Protokolls
+      für Wahlen in der Gesamtelternvertretung (GEV) in Berlin. Sie können es
+      nach dem Ausfüllen (z.B. als PDF) drucken oder als .docx-Datei
+      exportieren. Was gibt es sonst noch?
+    </p>
+    <ul>
+      <li>Dieses Protokoll gibt es auch in einer
+      <a href="gev-wahlprotokoll.docx">Word-Version</a>
+      und einer <a href="gev-wahlprotokoll.pdf">PDF-Version</a>.
+      </li>
+      <li>Für Wahlen in den Elternversammlungen der einzelnen Klassen
+      gibt es ebenfalls ein
+      <a href="../ev/ev-wahlprotokoll.html">Wahlprotokoll</a>
+      (<a href="../ev/ev-wahlprotokoll.docx">Word</a> |
+      <a href="../ev/ev-wahlprotokoll.pdf">PDF</a>).
+      </li>
+      <li>Weitere Materialien (z.B. Kontaktliste) gibt es
+      <a href="https://elternmaterialberlin.github.io/gremiendoks">hier</a>.
+      </li>
+      <li>Die leicht unterschiedlichen Varianten der BEAs,
+      auf denen dieses Protokoll beruht, sind unten bei Autor:innen verlinkt.
+      </li>
+    </ul>
+
     <h2>Anleitung</h2>
     <p class="haupttext htmlonly">
       Dieses Dokument ist im Browser ausfüllbar. Überschriften,
@@ -1604,9 +1630,9 @@
       Formularelemente (Fill-In) als weniger nutzbar herausgestellt
       haben. Das Dokument wird mit OnlyOffice (und seltener
       LibreOffice) getestet, kleine Fehler in MS Office sind nicht
-      auszuschließen. 
+      auszuschließen.
     </p>
-    
+
     <p class="haupttext docxonly">
       Insbesondere für das GEV-Wahlprotokoll empfiehlt es sich nicht
       diesen docx-Export im Nachhinein anzupassen (Auswahl der
@@ -1618,7 +1644,7 @@
       lokal speichern können, wenn Sie z.B. die Hinweise an die
       Gepflogenheiten der Schule anpassen wollen.
     </p>
-    
+
     <h2 class="htmlonly">Datenschutz</h2>
     <p class="haupttext htmlonly">
       Das Formular verwendet den localStorage der
@@ -1627,10 +1653,10 @@
       von Ihrem Browser gespeichert werden und auch nach einem
       Browserneustart verfügbar sind. Das Formular arbeitet komplett
       offline, es werden keine Felddaten an Server gesendet.
-      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und 
+      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und
       löschen Sie die Daten am Ende (z.B. nach Druck in Datei).</b>
     </p>
-    
+
     <h2>Weitergabe</h2>
     <p class="haupttext">
       Dieses Werk ist lizenziert unter der Lizenz
@@ -1647,7 +1673,7 @@
       anderen Zweck erstellen, genügt es die technischen Autor*innen
       dieses Dokuments aufzulisten.
     </p>
-    
+
     <p class="haupttext">
       Die jeweils aktuelle Version finden Sie unter:<br/>
       <a href="https://elternmaterialberlin.github.io/gremiendoks/gev/gev-wahlprotokoll.html">
@@ -1655,12 +1681,12 @@
       als Teil der Materialsammlung:<br/>
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
         https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
-      
+
       Dort finden Sie auch weitere
       Dokumente zur Elternarbeit und können eine verbesserte Version
       dieses Dokuments einsenden.
     </p>
-    
+
     <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
       <li> 2013-2021 (Wordvorlage: Schriftstile, Anordnung;
@@ -1669,7 +1695,7 @@
         (2020: editierbare Umsetzung in HTML/CSS/Javascript; 2022: Wahlergebnisse
         auf weißem Grund; 2023: docx-Export)</li>
     </ul>
-    
+
     <h2>Inhaltliche Autor*innen (Texte)</h2>
     <ul>
       <li> 2013-2021 Ursprungsversion:
@@ -1677,20 +1703,20 @@
           Elternfortbilder*innen für Mitwirkungsfragen
         </a>
       </li>
-      <li> 2013-2021 Anpassungen durch Bezirkselternausschüsse (u.a. 
+      <li> 2013-2021 Anpassungen durch Bezirkselternausschüsse (u.a.
         <a href="https://bea-sz.de/dokumente/willkommenspaket-2021/wahlprotokoll-gev.html">
           Steglitz-Zehlendorf</a>,
         <a href="https://beas-mh.de/aktuell/307-willkommenspaket-2021">
           Marzahn-Hellersdorf</a>)
       </li>
-      <li> 2020-2023 Frank Fuhlbrück (2020-21: 
+      <li> 2020-2023 Frank Fuhlbrück (2020-21:
         u.a. detailliertere Erläuterungen
         zur Stimmabgabe bei mehreren Kandidierende und allgemein zur
         Rolle der Wahlordnung nach SchulVerfG, kompakte Darstellung
         mehrerer Fachkonferenzen; 2023: letzte Seite überarbeitet)
       </li>
     </ul>
-    
+
     <h2>Haftungsausschluss</h2>
     <p class="haupttext">
       Die Autor*innen sind in der Mehrheit aktive Eltern ohne
@@ -1699,7 +1725,7 @@
       gegeben werden. Falls Sie Fehler oder Unklarheiten feststellen,
       bitten wir Sie die zuletzt aktiven Autor*innen zu kontaktieren.
     </p>
-    
+
     <h2>Warum HTML?</h2>
     <p class="haupttext">
       Zum Zeitpunkt der ersten Erstellung (2020-2022) ist die
@@ -1717,11 +1743,11 @@
       direkt aus der HTML-Seite generiert, profitiert also von
       zukünftigen Änderungen dieser.
     </p>
-    
+
     <h2 class="htmlonly">Drucktipps</h2>
     <p class="haupttext htmlonly">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken vom Hintergrund (Firefox) bzw. 
+      das Drucken vom Hintergrund (Firefox) bzw.
       Hintergrundgrafiken (Chrome) erlaubt werden. Zudem sollten
       keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
       auf die Seite passt.
@@ -1734,14 +1760,14 @@
       (auch für PDF-Export).
     </p>
   </div>
-</div>  
+</div>
 <div class="page doprint" id="schesp">
   <div class="content">
     <h1>Wahlprotokoll für die<br/>
       Funktionen in der Gesamtelternvertretung
     </h1>
     <p class="subhead">
-      (basierend auf dem Schulgesetz des Landes 
+      (basierend auf dem Schulgesetz des Landes
       Berlin und der Wahlordnung zum Schulverfassungsgesetz)
     </p>
     <table class="tabelleohnerahmen">
@@ -1758,7 +1784,7 @@
     </table>
     <h2>1. Feststellung der anwesenden Wahlberechtigten</h2>
     <p class="erlaeuterung">
-      Wahlberechtigt sind nach §90 die anwesenden Elternsprecherinnen 
+      Wahlberechtigt sind nach §90 die anwesenden Elternsprecherinnen
       und Elternsprecher der Klassen oder Jahrgangsstufen mit jeweils
       einer Stimme, auch wenn durch sie mehr als eine Klasse in der
       GEV vertreten wird. Stellvertretende Klassenelternsprecherinnen
@@ -1767,7 +1793,7 @@
       anwesend sind, als Abwesenheitsvertreterinnen und
       Abwesenheitsvertreter aktiv wählen, sich aber nicht wählen
       lassen. Eine Person kann nicht für eine Klasse anwesend und für
-      eine andere abwesend sein (siehe 
+      eine andere abwesend sein (siehe
       <a href="https://pardok.parlament-berlin.de/starweb/adis/citat/VT/17/SchrAnfr/s17-14635.pdf">
       AGH Drucksache 17/14635</a>).
     </p>
@@ -1778,7 +1804,7 @@
       (nachvollziehbar durch eine Anwesenheitsliste als Anlage zum
       Wahlprotokoll).
     </p>
-    
+
     <h2>2. Wahl der Wahlleitung</h2>
     <p class="erlaeuterung">
       Für die Durchführung wird eine Wahlleitung gewählt.
@@ -1791,11 +1817,11 @@
       <label for="wahlleitung">Wahlleitung:</label>
       <input type="text" id="wahlleitung" name="wahlleitung" value="" />
     </p>
-    
+
     <h2>3. Durchführung der Wahl und Erfassung der Kandidierenden</h2>
     <p class="erlaeuterung">
-      Wahlen sind grundsätzlich geheim und müssen daher per 
-      Stimmzettel durchgeführt werden. Dabei wird der Name der 
+      Wahlen sind grundsätzlich geheim und müssen daher per
+      Stimmzettel durchgeführt werden. Dabei wird der Name der
       kandidierenden Person(en) auf Zettel geschrieben. Auf Antrag und
       durch einstimmigen Beschluss der anwesenden Wahlberechtigten
       kann offen gewählt werden. Jede/jeder Wahlberechtigte
@@ -1811,19 +1837,19 @@
       statt, besteht danach die Stimmengleichheit fort, wird durch die
       Wahlleitung gelost. Stichwahl und Losentscheid sollten
       in der Stimmenspalte vermerkt werden, z.B. „8/10/Los“ für
-      eine im Losentscheid erfolgreiche Person, die davor 8 und 
+      eine im Losentscheid erfolgreiche Person, die davor 8 und
       10 Stimmen erhielt.
     </p>
     <p></p>
-    
+
 <!-- Schulelternsprecher*in plus Stv. -->
     <h3>Elternsprecherin oder Elternsprecher der Schule</h3>
-    
+
     <h4>
       Kandidierende für Elternsprecherin oder
       Elternsprecher der Schule
     </h4>
-    
+
     <table id=kandschesp class="tabellebreit" data-nrows="5">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1834,13 +1860,13 @@
     <p class="erlaeuterung">
       (bei mehr als fünf Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="schesptyp">Art der Wahl:</label>
       <input id="schesptyp" name="schesptyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="schespges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="schespges" name="schespges" class="anz" />,
@@ -1848,12 +1874,12 @@
       <input id="schespenth" name="schespenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis Elternsprecherin oder
       Elternsprecher der Schule
     </h5>
-    
+
     <table id=weschesp class="tabellebreit wahlerg" data-nrows="1">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1868,21 +1894,21 @@
   </div>
 <!-- GUI-Header erste Seite -->
   <div class="guiheader guiheader_edit">
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="flipEdit();">Editieren an/aus</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="dlSelf();">Dokument speichern</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="revertEdits();">Änderungen verwerfen</a>
   </div>
   <div class="guiheader">
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="clearFields();">Daten löschen</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="exportFields();">Daten exportieren</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="importFields();">Daten importieren</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="saveDocx();">als docx speichern</a>
   </div>
 <!-- ENDE GUI-Header erste Seite -->
@@ -1896,7 +1922,7 @@
       Kandidierende für stellvertretende Elternsprecherinnen oder
       Elternsprecher der Schule
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvschesp">Es sollen </label>
       <input id="stvschesp" name="stvschesp" class="anz" />
@@ -1904,7 +1930,7 @@
       Elternsprecher gewählt werden.
       <a class="erlaeuterung">(maximal 3)</a>
     </p>
-    
+
     <table id=kandstvschesp class="tabellebreit" data-nrows="6">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1915,13 +1941,13 @@
     <p class="erlaeuterung">
       (bei mehr als sechs Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvschesptyp">Art der Wahl:</label>
       <input id="stvschesptyp" name="stvschesptyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvschespges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvschespges" name="stvschespges" class="anz" />,
@@ -1929,12 +1955,12 @@
       <input id="stvschespenth" name="stvschespenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Elternsprecherinnen oder
       Elternsprecher der Schule
     </h5>
-    
+
     <table id=westvschesp class="tabellebreit wahlerg" data-nrows="3">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1955,31 +1981,31 @@
   <div class="content">
     <h3>Schulkonferenz</h3>
     <p class="erlaeuterung">
-      Mitglieder für die Schulkonferenz werden im Allgemeinen in allen 
-      geraden Kalenderjahren (2020, 2022, 2024 ...- kann bei Neugründung 
-      bzw. Fusion von Schulen abweichen) für die Dauer von zwei Schuljahren 
-      gewählt. Scheiden Mitglieder innerhalb dieses Zeitraums aus, erfolgen 
-      Nachwahlen. Die Amtszeit der nachgewählten Mitglieder dauert bis zur 
-      nächsten Wahl der Mitglieder der Schulkonferenz an. Stellvertretende 
-      Mitglieder rücken nicht zu Mitgliedern auf. Für dieses Gremium werden 
-      vier Mitglieder und bis zu acht stellvertretende Mitglieder gewählt. 
-      SchulG Berlin § 117 (2) Für die nach diesem Gesetz zu wählenden 
-      Gremienmitglieder sind Stellvertreterinnen und Stellvertreter zu 
-      wählen, höchstens jedoch zwei Stellvertreterinnen oder Stellvertreter 
+      Mitglieder für die Schulkonferenz werden im Allgemeinen in allen
+      geraden Kalenderjahren (2020, 2022, 2024 ...- kann bei Neugründung
+      bzw. Fusion von Schulen abweichen) für die Dauer von zwei Schuljahren
+      gewählt. Scheiden Mitglieder innerhalb dieses Zeitraums aus, erfolgen
+      Nachwahlen. Die Amtszeit der nachgewählten Mitglieder dauert bis zur
+      nächsten Wahl der Mitglieder der Schulkonferenz an. Stellvertretende
+      Mitglieder rücken nicht zu Mitgliedern auf. Für dieses Gremium werden
+      vier Mitglieder und bis zu acht stellvertretende Mitglieder gewählt.
+      SchulG Berlin § 117 (2) Für die nach diesem Gesetz zu wählenden
+      Gremienmitglieder sind Stellvertreterinnen und Stellvertreter zu
+      wählen, höchstens jedoch zwei Stellvertreterinnen oder Stellvertreter
       je Gremienmitglied, soweit dieses Gesetz nichts anderes bestimmt.
     </p>
-    
+
     <h4>
       Kandidierende für die Mitglieder der Schulkonferenz
     </h4>
-    
+
     <p class="haupttext">
       <label for="skanz">Es sind </label>
       <input id="skanz" name="skanz" class="anz" />
       Mitglieder der Schulkonferenz zu wählen.
       <a class="erlaeuterung">(4, nur bei Nachwahl weniger)</a>
     </p>
-    
+
     <table id=kandsk class="tabellebreit" data-nrows="10">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -1990,13 +2016,13 @@
     <p class="erlaeuterung">
       (bei mehr als zehn Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="sktyp">Art der Wahl:</label>
       <input id="sktyp" name="sktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="skges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="skges" name="skges" class="anz" />,
@@ -2004,11 +2030,11 @@
       <input id="skenth" name="skenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis Mitglieder der Schulkonferenz
     </h5>
-    
+
     <table id=wesk class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2025,11 +2051,11 @@
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2042,7 +2068,7 @@
     <h4>
       Kandidierende für die stellvertretenden Mitglieder der Schulkonferenz
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvskanz">Es sollen </label>
       <input id="stvskanz" name="stvskanz" class="anz" />
@@ -2050,7 +2076,7 @@
       werden.
       <a class="erlaeuterung">(max. 8 insgesamt)</a>
     </p>
-    
+
     <table id=kandstvsk class="tabellebreit" data-nrows="10">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2061,13 +2087,13 @@
     <p class="erlaeuterung">
       (bei mehr als zehn Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvsktyp">Art der Wahl:</label>
       <input id="stvsktyp" name="stvsktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvskges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvskges" name="stvskges" class="anz" />,
@@ -2075,11 +2101,11 @@
       <input id="stvskenth" name="stvskenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Schulkonferenz
     </h5>
-    
+
     <table id=westvsk class="tabellebreit wahlerg" data-nrows="8">
       <thead><tr>
         <th class="sprang">&#35;</th>
@@ -2093,23 +2119,23 @@
      stellvertretenden Mitglieder vor, jedoch war dies in der
      Wahlordnung zum alten Schulverfassungsgesetz der Fall. In der
      Praxis empfiehlt es sich eher, die stellvertretenden Mitglieder
-     den ordentlichen Mitgliedern persönlich zuzuordnen. 
+     den ordentlichen Mitgliedern persönlich zuzuordnen.
      Wird eine solche Zuordnung in der GEV direkt beschlossen, kann sie
      z.B. durch ein "(für Name)" in der Liste der Gewählten ausgedrückt
      werden.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Schulkonferenz"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2125,17 +2151,17 @@
     <p class="erlaeuterung">
       Für den Bezirkselternausschuss (BEA) werden zwei Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
-      SchulG Berlin § 117 (2): Für die 
-      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
-      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
-      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      SchulG Berlin § 117 (2): Für die
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied,
       soweit dieses Gesetz nichts anderes bestimmt.
     </p>
-    
+
     <h4>
       Kandidierende für zwei Mitglieder im Bezirkselternausschuss
     </h4>
-    
+
     <table id=kandbea class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2146,13 +2172,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="beatyp">Art der Wahl:</label>
       <input id="beatyp" name="beatyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="beages">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="beages" name="beages" class="anz" />,
@@ -2160,11 +2186,11 @@
       <input id="beaenth" name="beaenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis Mitglieder im BEA
     </h5>
-    
+
     <table id=webea class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2175,7 +2201,7 @@
     <h4>
       Kandidierende für die stellvertretenden Mitglieder im BEA
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvbeaanz">Es sollen </label>
       <input id="stvbeaanz" name="stvbeaanz" class="anz" />
@@ -2183,7 +2209,7 @@
       werden.
       <a class="erlaeuterung">(2-4)</a>
     </p>
-    
+
     <table id=kandstvbea class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2194,13 +2220,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvbeatyp">Art der Wahl:</label>
       <input id="stvbeatyp" name="stvbeatyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvbeages">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvbeages" name="stvbeages" class="anz" />,
@@ -2208,11 +2234,11 @@
       <input id="stvbeaenth" name="stvbeaenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder im BEA
     </h5>
-    
+
     <table id=westvbea class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="sprang">&#35;</th>
@@ -2221,22 +2247,22 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <p class="erlaeuterung">
      Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Bezirkselternausschuss"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2251,17 +2277,17 @@
     <p class="erlaeuterung">
       Für die Gesamtkonferenz (GK) werden zwei beratende Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
-      SchulG Berlin § 117 (2): Für die 
-      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
-      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
-      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      SchulG Berlin § 117 (2): Für die
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied,
       soweit dieses Gesetz nichts anderes bestimmt.
     </p>
-    
+
     <h4>
       Kandidierende für zwei beratende Mitglieder in der Gesamtkonferenz
     </h4>
-    
+
     <table id=kandgk class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2272,13 +2298,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="gktyp">Art der Wahl:</label>
       <input id="gktyp" name="gktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="gkges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="gkges" name="gkges" class="anz" />,
@@ -2286,11 +2312,11 @@
       <input id="gkenth" name="gkenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis beratende Mitglieder in der Gesamtkonferenz
     </h5>
-    
+
     <table id=wegk class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2301,7 +2327,7 @@
     <h4>
       Kandidierende für die stellvertretenden Mitglieder in der Gesamtkonferenz
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvgkanz">Es sollen </label>
       <input id="stvgkanz" name="stvgkanz" class="anz" />
@@ -2309,7 +2335,7 @@
       werden.
       <a class="erlaeuterung">(2-4)</a>
     </p>
-    
+
     <table id=kandstvgk class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2320,13 +2346,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvgktyp">Art der Wahl:</label>
       <input id="stvgktyp" name="stvgktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvgkges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvgkges" name="stvgkges" class="anz" />,
@@ -2334,11 +2360,11 @@
       <input id="stvgkenth" name="stvgkenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Gesamtkonferenz
     </h5>
-    
+
     <table id=westvgk class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="sprang">&#35;</th>
@@ -2347,22 +2373,22 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <p class="erlaeuterung">
      Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Gesamtkonferenz"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2380,17 +2406,17 @@
       Grundschulen.
       Für die GSV werden zwei beratende Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
-      SchulG Berlin § 117 (2): Für die 
-      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
-      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
-      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      SchulG Berlin § 117 (2): Für die
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied,
       soweit dieses Gesetz nichts anderes bestimmt.
     </p>
-    
+
     <h4>
       Kandidierende für zwei beratende Mitglieder in der Gesamtschülervertretung
     </h4>
-    
+
     <table id=kandgsv class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2400,13 +2426,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="gsvtyp">Art der Wahl:</label>
       <input id="gsvtyp" name="gsvtyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="gsvges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="gsvges" name="gsvges" class="anz" />,
@@ -2414,11 +2440,11 @@
       <input id="gsventh" name="gsventh" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis beratende Mitglieder in der Gesamtschülervertretung
     </h5>
-    
+
     <table id=wegsv class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2429,7 +2455,7 @@
     <h4>
       Kandidierende für die stellvertretenden Mitglieder in der Gesamtschülervertretung
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvgsvanz">Es sollen </label>
       <input id="stvgsvanz" name="stvgsvanz" class="anz" />
@@ -2437,7 +2463,7 @@
       werden.
       <a class="erlaeuterung">(2-4)</a>
     </p>
-    
+
     <table id=kandstvgsv class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2448,13 +2474,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvgsvtyp">Art der Wahl:</label>
       <input id="stvgsvtyp" name="stvgsvtyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvgsvges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvgsvges" name="stvgsvges" class="anz" />,
@@ -2462,11 +2488,11 @@
       <input id="stvgsventh" name="stvgsventh" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Gesamtschülervertretung
     </h5>
-    
+
     <table id=westvgsv class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="sprang">&#35;</th>
@@ -2475,22 +2501,22 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <p class="erlaeuterung">
      Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Gesamtschülervertretung"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2506,17 +2532,17 @@
     <p class="erlaeuterung">
       Für jede Fachkonferenz werden zwei beratende Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
-      SchulG Berlin § 117 (2): Für die 
-      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
-      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
-      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      SchulG Berlin § 117 (2): Für die
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied,
       soweit dieses Gesetz nichts anderes bestimmt.
     </p>
-    
+
     <h4>
       Kandidierende für zwei beratende Mitglieder in der Fachkonferenz
     </h4>
-    
+
     <table id=kandfk class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2528,13 +2554,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="fktyp">Art der Wahl:</label>
       <input id="fktyp" name="fktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="fkges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="fkges" name="fkges" class="anz" />,
@@ -2542,11 +2568,11 @@
       <input id="fkenth" name="fkenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis Mitglieder in der Fachkonferenz
     </h5>
-    
+
     <table id=wefk class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2557,7 +2583,7 @@
     <h4>
       Kandidierende für die stellvertretenden Mitglieder in der Fachkonferenz
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvfkanz">Es sollen </label>
       <input id="stvfkanz" name="stvfkanz" class="anz" />
@@ -2565,7 +2591,7 @@
       werden.
       <a class="erlaeuterung">(2-4)</a>
     </p>
-    
+
     <table id=kandstvfk class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2576,13 +2602,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvfktyp">Art der Wahl:</label>
       <input id="stvfktyp" name="stvfktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvfkges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvfkges" name="stvfkges" class="anz" />,
@@ -2590,11 +2616,11 @@
       <input id="stvfkenth" name="stvfkenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Fachkonferenz
     </h5>
-    
+
     <table id=westvfk class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
         <th class="sprang">&#35;</th>
@@ -2603,22 +2629,22 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <p class="erlaeuterung">
      Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Fachkonferenz"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2633,26 +2659,26 @@
     <p class="erlaeuterung">
       Für jede Fachkonferenz werden zwei beratende Mitglieder und
       bis zu vier stellvertretende Mitglieder gewählt.<br/>
-      SchulG Berlin § 117 (2): Für die 
-      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
-      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
-      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      SchulG Berlin § 117 (2): Für die
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied,
       soweit dieses Gesetz nichts anderes bestimmt.<br/>
       Diese Seite kann für die Fachkonferenzwahlen genutzt werden,
       die <strong>offen durchgeführt werden</strong>. Für geheime
       Wahlen bitte die ausführlichen Seiten nutzen.
     </p>
-    
+
     <p class="haupttext">Es finden je zwei Wahlen
-      (Mitglieder, stellvertretende Mitglieder) 
+      (Mitglieder, stellvertretende Mitglieder)
       pro Fachkonferenz statt.
     </p>
-    
+
     <h4>
       Kandidierende für je zwei beratende Mitglieder in den
       Fachkonferenzen
     </h4>
-    
+
     <table id=kandfkkp class="tabellebreit"  data-nrows="10">
       <thead><tr>
         <th class="spfach">Fach</th>
@@ -2664,11 +2690,11 @@
     <p class="erlaeuterung">
       (bei mehr als zehn Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <h5>
       Wahlergebnis Mitglieder in den Fachkonferenzen
     </h5>
-    
+
     <table id=wefkkp class="tabellebreit wahlerg"  data-nrows="10">
       <thead><tr>
         <th class="spfach">Fach</th>
@@ -2683,11 +2709,11 @@
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2697,12 +2723,12 @@
 <div class="page doprint cloneable" id="template">
   <div class="content">
     <h3>Fachkonferenzen <span class="erlaeuterung">kompakt</span></h3>
-    
+
     <h4>
       Kandidierende für die stellvertretenden Mitglieder in den
       Fachkonferenzen
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvfkkpanz">Es sollen </label>
       <input id="stvfkkpanz" name="stvfkkpanz" class="anz" />
@@ -2710,7 +2736,7 @@
       werden.
       <a class="erlaeuterung">(2-4)</a>
     </p>
-    
+
     <table id=kandstvfkkp class="tabellebreit" data-nrows="10">
       <thead><tr>
         <th class="spfach">Fach</th>
@@ -2722,11 +2748,11 @@
     <p class="erlaeuterung">
       (bei mehr als zehn Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Fachkonferenzen
     </h5>
-    
+
     <table id=westvfkkp class="tabellebreit wahlerg" data-nrows="10">
       <thead><tr>
         <th class="spfach">Fach</th>
@@ -2736,22 +2762,22 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <p class="erlaeuterung">
      Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Fachkonferenzen kompakt"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2774,20 +2800,20 @@
       Für jede Teilkonferenz/Teilschülervertretung werden ein
       beratendes Mitglied und
       bis zu zwei stellvertretende Mitglieder gewählt.<br/>
-      SchulG Berlin § 117 (2): Für die 
-      nach diesem Gesetz zu wählenden Gremienmitglieder sind 
-      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch 
-      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied, 
+      SchulG Berlin § 117 (2): Für die
+      nach diesem Gesetz zu wählenden Gremienmitglieder sind
+      Stellvertreterinnen und Stellvertreter zu wählen, höchstens jedoch
+      zwei Stellvertreterinnen oder Stellvertreter je Gremienmitglied,
       soweit dieses Gesetz nichts anderes bestimmt.<br/>
-      Diese Wahlen erfolgen nur dann in der GEV, wenn die GEV keine 
+      Diese Wahlen erfolgen nur dann in der GEV, wenn die GEV keine
       Teilelternvertretungen eingerichtet hat (SchulG § 90 (4)).
       Sonst ist dort zu wählen.
     </p>
-    
+
     <h4>
       Kandidierende für ein beratende Mitglied in der Teilkonferenz/Teilschülervertretung
     </h4>
-    
+
     <table id=kandtk class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2798,13 +2824,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="tktyp">Art der Wahl:</label>
       <input id="tktyp" name="tktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="tkges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="tkges" name="tkges" class="anz" />,
@@ -2812,11 +2838,11 @@
       <input id="tkenth" name="tkenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis Mitglied in der Teilkonferenz/Teilschülervertretung
     </h5>
-    
+
     <table id=wetk class="tabellebreit wahlerg" data-nrows="1">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2827,7 +2853,7 @@
     <h4>
       Kandidierende für die stellvertretenden Mitglieder in der Teilkonferenz/Teilschülervertretung
     </h4>
-    
+
     <p class="haupttext">
       <label for="stvtkanz">Es sollen </label>
       <input id="stvtkanz" name="stvtkanz" class="anz" />
@@ -2835,7 +2861,7 @@
       werden.
       <a class="erlaeuterung">(1-2)</a>
     </p>
-    
+
     <table id=kandstvtk class="tabellebreit" data-nrows="4">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2846,13 +2872,13 @@
     <p class="erlaeuterung">
       (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
     </p>
-    
+
     <p class="haupttext">
       <label for="stvtktyp">Art der Wahl:</label>
       <input id="stvtktyp" name="stvtktyp" class="wahltyp" />
       <a class="erlaeuterung">(geheim/offen/Blockwahl)</a>
     </p>
-    
+
     <p class="haupttext">
       <label for="stvtkges">Anzahl der abgegebenen Stimmzettel:</label>
       <input id="stvtkges" name="stvtkges" class="anz" />,
@@ -2860,11 +2886,11 @@
       <input id="stvtkenth" name="stvtkenth" class="anz" />
       <a class="erlaeuterung">(beides nur bei geheimer Wahl)</a>
     </p>
-    
+
     <h5>
       Wahlergebnis stellvertretende Mitglieder der Teilkonferenz/Teilschülervertretung
     </h5>
-    
+
     <table id=westvtk class="tabellebreit wahlerg" data-nrows="2">
       <thead><tr>
         <th class="sprang">&#35;</th>
@@ -2873,22 +2899,22 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    
+
     <p class="erlaeuterung">
      Siehe Hinweis zu stellvertretenden Mitgliedern bei der Schulkonferenz.
     </p>
-    
+
   </div>
   <div class="footerl" data-sub="Teilkonferenz/Teilschülervertretung"></div>
   <div class="footerr">
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
@@ -2900,21 +2926,21 @@
 <div class="page doprint" id="abschluss">
   <div class="content">
     <h2>4. Einspruch, geleitete Wahlen und Unterschriften</h2>
-    
+
     <p class="haupttext">
       Einspruch gegen die Wahlen oder Wahldurchführung sind
       schriftlich begründet innerhalb einer Woche bei der
       Wahlleitung einzulegen. Über die Einsprüche entscheidet
-      innerhalb einer Woche die Schulleiterin oder der 
+      innerhalb einer Woche die Schulleiterin oder der
       Schulleiter (SchulG § 118(1) und (2)).
     </p>
-    
+
     <p class="haupttext">
       <label for="seiten">Das Wahlprotokoll umfasst</label>
       <input id="seiten" name="seiten" class="anz" />
       Seiten.
     </p>
-    
+
     <table id=wahlleitus class="tabellebreit doppelzeilen">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2962,7 +2988,7 @@
      helfen. Bei vielen geleiteten Wahlen
      kann man diese
      z.B. durch „SK, stvSK, FK D,FK Ku, stvGK“ abkürzen und/oder
-     "alle außer:" davor zu setzen. 
+     "alle außer:" davor zu setzen.
     </p>
   </div>
   <div class="footerl" data-sub="Einspruch, geleitete Wahlen und Unterschriften"></div>
@@ -2970,11 +2996,11 @@
     Seite <a class="pn"></a>  <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>
