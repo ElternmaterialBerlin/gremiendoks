@@ -191,6 +191,10 @@
     .noprint {
       filter: contrast(50%);
     }
+
+    .smallonly {
+      display: none;
+    }
   }
 
   h1 {/*Wahlprotokoll fuer ...*/
@@ -424,6 +428,72 @@
 
   .docxonly {
     display: none;
+  }
+
+  @media screen and (max-width: 800px) {
+    .smallonly {
+      display: block;
+    }
+
+    .page, .vhpage {
+/*       background-color: #ff0000; */
+      width: 100%;
+      height: auto;
+      display: inline-block;
+      padding: 5px;
+      font-size: 13pt;
+    }
+
+    .erlaeuterung, .haupttext, .tabellebreit, h2, h3, h4, h5 {
+      font-size: 13pt;
+    }
+
+    .guielement_small, .guielement {
+      background-color: white;
+      display: block;
+      width: auto;
+      overflow: visible;
+      border: 1px solid black;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      margin: 3px;
+      padding: 2px;
+      max-width: none;
+
+    }
+
+    .guiheader {
+      position: relative;
+      font-size: 13pt;
+      display: block;
+      height: auto;
+      width: auto;
+      padding: 5px;
+
+    }
+
+    .content {
+      position: static;
+      height: auto;
+      width: 95%;
+      background-color: white;
+      padding: 7px;
+      padding-right: 10px;
+      margin: 5px;
+    }
+    .footerl, .footerr {
+      position: relative;
+      bottom: auto;
+      display: inline-block;
+      left: auto;
+      right: auto;
+    }
+
+    #schule, #wahlleitung, #datum {
+      width: 2cm;
+    }
   }
 </style>
 <script>
@@ -1600,6 +1670,19 @@
       </li>
     </ul>
 
+    <h2 class="htmlonly smallonly">Bitte als Desktop-Webseite nutzen!</h2>
+    <p class="haupttext htmlonly smallonly">
+      Dieses Seite ist für die Desktopnutzung entworfen. Auf
+      Smartphones und ggf. Tablets verwenden Sie bitte die Einstellung
+      "Desktop-Webseite" (Firefox) bzw. "Desktopwebseite"
+      (Chrome) bzw. "aA" → "Desktop-Webseite anfordern" (Safari ab iOS 13).
+      Die mobile Ansicht, die Sie gerade sehen, kann beim Drucken als
+      PDF und Export als .docx zu Formatierungsfehlern führen und ist
+      primär zum (Mit)Lesen der Wahlerläuterungen gedacht.
+      Sollten Sie diesen Text auf Ihrem PC oder Laptop sehen, stellen
+      Sie bitte sicher, dass das Browserfenster breit genug ist.
+    </p>
+
     <h2>Anleitung</h2>
     <p class="haupttext htmlonly">
       Dieses Dokument ist im Browser ausfüllbar. Überschriften,
@@ -1670,7 +1753,7 @@
       Teils (insbesondere ohne Anleitungsseite) zu erstellen und
       ohne Namensnennung zu verbreiten und zu archivieren. Wenn Sie nur
       die GUI dieses Dokuments übernehmen und z.B. ein Dokument zu einem
-      anderen Zweck erstellen, genügt es die technischen Autor*innen
+      anderen Zweck erstellen, genügt es die technischen Autor:innen
       dieses Dokuments aufzulisten.
     </p>
 
@@ -1687,7 +1770,7 @@
       dieses Dokuments einsenden.
     </p>
 
-    <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
+    <h2>Technische Autor:innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
       <li> 2013-2021 (Wordvorlage: Schriftstile, Anordnung;
         Quelle s.u.)</li>
@@ -1696,11 +1779,11 @@
         auf weißem Grund; 2023: docx-Export)</li>
     </ul>
 
-    <h2>Inhaltliche Autor*innen (Texte)</h2>
+    <h2>Inhaltliche Autor:innen (Texte)</h2>
     <ul>
       <li> 2013-2021 Ursprungsversion:
         <a href="https://berliner-elternvideos.de/elternfortbildner/">
-          Elternfortbilder*innen für Mitwirkungsfragen
+          Elternfortbilder:innen für Mitwirkungsfragen
         </a>
       </li>
       <li> 2013-2021 Anpassungen durch Bezirkselternausschüsse (u.a.
@@ -1719,11 +1802,11 @@
 
     <h2>Haftungsausschluss</h2>
     <p class="haupttext">
-      Die Autor*innen sind in der Mehrheit aktive Eltern ohne
+      Die Autor:innen sind in der Mehrheit aktive Eltern ohne
       juristische Ausbildung. Entsprechend kann für die korrekte
       Auslegung von Gesetzen (Schulgesetz, DSGVO, etc.) keine Garantie
       gegeben werden. Falls Sie Fehler oder Unklarheiten feststellen,
-      bitten wir Sie die zuletzt aktiven Autor*innen zu kontaktieren.
+      bitten wir Sie die zuletzt aktiven Autor:innen zu kontaktieren.
     </p>
 
     <h2>Warum HTML?</h2>
@@ -1733,7 +1816,7 @@
       relativ konsistent. Die gewählte Implementierung erlaubt zudem
       das Anpassen von Teilen des Dokuments ohne HTML-Kenntnisse.
       Da die korrekte Verarbeitung von Stilen
-      in Office-Dokumenten über Anwendungen (und Anwender*innen) hinweg
+      in Office-Dokumenten über Anwendungen (und Anwender:innen) hinweg
       immer wieder problematisch ist, wurde bewusst kein OOXML (.docx)
       oder OpenDocument (.odt) eingesetzt. TeX würde zwar
       konsistentere Druckdarstellung und bessere Langzeitnutzbarkeit
@@ -2988,7 +3071,7 @@
      helfen. Bei vielen geleiteten Wahlen
      kann man diese
      z.B. durch „SK, stvSK, FK D,FK Ku, stvGK“ abkürzen und/oder
-     "alle außer:" davor zu setzen.
+     "alle außer:" davorsetzen.
     </p>
   </div>
   <div class="footerl" data-sub="Einspruch, geleitete Wahlen und Unterschriften"></div>

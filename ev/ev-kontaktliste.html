@@ -15,9 +15,9 @@
     --year: "2022/2023";
     --npages: "";
   }
-  
+
   body {
-/*  position: absolute scheint page-breaks in Chrom(e/ium) zu 
+/*  position: absolute scheint page-breaks in Chrom(e/ium) zu
     verhindern:*/
 /*     position: absolute; */
     background-color: white;
@@ -31,7 +31,7 @@
     /*Verhindert Abstände zwischen Seiten:*/
     line-height: 0pt;
     font-size: 0pt;
-    counter-reset: pn; 
+    counter-reset: pn;
   }
   .page {
     box-sizing: border-box;
@@ -101,7 +101,7 @@
   .yr::after {
     content: var(--year);
   }
-  
+
   @media print {
     @page {
       size: auto;
@@ -112,7 +112,7 @@
 /*       background-color: #efefff;
        border: solid 1px; */
       /*Ende Debugging*/
-      
+
 /*       break-after: page; */
       break-inside: avoid-page;
     }
@@ -125,12 +125,12 @@
     .anleitung {
       display: none;
     }
-    
+
     select {
       appearance: none;
       border-bottom: 1px solid;
     }
-    
+
     a:link {
       text-decoration: inherit;
       color: inherit;
@@ -179,7 +179,7 @@
     .noprint .lesspages::after {
       content: "";
     }
-    
+
     .guielement_small {
       display: inline-block;
       max-width: 18mm;
@@ -188,26 +188,30 @@
       margin-left: 1mm;
       margin-top: 1mm;
     }
-    
+
     .noprint {
       filter: contrast(50%);
     }
+
+    .smallonly {
+      display: none;
+    }
   }
-  
+
   h1 {/*Hauptüberschrift*/
     text-align: center;
     font-size: 21pt;
     margin-top: 5mm;
     margin-bottom: 0.5mm;
   }
-  
+
   .subhead {/*Untertitel*/
     text-align: center;
     font-size: 8pt;
     margin-top: 0pt;
     margin-bottom: 2mm;
   }
-  
+
   h2 {/*kleine Zwischenüberschrift*/
     text-align: left;
     font-weight: bold;
@@ -215,7 +219,7 @@
     margin-top: 2mm;
     margin-bottom: 0pt;
   }
-  
+
   h3 {/*größere Zwischenüberschrift*/
     text-align: left;
     font-weight: bold;
@@ -223,7 +227,7 @@
     margin-top: 0pt;
     margin-bottom: 2mm;
   }
-  
+
   h4 {/*gleichrangig und zugehörig zu h5, idR davor*/
     text-align: left;
     font-weight: normal;
@@ -234,7 +238,7 @@
     text-decoration-thickness: 0.5pt;
     text-underline-offset: 1pt;
   }
-  
+
   h5 {/*gleichrangig und zugehörig zu h4, idR danach*/
     text-align: left;
     font-weight: bold;
@@ -245,14 +249,14 @@
     color: white;
     display: inline-block;
   }
-  
+
   p {
     padding: 0mm;
     margin: 0mm;
     margin-top: 3mm;
     margin-bottom: 3mm;
   }
-  
+
   .erlaeuterung {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
@@ -261,14 +265,14 @@
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  
+
   ul, ol {
     margin-top: 2mm;
     padding-top: 0pt;
     margin-bottom: 2mm;
     padding-bottom: 0pt;
   }
-  
+
   .haupttext {
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 0pt;
@@ -277,12 +281,12 @@
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  
+
   td, th {
     margin: 0mm;
     padding: 1pt;
   }
-  
+
   .tabellebreit {
     box-sizing: border-box;
     width: 100%;
@@ -300,12 +304,12 @@
     border: 1pt solid;
     height: 7mm;
   }
-  
+
   .doppelzeilen td {
     height: 14mm;
     vertical-align: top;
   }
-  
+
   .wahlerg {
     background-color: #d9d9d9;
 /*     margin-bottom: 4mm; */
@@ -313,13 +317,13 @@
   .wahlerg .iptab {
     background-color: #d9d9d9;
   }
-  
+
   .tabelleohnerahmen {
     width: 100%;
     padding: 0px;
     border-spacing: 0pt;
   }
-  
+
   .iptab {
     border: none;
     height: 100%;
@@ -328,7 +332,7 @@
     width: 100%;
     resize: none;
   }
-  
+
   .ipcb {
     margin: 0pt;
     border: none;
@@ -337,37 +341,37 @@
     filter: opacity(0%);
     margin-right: -70%;
   }
-  
+
   .ipcb:checked ~ a::after{
     font-size: 100%;
     content: "X";
     pointer-events: none;
   }
-  
+
   .spkind {
     width: 3cm;
     text-align: left;
   }
-  
+
   .spnamen {
     width: 4cm;
     text-align: left;
   }
-  
+
   .sptel {
     width: 4cm;
     text-align: left;
   }
-  
+
   .spmail {
 /*     width: 5cm; */
     text-align: left;
   }
-  
+
   .sp1o, .sp2o, .sp3o {
     width: 4mm;
   }
-  
+
   input {
     font: inherit;
     border: none;
@@ -375,13 +379,13 @@
     padding: 1pt;
     margin: 0pt;
   }
-  
+
   label {
 /*     font-size: 11pt; */
     padding: 0pt;
     margin-left: 0pt;
   }
-  
+
   select {
     font: inherit;
     border: none;
@@ -390,38 +394,108 @@
     padding: 0pt;
     margin: 0pt;
   }
-  
+
   #schulez {
     padding: 0pt;
     margin-left: 0pt;
   }
-  
+
   #schule {
     width: 6cm;
   }
-  
+
   #klasse {
     width: 2cm;
   }
-  
+
   #datumz {
     text-align: right;
   }
-  
+
   #anwesend {
     width: 1.2cm;
   }
-  
+
   #wahlleitung {
     width: 15cm;
   }
-  
+
   .anz  {
     width: 1.2cm;
   }
-  
+
   .wahltyp  {
-    width: 4cm;
+    width: 2cm;
+  }
+
+  .docxonly {
+    display: none;
+  }
+
+  @media screen and (max-width: 800px) {
+    .smallonly {
+      display: block;
+    }
+
+    .page, .vhpage {
+/*       background-color: #ff0000; */
+      width: 100%;
+      height: auto;
+      display: inline-block;
+      padding: 5px;
+      font-size: 13pt;
+    }
+
+    .erlaeuterung, .haupttext, .tabellebreit, h2, h3, h4, h5 {
+      font-size: 13pt;
+    }
+
+    .guielement_small, .guielement {
+      background-color: white;
+      display: block;
+      width: auto;
+      overflow: visible;
+      border: 1px solid black;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      margin: 3px;
+      padding: 2px;
+      max-width: none;
+
+    }
+
+    .guiheader {
+      position: relative;
+      font-size: 13pt;
+      display: block;
+      height: auto;
+      width: auto;
+      padding: 5px;
+
+    }
+
+    .content {
+      position: static;
+      height: auto;
+      width: 95%;
+      background-color: white;
+      padding: 7px;
+      padding-right: 10px;
+      margin: 5px;
+    }
+    .footerl, .footerr {
+      position: relative;
+      bottom: auto;
+      display: inline-block;
+      left: auto;
+      right: auto;
+    }
+
+    #schule, #klasse, #wahlleitung, #datum {
+      width: 2cm;
+    }
   }
 </style>
 <script>
@@ -458,7 +532,7 @@
     delete objStore[prefix][id];
     return storage.removeItem(prefix+id);
   };
-  
+
   const download = function(fn,text) {
     const el = document.createElement("a");
     el.setAttribute("href",
@@ -469,7 +543,7 @@
     el.click();
     document.body.removeChild(el);
   };
-  
+
   const upload = function(cb) {
     const fr = new FileReader();
     fr.onload= function(){
@@ -485,7 +559,7 @@
     el.click();
     document.body.removeChild(el);
   };
-  
+
   const dlSelf = function(){
     if (hasClones()){
       warnClones();
@@ -495,12 +569,12 @@
       document.documentElement.innerHTML+"\n</html>"
     );
   };
-  
+
   const exportObjStore = function(fn,prefix){
     const obj = prefix ? objStore[selffn+"_"+prefix] : objStore;
     download(fn,JSON.stringify(obj));
   };
-  
+
   const importJsonToStores = function(js,prefix){
   var obj;
     try {
@@ -516,7 +590,7 @@
       setItem(id,obj[id],prefix);
     }
   };
-  
+
   const saveField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     if (fld.id && fld.id != ""){
@@ -529,7 +603,7 @@
       }
     }
   };
-  
+
   const loadField = function(fld){
     fld = fld instanceof HTMLElement ? fld : this;
     const stored = getItem(fld.id,fieldPrefix)
@@ -543,7 +617,7 @@
       }
     }
   };
-  
+
   const deleteSavedField = function(fld){
     if (fld.id && fld.id != ""){
       removeItem(fld.id,fieldPrefix);
@@ -555,7 +629,7 @@
       setItem(el.id,el.innerHTML,editPrefix);
     }
   };
-  
+
   const loadElement = function(el){
     if (el.id && el.id != ""){
       const stored = getItem(el.id,editPrefix);
@@ -564,13 +638,13 @@
       }
     }
   };
-  
+
   const deleteSavedElement = function(el){
     if (el.id && el.id != ""){
       removeItem(el.id,editPrefix);
     }
   };
-  
+
   const clearFields = function(){
     const flds  = document.querySelectorAll("input,select,textarea");
     for(const fld of flds){
@@ -585,22 +659,22 @@
     }
     location.reload();
   };
-  
+
   const exportFields = function(){
     exportObjStore(selffn+"_daten.json",fieldPrefix);
   };
-  
+
   const importFields = function(){
     upload(function(js){
       importJsonToStores(js,fieldPrefix);
       location.reload();
     });
   };
-  
+
   var allowEdits = false;
   const edicls = ["haupttext","erlaeuterung"];
   const editags = ["H1","H2","H3","H4","H5","TH","OL","UL"];
-  
+
   const flipEdit = function(){
     if(hasClones()){
       warnClones();
@@ -620,7 +694,7 @@
       }
     }
   };
-  
+
   const loadEdits = function(){
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -639,7 +713,7 @@
       }
     }
   };
-  
+
   const revertEdits = function(){
     for (const c of edicls) {
       const cl = document.getElementsByClassName(c);
@@ -659,7 +733,7 @@
     }
     location.reload();
   };
-  
+
   var observer;
   var npages;
   var npagesChanged = function(){};
@@ -674,7 +748,7 @@
   }
   const ol = function(){
     "use strict";
-    
+
     const flds  = document.querySelectorAll("input,select,textarea");
     const usedids = {};
     for(const fld of flds){
@@ -688,7 +762,7 @@
         const rowNr = Array.prototype.indexOf.call(gp.children,par);
         const colid = tab.firstElementChild.firstElementChild.children[colNr].className.substr(2);
         fld.id = tab.id+"_"+colid+rowNr;
-        
+
         /*Dies dient nur Debug-Zwecken und soll Logik-Fehler durch
           copy and paste vermeiden.*/
         if (usedids[fld.id]){
@@ -701,7 +775,7 @@
       loadField(fld);
       fld.oninput = saveField;
     }
-    
+
     observer = new MutationObserver(function(mutationsList,observer){
       for(const mutation of mutationsList) {
         const el = mutation.target.parentElement;
@@ -710,7 +784,7 @@
     });
     observer.observe(document,{characterData:true,subtree:true});
     loadEdits();
-    
+
     for (const pageid in nclones){
       const ncl = nclones[pageid];
       let page = document.getElementById(pageid);
@@ -724,13 +798,13 @@
         page.classList.remove("doprint");
       }
     }
-    
+
     npages = document.getElementsByClassName("doprint").length;
     document.documentElement.style.setProperty("--year","'"+year+"'");
     document.documentElement.style.setProperty("--npages","'/ "+npages+"'");
     npagesChanged();
   };
-  
+
   const removeClonedPage = function(page){
     page.parentNode.removeChild(page);
     const idsuffix = page.ncopy > 2 ? "_"+(page.ncopy-1): "";
@@ -742,7 +816,7 @@
     nclones[page.baseid] = lastclone.ncopy;
     setItem("..nclones",JSON.stringify(nclones));
   };
-  
+
   const hidePagePrint = function(x){
     const page = x.parentNode.parentNode;
     if (page.ncopy && page.ncopy > 1){
@@ -768,7 +842,7 @@
       page.classList.remove("doprint");
     }
   };
-  
+
   const clonePage = function(page){
     const pagecl = page.cloneNode(true);
     page.parentNode.insertBefore(pagecl,page.nextSibling);
@@ -805,7 +879,7 @@
     }
     return pagecl;
   };
-  
+
   const hasClones = function(){
     for (const ncl of Object.values(nclones)){
       if (ncl > 1){
@@ -814,22 +888,22 @@
     }
     return false;
   };
-  
+
   const warnClones = function(){
       alert("Eine modifizierte Version des Dokuments sollte nicht " +
       "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
       "Bitte löschen Sie zunächst die Daten oder entfernen Sie " +
       "alle vervielfältigten Seiten.");
   };
-  
+
   const warnEdit = function(){
       alert("Eine modifizierte Version des Dokuments sollte nicht " +
       "mit vervielfältigten Seiten erstellt/gespeichert werden. " +
       "Bitte speichern Sie Ihre modifizierte Version und stellen " +
       "das Editieren ab, bevor Sie Seiten vervielfältigen.");
   };
-  
-  
+
+
   const showPagePrint = function(plus){
     const page = plus.parentNode.parentNode;
     if (page.className.indexOf("noprint") == -1){
@@ -859,6 +933,33 @@
 <body onload="ol()">
 <div class="vhpage anleitung" id="anl">
   <div class="content">
+    <h2 class="htmlonly">Was ist das?</h2>
+    <p class="haupttext htmlonly">
+      Dies ist eine im Browser ausfüllbare Kontaktliste für
+      Elternversammlungen. Es ist möglich
+      Weitergabemöglichkeiten einzeln zuzustimmen.
+    </p>
+    <ul class="htmlonly">
+      <li>Diese Kontaktliste gibt es auch in einer
+      <a href="ev-kontaktliste.pdf">PDF-Version</a>.
+      </li>
+      <li>Weitere Materialien (z.B. Wahlprotokolle) gibt es
+      <a href="https://github.com/ElternmaterialBerlin/gremiendoks">hier</a>.
+      </li>
+    </ul>
+
+    <h2 class="htmlonly smallonly">Bitte als Desktop-Webseite nutzen!</h2>
+    <p class="haupttext htmlonly smallonly">
+      Dieses Seite ist für die Desktopnutzung entworfen. Auf
+      Smartphones und ggf. Tablets verwenden Sie bitte die Einstellung
+      "Desktop-Webseite" (Firefox) bzw. "Desktopwebseite"
+      (Chrome) bzw. "aA" → "Desktop-Webseite anfordern" (Safari ab iOS 13).
+      Die mobile Ansicht, die Sie gerade sehen, kann beim Drucken als
+      PDF und Export als .docx zu Formatierungsfehlern führen.
+      Sollten Sie diesen Text auf Ihrem PC oder Laptop sehen, stellen
+      Sie bitte sicher, dass das Browserfenster breit genug ist.
+    </p>
+
     <h2>Anleitung</h2>
     <p class="haupttext">
       Dieses Dokument ist im Browser ausfüllbar. Überschriften,
@@ -881,7 +982,7 @@
       nur aus einer HTML-Datei besteht, können Sie es einfach
       speichern, offline nutzen und weitergeben.
     </p>
-    
+
     <h2>Datenschutz</h2>
     <p class="haupttext">
       Das Formular verwendet den localStorage der
@@ -890,10 +991,10 @@
       von Ihrem Browser gespeichert werden und auch nach einem
       Browserneustart verfügbar sind. Das Formular arbeitet komplett
       offline, es werden keine Felddaten an Server gesendet.
-      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und 
+      <b>Wenn Sie auf einem fremden PC arbeiten, exportieren und
       löschen Sie die Dateien am Ende (z.B. nach Druck in Datei).</b>
     </p>
-    
+
     <h2>Weitergabe</h2>
     <p class="haupttext">
       Dieses Werk ist lizenziert unter der Lizenz
@@ -910,30 +1011,30 @@
       anderen Zweck erstellen, genügt es die technischen Autor*innen
       dieses Dokuments aufzulisten.
     </p>
-    
+
     <p class="haupttext">
       Die jeweils aktuelle Version finden Sie unter:<br/>
       <a href="https://elternmaterialberlin.github.io/gremiendoks/ev/ev-kontaktliste.html">
-        https://elternmaterialberlin.github.io/gremiendoks/ev/kontaktliste.html</a><br/>
+        https://elternmaterialberlin.github.io/gremiendoks/ev/ev-kontaktliste.html</a><br/>
       als Teil der Materialsammlung:<br/>
       <a href="https://github.com/ElternmaterialBerlin/gremiendoks">
         https://github.com/ElternmaterialBerlin/gremiendoks</a>.<br/>
-      
+
       Dort finden Sie auch weitere
       Dokumente zur Elternarbeit und können eine verbesserte Version
       dieses Dokuments einsenden.
     </p>
-    
+
     <h2>Technische Autor*innen (Javascript, CSS-Stile etc.)</h2>
     <ul>
-      <li> 2020-2022 Frank Fuhlbrück</li>
+      <li> 2020-2023 Frank Fuhlbrück</li>
     </ul>
-    
+
     <h2>Inhaltliche Autor*innen (Texte)</h2>
     <ul>
       <li> 2021-2022 Frank Fuhlbrück</li>
     </ul>
-    
+
     <h2>Haftungsausschluss</h2>
     <p class="haupttext">
       Die Autor*innen sind in der Mehrheit aktive Eltern ohne
@@ -942,7 +1043,7 @@
       gegeben werden. Falls Sie Fehler oder Unklarheiten feststellen,
       bitten wir Sie die zuletzt aktiven Autor*innen zu kontaktieren.
     </p>
-    
+
     <h2>Warum HTML?</h2>
     <p class="haupttext">
       Zum Zeitpunkt der ersten Erstellung (2020-2021) ist die
@@ -957,11 +1058,11 @@
       desselben Dokuments erlauben, ist aber für die Elternarbeit
       zu wenig verbreitet und schließt daher viele Mitarbeitende aus.
     </p>
-    
+
     <h2>Drucktipps</h2>
     <p class="haupttext">
       Kopf- und Fußzeilen des Browsers müssen ausgestellt und
-      das Drucken vom Hintergrund (Firefox) bzw. 
+      das Drucken vom Hintergrund (Firefox) bzw.
       Hintergrundgrafiken (Chrome) erlaubt werden. Zudem sollten
       keine Schriftarten erzwungen werden, da sonst z.B. der Inhalt nicht
       auf die Seite passt.
@@ -972,18 +1073,18 @@
       wählt man <i>Teilen</i> und dann <i>Drucker</i>
       (auch für PDF-Export).
     </p>
-    
+
     <h2>Änderungen:</h2>
     <ul>
       <li> Juli 2022: Querformat und kleine Textänderungen</li>
     </ul>
   </div>
-</div>  
+</div>
 <div class="page doprint" id="kontakt">
   <div class="content">
     <h1>Kontaktdaten für die Elternarbeit
     </h1>
-    
+
     <table class="tabelleohnerahmen">
       <tr>
         <td id="schulez"><!--
@@ -1017,7 +1118,7 @@
       Die unten aufgeführte Tabelle wird in digitaler Form auf den Privatgeräten
       der Elternsprecher*innen der Klasse gespeichert.
       Im Falle der Zustimmung zur Weitergabe, werden die Daten per
-      E-Mail an die Mailingliste gesendet. Wird der Eintragung 
+      E-Mail an die Mailingliste gesendet. Wird der Eintragung
       in die Mailingliste zugestimmt, so wird die Mailadresse auf dem
       Mailinglistenserver gespeichert. Mails an die Mailingliste
       werden über diesen so versendet, dass die Empfangsadressen
@@ -1032,15 +1133,15 @@
       ersten Elternversammlung, ob Wunsch auf Löschung
       besteht.
     </p>
-    
+
     <h2>Optionen</h2>
     <ol class="haupttext">
       <li><strong>Keine</strong> Aufnahme in Mailingliste</li>
       <li>Weitergabe der Mailadresse an Eltern auf der Mailingliste</li>
       <li>Weitergabe der Telefonnummer an Eltern auf der Mailingliste</li>
-    </ol> 
+    </ol>
 
-    
+
     <table id="kontaktdaten" class="tabellebreit">
       <thead><tr>
         <th class="spkind">Vorname Kind</th>
@@ -1135,19 +1236,19 @@
   </div>
 <!-- GUI-Header erste Seite -->
   <div class="guiheader guiheader_edit">
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="flipEdit();">Editieren an/aus</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="dlSelf();">Dokument speichern</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="revertEdits();">Änderungen verwerfen</a>
   </div>
   <div class="guiheader">
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="clearFields();">Daten löschen</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="exportFields();">Daten exportieren</a>
-    <a class="guielement_small" 
+    <a class="guielement_small"
       onclick="importFields();">Daten importieren</a>
   </div>
 <!-- ENDE GUI-Header erste Seite -->
@@ -1364,11 +1465,11 @@
     Seite <a class="pn"></a>   <a class="np"></a>
   </div>
   <div class="guiheader">
-    <a class="guielement" 
+    <a class="guielement"
       onclick="hidePagePrint(this);">
       <span class="lesspages"></span>
     </a>
-    <a class="guielement" 
+    <a class="guielement"
       onclick="showPagePrint(this);">
       <span class="morepages"></span>
     </a>

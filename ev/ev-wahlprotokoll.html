@@ -190,6 +190,10 @@
     .noprint {
       filter: contrast(50%);
     }
+
+    .smallonly {
+      display: none;
+    }
   }
 
   h1 {/*Wahlprotokoll fuer ...*/
@@ -431,6 +435,72 @@
 
   .docxonly {
     display: none;
+  }
+
+  @media screen and (max-width: 800px) {
+    .smallonly {
+      display: block;
+    }
+
+    .page, .vhpage {
+/*       background-color: #ff0000; */
+      width: 100%;
+      height: auto;
+      display: inline-block;
+      padding: 5px;
+      font-size: 13pt;
+    }
+
+    .erlaeuterung, .haupttext, .tabellebreit, h2, h3, h4, h5 {
+      font-size: 13pt;
+    }
+
+    .guielement_small, .guielement {
+      background-color: white;
+      display: block;
+      width: auto;
+      overflow: visible;
+      border: 1px solid black;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      margin: 3px;
+      padding: 2px;
+      max-width: none;
+
+    }
+
+    .guiheader {
+      position: relative;
+      font-size: 13pt;
+      display: block;
+      height: auto;
+      width: auto;
+      padding: 5px;
+
+    }
+
+    .content {
+      position: static;
+      height: auto;
+      width: 95%;
+      background-color: white;
+      padding: 7px;
+      padding-right: 10px;
+      margin: 5px;
+    }
+    .footerl, .footerr {
+      position: relative;
+      bottom: auto;
+      display: inline-block;
+      left: auto;
+      right: auto;
+    }
+
+    #schule, #klasse, #wahlleitung, #datum {
+      width: 2cm;
+    }
   }
 </style>
 <script>
@@ -1585,7 +1655,7 @@
 <body onload="ol()">
 <div class="vhpage anleitung" id="anl">
   <div class="content">
-    <h2>Was ist das?</h2>
+    <h2 class="htmlonly">Was ist das?</h2>
     <p class="haupttext htmlonly">
       Dies ist die im Browser ausfüllbare Version eines Protokolls
       für Wahlen in Elternversammlungen in Klassen,
@@ -1593,7 +1663,7 @@
       nach dem Ausfüllen (z.B. als PDF) drucken oder als .docx-Datei
       exportieren. Was gibt es sonst noch?
     </p>
-    <ul>
+    <ul class="htmlonly">
       <li>Dieses Protokoll gibt es auch in einer
       <a href="ev-wahlprotokoll.docx">Word-Version</a>
       und einer <a href="ev-wahlprotokoll.pdf">PDF-Version</a>.
@@ -1610,6 +1680,19 @@
       auf denen dieses Protokoll beruht, sind unten bei Autor:innen verlinkt.
       </li>
     </ul>
+
+    <h2 class="htmlonly smallonly">Bitte als Desktop-Webseite nutzen!</h2>
+    <p class="haupttext htmlonly smallonly">
+      Dieses Seite ist für die Desktopnutzung entworfen. Auf
+      Smartphones und ggf. Tablets verwenden Sie bitte die Einstellung
+      "Desktop-Webseite" (Firefox) bzw. "Desktopwebseite"
+      (Chrome) bzw. "aA" → "Desktop-Webseite anfordern" (Safari ab iOS 13).
+      Die mobile Ansicht, die Sie gerade sehen, kann beim Drucken als
+      PDF und Export als .docx zu Formatierungsfehlern führen und ist
+      primär zum (Mit)Lesen der Wahlerläuterungen gedacht.
+      Sollten Sie diesen Text auf Ihrem PC oder Laptop sehen, stellen
+      Sie bitte sicher, dass das Browserfenster breit genug ist.
+    </p>
 
     <h2>Anleitung</h2>
     <p class="haupttext htmlonly">
