@@ -402,7 +402,7 @@
   }
 
   #schule {
-    width: 10cm;
+    width: 9cm;
   }
 
   #klasse {
@@ -414,7 +414,7 @@
   }
 
   #datum {
-    width: 3cm;
+    width: 4cm;
   }
 
   #anwesend, #stimmen {
@@ -1683,16 +1683,17 @@
     <h2 class="htmlonly">Wie aktuell ist das Protokoll?</h2>
     <p class="haupttext htmlonly">
       Die letzte geprüfte Schulgesetzänderung ist vom 4.7.2024
-      (AGH-Beschluss, tritt 1.8.2024 bzw. 1.1.2025 in Kraft).
+      (AGH-Beschluss, trat 1.8.2024 bzw. 1.1.2025 in Kraft).
       Daraus ergaben sich keine notwendigen Änderungen.</p>
     <p>
-      <strong>Seit 1.1.2025 gibt es nach über 20 Jahren "neues"
+      <strong>Seit 1.1.2025 gilt nach über 20 Jahren "neues"
       SchulG endlich eine aktualisierte
       <a href="https://www.berlin.de/sen/bildung/schule/rechtsvorschriften/schulgwahlo.pdf?ts=1752674592">Wahlordnung</a>.
-      Deren Auswirkungen sind hier noch <i>nicht</i> berücksichtigt und werden
-      in den nächsten Wochen (bis vsl. 12.9.) überprüft und eingearbeitet!
       Die alte Wahlordnung zum Schulverfassungsgesetz ist damit endgültig
       komplett außer Kraft getreten.
+      Die neue Wahlordnung wurde hier eingearbeitet; Fehler dabei oder
+      weitere Anpassungen sind aber möglich. Bitte die Vorlagen für
+      2024/25 und früher nicht mehr nutzen.
       </strong>
     </p>
 
@@ -1806,9 +1807,10 @@
         <a href="https://beas-mh.de/aktuell/307-willkommenspaket-2021">
           Marzahn-Hellersdorf</a>)
       </li>
-      <li> 2022-2023 Frank Fuhlbrück (2022: u.a. detailliertere Erläuterungen
-        Abfrage der Stellvertreter:innenzahl und Feld für die
-        Personalunion, 2023: Erläuterungen zur Rolle der Stellvertretenden)
+      <li> 2022-2025 Frank Fuhlbrück (2022: u.a. detailliertere Erläuterungen
+        + Abfrage der Stellvertreter:innenzahl;
+        2023: Erläuterungen zur Rolle der Stellvertretenden;
+        2025: Anpassungen an SchulGWahlO)
       </li>
     </ul>
 
@@ -1862,7 +1864,7 @@
     </h1>
     <p class="subhead">
       (basierend auf dem Schulgesetz des Landes
-      Berlin und der Wahlordnung zum Schulverfassungsgesetz)
+      Berlin (SchulG) und der Wahlordnung zum Schulgesetz (SchulGWahlO))
     </p>
     <table class="tabelleohnerahmen">
       <tr>
@@ -1875,7 +1877,7 @@
           <input type="text" id="klasse" name="klasse" value="" />
         </td>
         <td id="datumz">
-          <label for="datum">Datum:</label>
+          <label for="datum">Zeitpunkt:</label>
           <input type="text" id="datum" name="datum" value="" />
         </td>
       </tr>
@@ -1891,7 +1893,7 @@
       (siehe Anwesenheitsliste als Anlage).
     </p>
 
-    <h2>2. Wahl der Wahlleitung</h2>
+    <h2>2. Wahl (oder Bestimmung) der Wahlleitung</h2>
     <p class="haupttext">
       <label for="wahlleitung">Wahlleitung:</label>
       <input type="text" id="wahlleitung" name="wahlleitung" value="" />
@@ -1911,19 +1913,21 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    <p class="erlaeuterung">
-      (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
-    </p>
 
     <p class="haupttext">
-      <label for="kesptyp">Wahlart:</label>
-      <input id="kesptyp" name="kesptyp" class="wahltyp" />
-      <a class="erlaeuterung">(geheim/offen/Block), falls geheim: </a>
-      <label for="kespges">Anzahl abgeg. Stimmzettel:</label>
-      <input id="kespges" name="kespges" class="anz" />,
-      <label for="kespenth">davon Enth.:</label>
-      <input id="kespenth" name="kespenth" class="anz" />
+      <label for="kespsptyp">Wahlart:</label>
+      <input id="kespsptyp" name="kespsptyp" class="wahltyp" /> &nbsp;
+      <label for="kespspenth">Enthaltungen:</label>
+      <input id="kespspenth" name="kespspenth" class="anz" /> &nbsp;
+      <label for="kespspung">ungültige Stimmen:</label>
+      <input id="kespspung" name="kespspung" class="anz" /> &nbsp;
+      <label for="kespspges">Anzahl Stimmzettel:</label>
+      <input id="kespspges" name="kespspges" class="anz" />
     </p>
+    <p class="erlaeuterung">
+      (bei &gt; 4 Kandidierenden bitte Extrablatt nutzen; Wahlart: geheim/offen/Block; Anzahl Stimmzettel nur bei geheimer Wahl)
+    </p>
+
 
     <h5>
       Wahlergebnis Klassenelternsprecherinnen / Klassenelternsprecher
@@ -1957,18 +1961,19 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    <p class="erlaeuterung">
-      (bei mehr als vier Kandidierenden bitte eigenes Blatt verwenden)
-    </p>
 
     <p class="haupttext">
       <label for="stvkesptyp">Wahlart:</label>
-      <input id="stvkesptyp" name="stvkesptyp" class="wahltyp" />
-      <a class="erlaeuterung">(geheim/offen/Block), falls geheim: </a>
-      <label for="stvkespges">Anzahl abgeg. Stimmzettel:</label>
-      <input id="stvkespges" name="stvkespges" class="anz" />,
-      <label for="stvkespenth">davon Enth.:</label>
-      <input id="stvkespenth" name="stvkespenth" class="anz" />
+      <input id="stvkesptyp" name="stvkesptyp" class="wahltyp" /> &nbsp;
+      <label for="stvkespenth">Enthaltungen:</label>
+      <input id="stvkespenth" name="stvkespenth" class="anz" /> &nbsp;
+      <label for="stvkespung">ungültige Stimmen:</label>
+      <input id="stvkespung" name="stvkespung" class="anz" /> &nbsp;
+      <label for="stvkespges">Anzahl Stimmzettel:</label>
+      <input id="stvkespges" name="stvkespges" class="anz" />
+    </p>
+    <p class="erlaeuterung">
+      (bei &gt; 4 Kandidierenden bitte Extrablatt nutzen; Wahlart: geheim/offen/Block; Anzahl Stimmzettel nur bei geheimer Wahl)
     </p>
 
     <h5>
@@ -1977,6 +1982,7 @@
 
     <table id=westvkesp class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
+        <th class="sprang">&#35;</th>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
       </tr></thead>
@@ -2019,20 +2025,6 @@
       Kandidierende für die Mitglieder der Klassenkonferenz
     </h4>
 
-    <p class="haupttext">
-      Die Klassenelternversammlung hat mit einfacher Mehrheit
-      beschlossen, die (stellvertretenden)
-      Klassenelternsprecherinnen und Klassenelternsprecher
-      in Personalunion
-      auch als (stellvertretende) Mitglieder der Klassenkonferenz
-      zu bestimmen:
-      <select id="kespauchklkonf">
-        <option value="none">ja/nein?</option>
-        <option value="ja">ja</option>
-        <option value="nein">nein</option>
-      </select>
-    </p>
-
     <table id=kandklko class="tabellebreit" data-nrows="3">
       <thead><tr>
         <th class="spnamen">Name</th>
@@ -2040,18 +2032,19 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    <p class="erlaeuterung">
-      (bei mehr als drei Kandidierenden bitte eigenes Blatt verwenden)
-    </p>
 
     <p class="haupttext">
-      <label for="klkotyp">Wahlart:</label>
-      <input id="klkotyp" name="klkotyp" class="wahltyp" />
-      <a class="erlaeuterung">(geheim/offen/Block), falls geheim: </a>
-      <label for="klkoges">Anzahl abgeg. Stimmzettel:</label>
-      <input id="klkoges" name="klkoges" class="anz" />,
-      <label for="klkoenth">davon Enth.:</label>
-      <input id="klkoenth" name="klkoenth" class="anz" />
+      <label for="klkosptyp">Wahlart:</label>
+      <input id="klkosptyp" name="klkosptyp" class="wahltyp" /> &nbsp;
+      <label for="klkospenth">Enthaltungen:</label>
+      <input id="klkospenth" name="klkospenth" class="anz" /> &nbsp;
+      <label for="klkospung">ungültige Stimmen:</label>
+      <input id="klkospung" name="klkospung" class="anz" /> &nbsp;
+      <label for="klkospges">Anzahl Stimmzettel:</label>
+      <input id="klkospges" name="klkospges" class="anz" />
+    </p>
+    <p class="erlaeuterung">
+      (bei &gt; 3 Kandidierenden bitte Extrablatt nutzen; Wahlart: geheim/offen/Block; Anzahl Stimmzettel nur bei geheimer Wahl)
     </p>
 
     <h5>
@@ -2073,8 +2066,7 @@
     <p class="haupttext">
       <label for="stvklko">Es sollen </label>
       <input id="stvklko" name="stvklko" class="anz" />
-      stellvertretende Elternsprecherinnen oder
-      Elternsprecher gewählt werden.
+      stellvertretende Mitlieder der Klassenkonferenz gewählt werden.
       <a class="erlaeuterung">(maximal 4)</a>
     </p>
 
@@ -2085,18 +2077,19 @@
       </tr></thead>
       <tbody></tbody>
     </table>
-    <p class="erlaeuterung">
-      (bei mehr als drei Kandidierenden bitte eigenes Blatt verwenden)
-    </p>
 
     <p class="haupttext">
-      <label for="stvklkotyp">Wahlart:</label>
-      <input id="stvklkotyp" name="stvklkotyp" class="wahltyp" />
-      <a class="erlaeuterung">(geheim/offen/Block), falls geheim: </a>
-      <label for="stvklkoges">Anzahl abgeg. Stimmzettel:</label>
-      <input id="stvklkoges" name="stvklkoges" class="anz" />,
-      <label for="stvklkoenth">davon Enth.:</label>
-      <input id="stvklkoenth" name="stvklkoenth" class="anz" />
+      <label for="stvklkosptyp">Wahlart:</label>
+      <input id="stvklkosptyp" name="stvklkosptyp" class="wahltyp" /> &nbsp;
+      <label for="stvklkospenth">Enthaltungen:</label>
+      <input id="stvklkospenth" name="stvklkospenth" class="anz" /> &nbsp;
+      <label for="stvklkospung">ungültige Stimmen:</label>
+      <input id="stvklkospung" name="stvklkospung" class="anz" /> &nbsp;
+      <label for="stvklkospges">Anzahl Stimmzettel:</label>
+      <input id="stvklkospges" name="stvklkospges" class="anz" />
+    </p>
+    <p class="erlaeuterung">
+      (bei &gt; 3 Kandidierenden bitte Extrablatt nutzen; Wahlart: geheim/offen/Block; Anzahl Stimmzettel nur bei geheimer Wahl)
     </p>
 
     <h5>
@@ -2105,16 +2098,20 @@
 
     <table id=westvklko class="tabellebreit wahlerg" data-nrows="4">
       <thead><tr>
+        <th class="sprang">&#35;</th>
         <th class="spnamen">Name</th>
         <th class="spkontakt">E-Mail / Telefon</th>
       </tr></thead>
       <tbody></table>
     <p></p>
 
-  <h2>4. Einspruchsrecht und Unterschrift(en) der Wahlleitung</h2>
+  <h2>4. Einspruchsrecht und Unterschrift(en) der Wahlleiter:innen
+    und Helfer:innen
+    </h2>
     <p class="haupttext">
-    Einspruch gegen die Wahlen oder Wahldurchführung sind schriftlich
-    begründet bei der Wahlleitung einzulegen.
+    Einspruch gegen die Wahlen oder Wahldurchführung sind innerhalb
+    einer Woche schriftlich begründet bei der Wahlleitung oder der
+    Schulleitung einzulegen.
     </p>
 
     <table id=wahlleitus class="tabellebreit doppelzeilen">
@@ -2123,16 +2120,27 @@
         <th class="spwg">
           geleitete Wahlen
         </th>
+        <th class="sphi">
+          Helfer:in bei
+        </th>
         <th class="spunters">Unterschrift</th>
       </tr></thead>
       <tbody>
         <tr>
           <td><input class="iptab"/></td>
           <td><textarea class="iptab"></textarea></td>
+          <td><textarea class="iptab"></textarea></td>
           <td></td>
         </tr>
         <tr>
           <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td><textarea class="iptab"></textarea></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><input class="iptab"/></td>
+          <td><textarea class="iptab"></textarea></td>
           <td><textarea class="iptab"></textarea></td>
           <td></td>
         </tr>
@@ -2182,15 +2190,43 @@
 
     <h2>2. Wahl der Wahlleitung</h2>
     <p class="haupttext">
-      Für die Durchführung wird eine Wahlleitung gewählt.
-      Eine Person aus der Wahlleitung ist für den Wahlgang, den sie
-      leitet, nicht in Funktionen wählbar. Die Wahlleitung kann jedoch
-      während der Wahlvorgänge wechseln. Die Wahlleitung darf die Wahl
-      nicht beeinflussen.
-      Das Schulgesetz macht keine Angaben zur Besetzung der Wahlleitung.
-      Nach § 20 der Wahlordnung zum aufgehobenen SchulVerfG soll es
-      Erziehungsberechtigte*r oder Klassenlehrer*in sein (oder andere
-      von der/dem Schulleiter*in bestimmte Lehrer*in).
+      <em>§ 4 (1) SchulGWahlO:
+      Die Leitung einer Wahl obliegt der Wahlleiterin oder dem
+      Wahlleiter. Die Wahlleitung übernimmt ein nicht kandidierendes
+      Mitglied oder eine nicht dem Gremium, der Versammlung oder der
+      jeweiligen Gesamtheit der Wahlberechtigten angehörende Person.
+      </em>
+    </p>
+
+    <p class="haupttext">
+      <em>§ 4 (2) SchulGWahlO:
+      Die Wahlberechtigten wählen die Wahlleiterin oder den Wahlleiter
+      in offener Abstimmung. Die Abstimmung führt durch, wer den
+      Wahltermin bekanntgegeben hat oder eine von ihm oder ihr
+      beauftragte Person, die die Sitzung oder Versammlung, in der die
+      Wahl durchgeführt wird, leitet. Sofern sich bei Wahlen in den
+      Schulen aus der Abstimmung eine Wahlleiterin oder ein Wahlleiter
+      nicht ergibt, leitet die Schulleiterin oder der Schulleiter oder
+      eine von ihr oder ihm beauftragte Lehrkraft die Wahl. [...]
+      </em>
+    </p>
+
+    <p class="haupttext">
+      Für die Elternversammlung heißt das: die bisherigen
+      Elternvertreter:innen (die den Termin nach § 3 SchulGWahlO
+      bestimmen und nach § 89 (3,4) SchulG einladen) leiten idR die
+      Abstimmung zur Wahlleitung. Bei einer neu gebildeten Klasse
+      (oder Jahrgangsstufe, z.B. in Klassenstufe 11) tut dies
+      die/der Klassenlehrer:in. Sinnvollerweise beauftragt die
+      Schulleitung auch die/den Klassenlehrer:in dazu im Falle einer
+      Nichteinigung die Wahl zu leiten. Theoretisch darf die
+      Wahlleitung auch wechseln (d.h. für jede Wahl einzeln bestimmt
+      werden). Allerdings erlaubt § 4 (4) SchulGWahlO die Hinzuziehung
+      von Helfenden je Wahlgang, die fast alle Aufgaben der Wahlleitung
+      übernehmen können. Insofern kann die formelle Wahlleitung auch
+      von einer unerfahrenen Person übernommen werden, die in jedem
+      Wahlgang Helfende aus den jeweils
+      nicht kandidierenden Eltern bestimmt.
     </p>
 
     <h2>3. Durchführung der Wahl und Erfassung der Kandidierenden</h2>
@@ -2206,16 +2242,32 @@
       der wiederum mehrere Personen enthalten darf.</b>
       Bei einer einstimmigen offenen Wahl im Block erhalten allen
       Kandidierenden beispielsweise die Gesamtzahl der Stimmen.
+      <strong>
+      Nach SchulGWahlO § 5 genügt es, falls nicht mehr
+      Personen kandidieren als Posten zu besetzten sind, nicht,
+      nur die Namen (nicht) auf die Stimmzettel zu schreiben.
+      Jeder Name muss dann mit Ja/Nein/Enthaltung versehen sein.
+      Entsprechend sollten auch alle drei Anzahlen je Person
+      getrennt im Protokoll erfasst werden.
+      </strong>
 
       Bevor Stellvertreter:innen gewählt werden, wird
-      deren Anzahl abgestimmt. Stellvertreter:innen können
-      nur gewählt werden, wenn alle stimmberechtigten Mitglieder
-      gewählt wurden.
+      deren Anzahl abgestimmt.
       Bei Stimmengleichheit findet (sofern nötig) eine Stichwahl
       statt, besteht diese fort, wird gelost.
     </p>
 
-    <h2>4. Rolle der stellvertretenden Klassenelternsprecher:innen</h2>
+    <h2>4. Stellvertretende allgemein</h2>
+    <p class="haupttext">
+    § 2 (5) SchulGWahlO verlangt eine explizite Reihenfolge
+    der Stellvertretenden,
+    <em>soweit [...] die Versammlung nichts anderes bestimmt.</em>
+    Die Standardreihenfolge ist nach Stimmenzahl mit Losentscheid bei
+    Gleichstand. Statt Los können sich die Stellvertretenden aber
+    auch untereinander einigen.
+    </p>
+
+    <h2>5. Rolle der stellvertretenden Klassenelternsprecher:innen</h2>
     <p class="haupttext">
       Das Schulgesetz sieht nur für die/den Elternsprecher*in
       der ganzen Schule explizit Stellvertretende vor. Allerdings
