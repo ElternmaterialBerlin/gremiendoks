@@ -1905,14 +1905,21 @@
 
     <h2>2. Wahl der Wahlleitung</h2>
     <p class="erlaeuterung">
-      Für die Durchführung wird eine Wahlleitung gewählt.
-      Eine Person aus der Wahlleitung ist für den Wahlgang, den sie
-      leitet, nicht in Funktionen wählbar. Die Wahlleitung kann jedoch
-      während der Wahlvorgänge wechseln. Die Wahlleitung darf die Wahl
-      nicht beeinflussen.
+      Die/der Wahleiter:in wird in offener Abstimmung bestimmt und
+      darf für den jeweiligen Wahlgang nicht selbst kandidieren.
+      In der GEV sollte nach SchulGWahlO § 3 (1) Satz 1 Punkt 5
+      die/der bisherige Elternsprecher:in der Schule die Wahltermine
+      festgesetzt haben. Dementsprechend leitet sie/er die Abstimmung
+      zur Wahlleitung (SchulGWahlO § 4 (2)).
+      Da SchulGWahlO § 4 (4) es der Wahlleitung erlaubt,
+      (nicht kandidierende) Helfende für jeden Wahlgang zu bestimmen,
+      die auch fast alle Teile der Wahlhandlung übernehmen können,
+      genügt idR die Wahl einer (ggf. wenig kundigen) Person als
+      Wahlleiter:in, die bei keiner Wahl kandidieren will. Helfer:innen
+      können auf der letzten Seite angegeben werden.
     </p>
     <p class="haupttext">
-      <label for="wahlleitung">Wahlleitung:</label>
+      <label for="wahlleitung">Wahlleiter:in(nen):</label>
       <input type="text" id="wahlleitung" name="wahlleitung" value="" />
     </p>
 
@@ -1922,21 +1929,28 @@
       Stimmzettel durchgeführt werden. Dabei wird der Name der
       kandidierenden Person(en) auf Zettel geschrieben. Auf Antrag und
       durch einstimmigen Beschluss der anwesenden Wahlberechtigten
-      kann offen gewählt werden. Jede/jeder Wahlberechtigte
+      kann offen gewählt werden. Das sollte je Wahlgang <strong>separat
+      gefragt</strong> werden.
+      Jede/jeder Wahlberechtigte
       kann auf dem Stimmzettel so vielen Bewerberinnen und Bewerbern
       die Stimme geben, wie Personen zu wählen sind. Daher sollten
       Wahlen bei mehreren zu wählenden Personen und mehr Kandidierenden
       als zu wählenden Personen grundsätzlich geheim erfolgen.
       Bevor Stellvertreterinnen und Stellvertreter gewählt werden, wird
-      deren Anzahl abgestimmt. Stellvertretende Mitglieder können
+      deren Anzahl abgestimmt. Stellvertretende Mitglieder sollten idR
       nur gewählt werden, wenn zuvor alle für die entsprechenden
-      Gremien vorgesehenen Mitglieder gewählt wurden.
+      Gremien vorgesehenen Mitglieder gewählt wurden (ein Verbot
+      enthält aber weder SchulG noch SchulGWahlO).
       Bei Stimmengleichheit findet (sofern nötig) eine Stichwahl
       statt, besteht danach die Stimmengleichheit fort, wird durch die
       Wahlleitung gelost. Stichwahl und Losentscheid sollten
       in der Stimmenspalte vermerkt werden, z.B. „8/10/Los“ für
       eine im Losentscheid erfolgreiche Person, die davor 8 und
       10 Stimmen erhielt.
+      Kandidieren nicht mehr Personen als Posten zu vergeben sind,
+      so verlangt SchulGWahlO in § 5 und 6, dass je Person nach
+      Ja/Nein/Enthaltung gefragt wird. In diesem Fall darf aber im
+      Block abgestimmt werden, wenn niemand dagegen ist.
     </p>
     <p></p>
 
@@ -3051,7 +3065,7 @@
 
 <div class="page doprint" id="abschluss">
   <div class="content">
-    <h2>4. Einspruch, geleitete Wahlen und Unterschriften</h2>
+    <h2>4. Einspruch, Wahlleiter:innen und Helfer:innen Unterschriften</h2>
 
     <p class="haupttext">
       Einspruch gegen die Wahlen oder Wahldurchführung sind
@@ -3068,11 +3082,14 @@
       Seiten.
     </p>
 
-    <table id=wahlleitus class="tabellebreit doppelzeilen">
+    <table id=wahlleitus class="tabellebreit doppelzeilen" data-nrows="12">
       <thead><tr>
         <th class="spnamen">Name</th>
         <th class="spwg">
           geleitete Wahlen
+        </th>
+        <th class="sphi">
+          Helfer:in bei
         </th>
         <th class="spunters">Unterschrift</th>
       </tr></thead>
@@ -3080,39 +3097,14 @@
         <tr>
           <td><input class="iptab"/></td>
           <td><textarea class="iptab"></textarea></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><textarea class="iptab"></textarea></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><textarea class="iptab"></textarea></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><textarea class="iptab"></textarea></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
-          <td><textarea class="iptab"></textarea></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td><input class="iptab"/></td>
           <td><textarea class="iptab"></textarea></td>
           <td></td>
         </tr>
       </tbody>
     </table>
     <p class="erlaeuterung">
-     Kandidierende einer Wahl sollen der Wahlleitung dieser
-     Wahl auch nicht durch z.B. Auszählen oder Verteilen der Stimmzettel
-     helfen. Bei vielen geleiteten Wahlen
+     Helfer:in bei einer Wahl ist, wer u.a. Stimmzettel verteilt/einsammelt, Stimmen aufschreibt, nach offener Wahl fragt usw. (siehe § 4 (3) SchulGWahlO).
+     Helfer:innen eines Wahlgangs dürfen nicht kandidieren. Bei vielen geleiteten/unterstützen Wahlen
      kann man diese
      z.B. durch „SK, stvSK, FK D,FK Ku, stvGK“ abkürzen und/oder
      "alle außer:" davorsetzen.
