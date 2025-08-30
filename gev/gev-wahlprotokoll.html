@@ -414,6 +414,10 @@
     width: 1.2cm;
   }
 
+  #anzstimmen {
+    width: 1.2cm;
+  }
+
   #wahlleitung {
     width: 15cm;
   }
@@ -1806,13 +1810,16 @@
         <a href="https://bea-sz.de/dokumente/willkommenspaket-2021/wahlprotokoll-gev.html">
           Steglitz-Zehlendorf</a>,
         <a href="https://beas-mh.de/aktuell/307-willkommenspaket-2021">
-          Marzahn-Hellersdorf</a>)
+          Marzahn-Hellersdorf</a>, MH geht seit 2020 von
+          Stimmenhäufungen in der GEV aus)
       </li>
-      <li> 2020-2023 Frank Fuhlbrück (2020-21:
+      <li> 2020-2025 Frank Fuhlbrück (2020-21:
         u.a. detailliertere Erläuterungen
         zur Stimmabgabe bei mehreren Kandidierende und allgemein zur
         Rolle der Wahlordnung nach SchulVerfG, kompakte Darstellung
-        mehrerer Fachkonferenzen; 2023: letzte Seite überarbeitet)
+        mehrerer Fachkonferenzen; 2023: letzte Seite überarbeitet;
+        2025: Anpassungen an SchulGWahlO und Änderung der Auslegung
+        zur Stimmenhäufung.)
       </li>
     </ul>
 
@@ -1884,24 +1891,39 @@
     <h2>1. Feststellung der anwesenden Wahlberechtigten</h2>
     <p class="erlaeuterung">
       Wahlberechtigt sind nach §90 die anwesenden Elternsprecherinnen
-      und Elternsprecher der Klassen oder Jahrgangsstufen mit jeweils
-      einer Stimme, auch wenn durch sie mehr als eine Klasse in der
-      GEV vertreten wird. Stellvertretende Klassenelternsprecherinnen
+      und Elternsprecher der Klassen oder Jahrgangsstufen.
+      Stellvertretende Klassenelternsprecherinnen
       und Klassenelternsprecher können, falls nicht alle
       Klassenelternsprecherinnen und Klassenelternsprecher der Klasse
       anwesend sind, als Abwesenheitsvertreterinnen und
       Abwesenheitsvertreter aktiv wählen, sich aber nicht wählen
       lassen. Eine Person kann nicht für eine Klasse anwesend und für
-      eine andere abwesend sein (siehe
+      eine andere abwesend sein.
+      Das Schulgesetz legt nicht explizit fest, ob eine Person in
+      einem Gremium mehr als eine Stimme haben kann.
+      Frühere Senatsverwaltungen gingen
+      davon aus, dass dies nicht möglich ist, siehe
       <a href="https://pardok.parlament-berlin.de/starweb/adis/citat/VT/17/SchrAnfr/s17-14635.pdf">
-      AGH Drucksache 17/14635</a>).
+      AGH Drucksache 17/14635</a>. Da die SchulGWahlO aber in § 2
+      von der "Anzahl der Stimmberechtigungen" spricht und auch der
+      Elternleitfaden (Stand 2023) nun von <strong>je einer Stimme pro
+      vertretener Klasse</strong> ausgeht, empfiehlt sich diese Auslegung.
     </p>
     <p class="haupttext">
       <label for="anwesend">Anwesend sind</label>
       <input id="anwesend" name="anwesend" value=""/>
-      Wahlberechtigte<br/>
-      (nachvollziehbar durch eine Anwesenheitsliste als Anlage zum
-      Wahlprotokoll).
+      Wahlberechtigte mit
+      <label for="anzstimmen">mit insgesamt</label>
+      <input id="anzstimmen" name="anzstimmen" value=""/>
+      Stimmen.<br/>
+      Das Quorum von 1/3 der Stimmen ist daher
+      <select id="quorum">
+         <option value="none">erfüllt?</option>
+         <option value="erfüllt">erfüllt</option>
+         <option value="nicht erfüllt">nicht erfüllt</option>
+      </select>;
+      nachvollziehbar durch eine Anwesenheitsliste als Anlage zum
+      Wahlprotokoll mit Zuordnung von Klassen und Stimmrechten.
     </p>
 
     <h2>2. Wahl der Wahlleitung</h2>
